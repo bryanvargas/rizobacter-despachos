@@ -14,10 +14,21 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.9.6",
       "toolsId": "971536ee-9021-4b72-a62a-50644d836e32"
+    },
+    "dataSources": {
+      "ZOS_DESPACHO_SRV": {
+        "uri": "/sap/opu/odata/sap/ZOS_DESPACHO_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      }
     }
   },
   "sap.ui": {
     "technology": "UI5",
+    "fullWidth": true,
     "icons": {
       "icon": "",
       "favIcon": "",
@@ -57,6 +68,15 @@
         "settings": {
           "bundleName": "ar.com.rizobacter.despacho.i18n.i18n"
         }
+      },
+      "entregas": {
+        "dataSource": "ZOS_DESPACHO_SRV",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
+        }
       }
     },
     "resources": {
@@ -78,10 +98,10 @@
       },
       "routes": [
         {
-          "name": "RouteApp",
-          "pattern": ":?query:",
+          "name": "Despacho",
+          "pattern": "",
           "target": [
-            "TargetApp"
+            "Despacho"
           ]
         }
       ],
@@ -92,6 +112,11 @@
           "clearControlAggregation": false,
           "viewId": "App",
           "viewName": "App"
+        },
+        "Despacho": {
+          "viewType": "XML",
+          "viewName": "Despacho",
+          "viewId": "Despacho"
         }
       }
     },
