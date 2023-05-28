@@ -130,7 +130,7 @@ sap.ui.define(
 				if (!this.byId("mainDialog")) {
 					Fragment.load({
 						Id: oView.getId(),
-						name: "com.rizobacter.despacho.fragment.DialogDespacho"
+						name: "ar.com.rizobacter.despacho.view.fragment.DialogDespacho"
 					}).then(function (oDialog) {
 						oView.addDependent(oDialog);
 						oDialog.open();
@@ -152,7 +152,7 @@ sap.ui.define(
 
 			onOpenDialogRemito: function (oEvent) {
 				debugger;
-				var oItem= this.getView().byId("table").getSelectedItem();
+				var oItem = this.getView().byId("table").getSelectedItem();
 				const oView = this.getView();
 				if (!this.byId("impRemitoDialog")) {
 					Fragment.load({
@@ -161,20 +161,20 @@ sap.ui.define(
 						controller: this
 					}).then(function (oDialog) {
 						oView.addDependent(oDialog)
-							oView.addDependent(oDialog);
-							oDialog.open();
-						
-					});				
+						oView.addDependent(oDialog);
+						oDialog.open();
+
+					});
 				} else {
 					this.byId("impRemitoDialog").open();
 				}
 			},
 
-			onClose: function() {
+			onClose: function () {
 				this.byId("impRemitoDialog").close();
 			},
 
-			onEdit: function(oEvent) {
+			onEdit: function (oEvent) {
 				//we are geting the particular row object() or property
 				var selectedItems = oEvent.getSource().getBindingContext("bindData").getObject();
 				//sending the path to update function so we know what is the row and we will bind see in update function()
@@ -184,7 +184,7 @@ sap.ui.define(
 				var desig = selectedItems.Designation;
 				var number = selectedItems.Number;
 				var exp = selectedItems.Experience;
-	
+
 				if (!this.editDalog) {
 					this.editDalog = sap.ui.xmlfragment(this.getView().getId(), "com.columnT_TableRowsEdit.view.edit", this);
 					this.getView().addDependent(this.editDalog);
@@ -196,8 +196,85 @@ sap.ui.define(
 				this.getView().byId("idNumber").setValue(number);
 				this.getView().byId("idExperience").setValue(exp);
 				this.editDalog.open();
-	
+
 			},
+
+			//*************************************************
+			//*************************************************
+			
+			onValueHelpRequest: function (oEvent) {
+                var that = this;
+                var oInput = oEvent.getSource(),
+                    sInputValue = oEvent.getSource().getValue(),
+                    oView = this.getView();
+
+                if (this._oValueHelpDialog) {
+                    this._oValueHelpDialog.destroy();
+                }
+                
+                this._kunnrDialogInput = oInput;
+                Fragment.load({
+                    id: oView.getId(),
+                    name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
+                    controller: this
+                }).then(function (oDialog) {
+                    that._oValueHelpDialog = oDialog;
+                    oView.addDependent(oDialog);
+                    var filtro = [];
+                    var sInputId = /[a-z]+$/.exec((/Despacho--[a-z]+/.exec(oInput.getId())[0]))[0];
+                    switch (sInputId) {
+                        case "kunnr":
+                            oDialog.bindAggregation("items", {
+                                path: 'entregas>/F4kunnrSet',
+                                filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
+                                template: new sap.m.StandardListItem({
+                                    title: '{entregas>Kunnr}',
+                                    description: '{entregas>Name}'
+                                })
+                            });
+							that._oValueHelpDialog._Field = "kunnr";
+                            break;
+							
+							
+                    }
+					if (sInputId === "kunnr") {
+						oDialog.getBinding("items").filter([
+							new Filter("Kunnr", FilterOperator.EQ, sInputValue),
+							new Filter("Name", FilterOperator.EQ, sInputValue)
+						]);
+					}
+
+                    oDialog.open(sInputValue);
+
+                    return oDialog;
+                });
+
+            },
+			onValueHelpSearch: function (oEvent) {
+				var sValue = oEvent.getParameter("value");
+
+                if (this._oValueHelpDialog._Field === "kunnr") {
+                    oEvent.getSource().getBinding("items").filter([
+                        new Filter("Kunnr", FilterOperator.Contains, sValue)
+                    ]);               
+                }
+				//var sValue = oEvent.getParameter("value");
+				//var oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
+	
+				//oEvent.getSource().getBinding("items").filter([oFilter]);
+			},
+	
+			onValueHelpClose: function (oEvent) {
+				var oSelectedItem = oEvent.getParameter("selectedItem");
+				oEvent.getSource().getBinding("items").filter([]);
+	
+				if (!oSelectedItem) {
+					return;
+				}
+	
+				this._kunnrDialogInput.setValue(oSelectedItem.getTitle());
+			}
+
 
 		});
 	});

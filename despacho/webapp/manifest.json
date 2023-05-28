@@ -103,6 +103,13 @@
           "target": [
             "Despacho"
           ]
+        },
+        {
+          "name": "RouteEntregasPos",
+          "pattern": "EntregaPos/{Kunnr}",
+          "target": [
+            "TargetEntregasPos"
+          ]
         }
       ],
       "targets": {
@@ -117,6 +124,11 @@
           "viewType": "XML",
           "viewName": "Despacho",
           "viewId": "Despacho"
+        },
+        "TargetEntregasPos": {
+          "viewType": "XML",
+          "viewName": "EntregaPos",
+          "viewId": "EntregaPos"
         }
       }
     },

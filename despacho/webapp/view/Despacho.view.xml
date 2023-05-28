@@ -177,252 +177,30 @@
 			</uxap:headerContent>
 			<!-- SECCIONES -->
 			<uxap:sections>
-				<uxap:ObjectPageSection title="{i18n>entregas}">
-					<uxap:subSections>
-						<uxap:ObjectPageSubSection
-							title=""
-							titleUppercase="false"
-						>
-							<uxap:blocks>
-								<VBox>
-									<MessageStrip
-										text="{worklistView>/worklistTableTitle}"
-										type="Information"
-										showIcon="true"
-										class="sapUiTinyMargin"
-									/>
-									<Table
-										id="table"
-										mode="SingleSelect"
-										inset="false"
-										width="auto"
-										class="sapUiResponsiveMargin"
-										growing="true"
-										growingThreshold="20"
-										growingScrollToLoad="true"
-										alternateRowColors="true"
-										items="{
-											path: 'entregas>/EntCabSet',
-											sorter: {
-												path: 'Vbeln',
-												descending: false
-											}
-										}"
-										busyIndicatorDelay="{worklistView>/tableBusyDelay}"
-										updateFinished=".onUpdateFinished"
-									>
-										<headerToolbar>
-											<OverflowToolbar
-												width="auto"
-												height="auto"
-												design="Transparent"
-												visible="true"
-												enabled="true"
-											>
-												<content>
-													<!-- <ToolbarSpacer /> -->
-													<ToolbarSpacer width=""/>
-													<ToolbarSpacer width=""/>
-													<SearchField
-														enableSuggestions="false"
-														enabled="true"
-														maxLength="0"
-														placeholder=""
-														showRefreshButton="false"
-														showSearchButton="true"
-														value=""
-														visible="true"
-														width="20rem"
-														search=".filterGlobally"
-													>
-														<suggestionItems>
-														</suggestionItems>
-													</SearchField>
-													<!-- <ToolbarSpacer width=""/>
-													<ToolbarSpacer width=""/> -->
-													<Button
-														icon="sap-icon://add"
-														press=".onAddLine"
-													/>
-													<Button
-														tooltip="{i18n>sort}"
-														icon="sap-icon://sort"
-														press="onSortPark"
-													/>
-													<Button
-														tooltip="{i18n>filter}"
-														icon="sap-icon://filter"
-														press="onFilterPark"
-													/>
-													<Button
-														tooltip="{i18n>clnFlt}"
-														icon="sap-icon://clear-filter"
-														press="onClearFilterPark"
-													/>
-													<Button
-														tooltip="{i18n>dwnXls}"
-														icon="sap-icon://excel-attachment"
-														press="onExportxls3WMParkeadas"
-													/>
-													<!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
-													<!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
-											iconDensityAware="false" press="onEditPDF" />-->
-												</content>
-											</OverflowToolbar>
-										</headerToolbar>
-										<columns>
-											<Column width="3rem" mergeDuplicates="true">
-												<header>
-													<Label/>
-												</header>
-											</Column>
-											<Column width="6rem" mergeDuplicates="true">
-												<header>
-													<Label text="{i18n>entrega.vbeln}"/>
-												</header>
-											</Column>
-											<Column width="8rem">
-												<header>
-													<Label text="{i18n>entrega.kunnr}"/>
-												</header>
-											</Column>
-											<Column width="16rem">
-												<header>
-													<Label text="{i18n>entrega.kunnrDesc}"/>
-												</header>
-											</Column>
-											<Column width="6rem">
-												<header>
-													<Label text="{i18n>entrega.matnr}"/>
-												</header>
-											</Column>
-											<!--<Column width="16rem" hAlign="Center">-->
-											<Column width="8rem">
-												<header>
-													<Label text="{i18n>entrega.matnrDesc}"/>
-												</header>
-											</Column>
-											<Column width="8rem">
-												<header>
-													<Label text="{i18n>entrega.lfimg}"/>
-												</header>
-											</Column>
-											<Column width="3rem">
-												<header>
-													<Label text="{i18n>entrega.vrkme}"/>
-												</header>
-											</Column>
-											<Column width="7rem">
-												<header>
-													<Label text="{i18n>entrega.wadat}"/>
-												</header>
-											</Column>
-											<Column>
-												<header width="1rem">
-													<Label text="{i18n>entrega.werks}"/>
-												</header>
-											</Column>	
-											<Column>
-												<header width="10rem">
-													<Label text="{i18n>entrega.werksDesc}"/>
-												</header>
-											</Column>																						
-											<!--<Column width="5rem">
-												<header>
-													<Label text="{i18n>entrega.status}"/>
-												</header>
-											</Column> -->
-											<!-- <Column width="7rem" hAlign="End">
-                                                <header>
-                                                    <Label text="Total"/>
-                                                </header>
-                                            </Column> -->
-										</columns>
-										<items>
-											<ColumnListItem type="Active">
-												<cells>
-													<core:Icon
-														src="sap-icon://monitor-payments"
-														size="1.5rem"
-													/>
-													<!-- <ObjectIdentifier
-														title="{entregas>Vbeln}"
-														text="Vanessa Budeanu"
-													/> -->
-													<Text text="{
-														path: 'entregas>Vbeln',
-														formatter: '.formatter.quitarCero'
-													}"/>
-													<!-- <ObjectStatus
-														text="USD"
-														state="Information"
-													/> -->
-													<Text text="{
-														path: 'entregas>Kunnr',
-														formatter: '.formatter.quitarCero'
-													}"/>
-													<!-- <VBox alignItems="Center">
-														<Text text="{entregas>NameWe}"/>
-														<StepInput width="6rem"/>
-													</VBox> -->
-													<Text text="{entregas>KunnrDesc}"/>
-													<ObjectStatus
-														text="{
-															path: 'entregas>Matnr',
-															formatter: '.formatter.quitarCero'
-														}"
-														state="Information"
-													/>
-													<Text text="{entregas>MatnrDesc}"/>
-													<VBox alignItems="Start">
-														<Text text="{entregas>Lfimg}"/>
-														<StepInput width="6rem"/>
-													</VBox>
-													<ObjectStatus
-														text="{entregas>Vrkme}"
-														state="Information"
-													/>
-													<Text
-														text="{
-															path: 'entregas>Wadat',
-															type: 'sap.ui.model.type.Date',
-															formatOptions: {
-																pattern: 'dd/MM/yyyy',
-																strictParsing: true,
-																UTC: true
-															}
-														}"
-														wrapping="true"
-														textAlign="Begin"
-														textDirection="Inherit"
-														visible="true"
-														width="auto"
-													/>
-													<Text text="{entregas>Werks}"/>
-													<Text text="{entregas>WerksDesc}"/>
-													<!--<core:Icon
-														src="{
-															path: 'entregas>Status',
-															formatter: '.formatter.statusFormatter'
-														}"
-														size="22px"
-														height="22px"
-														width="22px"
-														visible="true"
-														color="{
-															path: 'entregas>Status',
-															formatter: '.formatter.statColorFormater'
-														}"
-													/>-->
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-								</VBox>
-							</uxap:blocks>
-						</uxap:ObjectPageSubSection>
-					</uxap:subSections>
-				</uxap:ObjectPageSection>
+			<!-- CABECERA DE ENTREGAS-->
+			<uxap:ObjectPageSection title="{i18n>entregas}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection title="" titleUppercase="false">
+                            <uxap:blocks>
+                               <core:Fragment fragmentName="ar.com.rizobacter.despacho.view.fragment.EntregasCabecera" type="XML" />
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+
+			<!-- POSICIONES DE ENTREGAS-->	
+				  
+                <uxap:ObjectPageSection title="Posiciones">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection title="Posiciones" titleUppercase="false">
+                            <uxap:blocks>
+                               <core:Fragment fragmentName="ar.com.rizobacter.despacho.view.fragment.EntregasPosiciones" type="XML" />
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+
+
 			</uxap:sections>
 		</uxap:ObjectPageLayout>
 	</Page>
