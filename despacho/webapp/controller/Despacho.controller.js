@@ -51,20 +51,27 @@ sap.ui.define(
 			},
 
 			_filter: function () {
-				var oFilter = null;
+				// var oFilter = null;
 
-				if (this._oGlobalFilter && this._oPriceFilter) {
-					oFilter = new Filter([this._oGlobalFilter, this._oPriceFilter], true);
-				} else if (this._oGlobalFilter) {
-					oFilter = this._oGlobalFilter;
-				} else if (this._oPriceFilter) {
-					oFilter = this._oPriceFilter;
+				// if (this._oGlobalFilter && this._oPriceFilter) {
+				// 	oFilter = new Filter([this._oGlobalFilter, this._oPriceFilter], true);
+				// } else if (this._oGlobalFilter) {
+				// 	oFilter = this._oGlobalFilter;
+				// } else if (this._oPriceFilter) {
+				// 	oFilter = this._oPriceFilter;
+				// }
+
+				// this.byId("table").getBinding('items').filter(oFilter, "Application");
+
+				if (this._oGlobalFilter) {
+					const oList = this.getView().byId("table");
+					const oBinding = oList.getBinding("items");
+					oBinding.filter(this._oGlobalFilter);
 				}
-
-				this.byId("table").getBinding('items').filter(oFilter, "Application");
 			},
 
 			filterGlobally: function (oEvent) {
+				debugger; 
 				var sQuery = oEvent.getParameter("query");
 				this._oGlobalFilter = null;
 
@@ -273,6 +280,15 @@ sap.ui.define(
 				}
 	
 				this._kunnrDialogInput.setValue(oSelectedItem.getTitle());
+			},
+
+			navegateToEntregasPos: function (oEvent) {
+				debugger;
+				const oItem = oEvent.getSource();
+				const oRouter = this.getOwnerComponent().getRouter(); //sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("RouteEntregasPos", {
+					Kunnr: window.encodeURIComponent(oItem.getBindingContext("entregas").getPath().substr(1))
+				});
 			}
 
 

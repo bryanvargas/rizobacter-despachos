@@ -1,8 +1,10 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+    xmlns:uxap="sap.uxap"
 >
-
 <Panel>
     <VBox>
         <MessageStrip
@@ -13,7 +15,6 @@
         />
         <Table
             id="table"
-            mode="SingleSelect"
             inset="false"
             width="auto"
             class="sapUiResponsiveMargin"
@@ -159,7 +160,7 @@
                 </Column> -->
             </columns>
             <items>
-                <ColumnListItem type="Active">
+                <ColumnListItem type="Navigation" press="navegateToEntregasPos">  
                     <cells>
                         <core:Icon
                             src="sap-icon://monitor-payments"
@@ -169,19 +170,29 @@
                             title="{entregas>Vbeln}"
                             text="Vanessa Budeanu"
                         /> -->
-                        <Text text="{
+                        <!--<Text text="{
                             path: 'entregas>Vbeln',
                             formatter: '.formatter.quitarCero'
-                        }"/>
+                        }"/>-->
+
+                        <ObjectStatus
+                            text="{
+                                path: 'entregas>Vbeln',
+                                formatter: '.formatter.quitarCero'
+                            }"
+                            state="Information"
+                            press="showPosiciones"
+                            
+                        />
                         <!-- <ObjectStatus
                             text="USD"
                             state="Information"
                         /> -->
-                        <!--<Text text="{
+                        <Text text="{
                             path: 'entregas>Kunnr',
                             formatter: '.formatter.quitarCero'
-                        }"/> -->
-                        <Input
+                        }"/> 
+                        <!-- <Input
                             id="kunnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
@@ -193,7 +204,7 @@
                                     key="{entregas>Kunnr}"
                                     text="{entregas>Name}" />
                             </suggestionItems>  
-                        </Input>
+                        </Input> -->
                         <!-- <VBox alignItems="Center">
                             <Text text="{entregas>NameWe}"/>
                             <StepInput width="6rem"/>
@@ -204,7 +215,6 @@
                                 path: 'entregas>Matnr',
                                 formatter: '.formatter.quitarCero'
                             }"
-                            state="Information"
                         />
                         <Text text="{entregas>MatnrDesc}"/>
                         <VBox alignItems="Start">
@@ -213,7 +223,6 @@
                         </VBox>
                         <ObjectStatus
                             text="{entregas>Vrkme}"
-                            state="Information"
                         />
                         <Text
                             text="{
@@ -254,4 +263,4 @@
     </VBox>
 
 </Panel>
-</c:FragmentDefinition>
+</core:FragmentDefinition>

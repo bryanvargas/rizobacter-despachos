@@ -127,8 +127,8 @@
         },
         "TargetEntregasPos": {
           "viewType": "XML",
-          "viewName": "EntregaPos",
-          "viewId": "EntregaPos"
+          "viewName": "EntregasPos",
+          "viewId": "EntregasPos"
         }
       }
     },

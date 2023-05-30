@@ -1,0 +1,13 @@
+<mvc:View controllerName="ar.com.rizobacter.despacho.controller.EntregasPos"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+
+
+
+	<Page
+		title="{i18n>detailPageTitle}">
+		<ObjectHeader
+			intro="{entregas>Vbeln}"
+			title="{entregas>Vbeln}"/>
+	</Page>
+</mvc:View>

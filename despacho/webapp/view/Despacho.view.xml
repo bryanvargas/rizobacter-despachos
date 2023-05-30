@@ -4,6 +4,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core"
 	xmlns:uxap="sap.uxap"
+	xmlns:f="sap.f"
 	displayBlock="true"
 	height="100%"
 	busyIndicatorDelay="0"
@@ -188,9 +189,13 @@
                     </uxap:subSections>
                 </uxap:ObjectPageSection>
 
+
+
+
+
 			<!-- POSICIONES DE ENTREGAS-->	
 				  
-                <uxap:ObjectPageSection title="Posiciones">
+                <!--<uxap:ObjectPageSection title="Posiciones">
                     <uxap:subSections>
                         <uxap:ObjectPageSubSection title="Posiciones" titleUppercase="false">
                             <uxap:blocks>
@@ -198,10 +203,18 @@
                             </uxap:blocks>
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
-                </uxap:ObjectPageSection>
+                </uxap:ObjectPageSection>-->
 
 
 			</uxap:sections>
 		</uxap:ObjectPageLayout>
+			<f:FlexibleColumnLayout id="flexibleColumnLayout" backgroundDesign="Solid">
+		<f:beginColumnPages>
+			<mvc:XMLView id="beginView" viewName="ar.com.rizobacter.despacho.view.EntregasPos"/>
+		</f:beginColumnPages>
+		<f:midColumnPages>
+			<mvc:XMLView id="detailView" viewName="ar.com.rizobacter.despacho.view.EntregasPos"/>
+		</f:midColumnPages>
+	</f:FlexibleColumnLayout>
 	</Page>
 </mvc:View>
