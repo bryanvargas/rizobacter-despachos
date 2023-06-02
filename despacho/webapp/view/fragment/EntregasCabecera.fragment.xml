@@ -4,6 +4,7 @@
 	xmlns:core="sap.ui.core"
     xmlns:tnt="sap.tnt"
     xmlns:uxap="sap.uxap"
+    xmlns:f="sap.f"
 >
 <Panel>
     <VBox>
@@ -14,7 +15,7 @@
             class="sapUiTinyMargin"
         />
         <Table
-            id="table"
+            id="tablaEntregasCab"  
             inset="false"
             width="auto"
             class="sapUiResponsiveMargin"
@@ -51,10 +52,13 @@
                             placeholder=""
                             showRefreshButton="false"
                             showSearchButton="true"
-                            value=""
+                            value="{
+                                path: 'filters>/Vbeln'
+                            }"
                             visible="true"
                             width="20rem"
                             search=".filterGlobally"
+                            liveChange="onFilter"
                         >
                             <suggestionItems>
                             </suggestionItems>
@@ -83,7 +87,7 @@
                         <Button
                             tooltip="{i18n>dwnXls}"
                             icon="sap-icon://excel-attachment"
-                            press="onExportxls3WMParkeadas"
+                            press="onExportxlsEntregas"
                         />
                         <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
                         <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
@@ -261,6 +265,5 @@
             </items>
         </Table>
     </VBox>
-
 </Panel>
 </core:FragmentDefinition>

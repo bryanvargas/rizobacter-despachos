@@ -46,7 +46,7 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.114.0",
+      "minUI5Version": "1.71.21",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
@@ -83,6 +83,14 @@
       "css": [
         {
           "uri": "css/style.css"
+        }        
+      ],
+      "js": [
+        {
+            "uri": "libs/FileSaver.js"
+        },
+        {
+          "uri": "libs/xlsx.core.min.js"
         }
       ]
     },
@@ -106,7 +114,7 @@
         },
         {
           "name": "RouteEntregasPos",
-          "pattern": "EntregaPos/{Kunnr}",
+          "pattern": "EntregaPos/{Vbeln}",
           "target": [
             "TargetEntregasPos"
           ]

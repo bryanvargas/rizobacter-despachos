@@ -14,7 +14,7 @@ builder:
       afterTask: generateCachebusterInfo
       configuration:
         target:
-          destination: HB4_BACKEND_SAP
+          destination: HB4_BACKEND_SAP_100
           url: http://reds4:8000
         app:
           name: ZUI5MM_DESPACHO

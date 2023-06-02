@@ -87,7 +87,19 @@ sap.ui.define([],
                 if (!iNum) {
                     return "";
                 }
-                return parseInt(iNum, 0); //iNum.replace(/^0+/, '');
+                return parseInt(iNum, 0); 
             },
+
+
+            dateFormat: function (iDate) {
+                if (!iDate) {
+                    return "";
+                }    
+                var anio = iDate.getFullYear();
+                var mes = iDate.getUTCMonth();
+                var dia = iDate.getUTCDate();
+                return dia + "/" + mes + "/" + anio;
+            },
+    
         };
     });

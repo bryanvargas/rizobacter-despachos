@@ -1,13 +1,114 @@
 <mvc:View controllerName="ar.com.rizobacter.despacho.controller.EntregasPos"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar">
+    <Page id="idPrincipalPage" title="{i18n>title}">
+        <content>
+            <!-- <fb:FilterBar reset="onReset" search=".handleGetSeguimientoAFES" showRestoreButton="true" showClearButton="true">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{i18n>Principal.FiltroVuelo.Label}" partOfCurrentVariant="true"
+									visibleInFilterBar="true">
+									<fb:control>
+										<SearchField showSearchButton="false" placeholder="{i18n>Principal.FiltroVuelo.Placeholder}"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{i18n>Principal.FiltroOrigen.Label}" partOfCurrentVariant="true"
+									visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox placeholder="{i18n>Principal.FiltroOrigen.Placeholder}"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{i18n>Principal.FiltroDestino.Label}" partOfCurrentVariant="true"
+									visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox placeholder="{i18n>Principal.FiltroDestino.Placeholder}"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar> -->
 
-
-
-	<Page
-		title="{i18n>detailPageTitle}">
-		<ObjectHeader
-			intro="{entregas>Vbeln}"
-			title="{entregas>Vbeln}"/>
-	</Page>
+						<Table id="tablaPos" items="{/results}" noDataText="Algo de posiciones" growing="true"
+							growingThreshold="10" growingScrollToLoad="false" growingTriggerText="Ver más" fixedLayout="false" alternateRowColors="true">
+							<headerToolbar>
+								<OverflowToolbar>
+									<ToolbarSpacer/>
+									<Button icon="sap-icon://save" text="Grabar"/>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.vbeln}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.posnr}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.matnr}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.matnrDesc}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.werks}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.lgort}"/>
+									</header>
+								</Column>
+								<Column>
+									<header>
+										<Label text="{i18n>entrega.pos.lfimg}"/>
+									</header>
+								</Column>
+								<Column hAlign="Center" width="10rem"> 
+									<header>
+										<Label text="{i18n>entrega.pos.pikmg}"/>
+									</header>
+								</Column>
+								<Column hAlign="Center" width="10rem"> 
+									<header>
+										<Label text="{i18n>entrega.pos.charg}"/>
+									</header>
+								</Column>
+								<Column hAlign="Center" width="10rem"> 
+									<header>
+										<Label text="{i18n>entrega.pos.vrkme}"/>
+									</header>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Active" press="onPicking" highlight="Information">
+									<cells>
+										<Label text="{Vbeln}" design="Bold"/>
+										<Text text="{Posnr}"/>
+										<Text text="{Matnr}"/>
+										<Text text="{MatnrDesc}"/>
+										<Text text="{Werks}"/>
+										<Text text="{Lgort}"/>
+										<Text text="{Lfimg}"/>
+										<Text text="{Pikmg}"/>
+										<Text text="{Charg}"/>
+										<Text text="{Vrkme}"/>
+										<!-- <core:Icon src="{modeloVuelos>Icono}" size="1.5rem" color="{modeloVuelos>Color}"/>
+										<core:Icon src="sap-icon://alert" size="1.5rem" color="#FABD64" visible="{modeloVuelos>Modificaciones}"/> -->
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+        </content>
+    </Page>
 </mvc:View>

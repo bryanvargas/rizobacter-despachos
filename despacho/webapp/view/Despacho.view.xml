@@ -1,166 +1,135 @@
 <mvc:View
-	controllerName="ar.com.rizobacter.despacho.controller.Despacho"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m"
-	xmlns:core="sap.ui.core"
-	xmlns:uxap="sap.uxap"
-	xmlns:f="sap.f"
-	displayBlock="true"
-	height="100%"
-	busyIndicatorDelay="0"
+    controllerName="ar.com.rizobacter.despacho.controller.Despacho"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:uxap="sap.uxap"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
 >
-	<Page
-		id="page"
-		showNavButton="true"
-		showHeader="true"
-	>
-		<uxap:ObjectPageLayout id="ObjectPageLayout">
-			<!-- HEADER TITULO -->
-			<uxap:headerTitle>
-				<uxap:ObjectPageDynamicHeaderTitle>
-					<uxap:expandedHeading>
-						<Title text="{i18n>appTitle}"/>
-					</uxap:expandedHeading>
-					<uxap:snappedHeading>
-						<HBox>
-							<Avatar
-								src="sap-icon://product"
-								class="sapUiMediumMarginEnd sapUiSmallMargin"
-								displayShape="Square"
-							/>
-							<VBox>
-								<Title text="{i18n>title}"/>
-								<Label text="{i18n>subTitle}"/>
-							</VBox>
-						</HBox>
-					</uxap:snappedHeading>
-					<uxap:expandedContent>
-						<Label text="{i18n>subTitle}"/>
-					</uxap:expandedContent>
-					<uxap:snappedTitleOnMobile>
-						<Title text="{i18n>title}"/>
-					</uxap:snappedTitleOnMobile>
-					<uxap:actions>
-						<Button
-							press=".onOpenDialogRemito"
-							icon="sap-icon://print"
-							text="{i18n>print}"
-							type="Emphasized"
-							visible="true"
-						/>
-						<Button
-							type="Accept"
-							press="abrirDialogFinalizacion"
-							icon="sap-icon://save"
-							text="{i18n>update}"
-						/>
-						<Button
-							type="Accept"
-							press="abrirDialogFinalizacion"
-							icon="sap-icon://activity-items"
-							text="{i18n>list}"
-						/>
-					</uxap:actions>
-				</uxap:ObjectPageDynamicHeaderTitle>
-			</uxap:headerTitle>
-			<!-- HEADER CONTENIDO -->
-			<uxap:headerContent>
-				<FlexBox
-					class="fondo"
-					wrap="Wrap"
-					fitContainer="true"
-				>
-					<Avatar
-						src="sap-icon://product"
-						displayShape="Square"
-						displaySize="L"
-					/>
-					<VBox
-						class="sapUiSmallMargin"
-						alignItems="Center"
-					>
-						<Label
-							text="{i18n>vbeln}:"
-							labelFor="vbeln"
-							class="sapUiTinyMarginBottom"
-						/>
-						<Input
-							id="vbeln"
-							textFormatMode="KeyValue"
-							showSuggestion="true"
-							showValueHelp="true"
-							valueHelpOnly="true"
-						>
-							<suggestionItems>
-								<core:ListItem
-									key="{fbOptyp>Id}"
-									text="{fbOptyp>Description}"
-								/>
-							</suggestionItems>
-						</Input>
-					</VBox>
-					<VBox
-						class="sapUiSmallMargin"
-						alignItems="Center"
-					>
-						<Label
-							text="{i18n>matnr}:"
-							labelFor="matnr"
-							class="sapUiTinyMarginBottom"
-						/>
-						<Input
-							id="matnr"
-							textFormatMode="KeyValue"
-							showSuggestion="true"
-							showValueHelp="true"
-							valueHelpOnly="true"
-						>
-							<suggestionItems>
-								<core:ListItem
-									key="{fbOptyp>Id}"
-									text="{fbOptyp>Description}"
-								/>
-							</suggestionItems>
-						</Input>
-					</VBox>
-					<VBox
-						class="sapUiSmallMargin"
-						alignItems="Center"
-					>
-						<Label
-							text="{i18n>werks}:"
-							labelFor="werks"
-							class="sapUiTinyMarginBottom"
-						/>
-						<Input
-							id="werks"
-							textFormatMode="KeyValue"
-							showSuggestion="true"
-							showValueHelp="true"
-							valueHelpOnly="true"
-						>
-							<suggestionItems>
-								<core:ListItem
-									key="{fbOptyp>Id}"
-									text="{fbOptyp>Description}"
-								/>
-							</suggestionItems>
-						</Input>
-					</VBox>
-					<VBox
-						class="sapUiSmallMargin"
-						alignItems="Center"
-					>
-						<Label
-							text="{i18n>wadat}:"
-							labelFor="wadat"
-							class="sapUiTinyMarginBottom"
-						/>
-						<DatePicker
-							id="wadat"
-							required="true"
-							change="onChangeState"
-							value="{
+<Title text="{i18n>appTitle}"/>
+    <Page
+        id="page"
+        showNavButton="true"
+        showHeader="true"
+    >
+        <uxap:ObjectPageLayout id="ObjectPageLayout">
+            <!-- HEADER TITULO -->
+            <uxap:headerTitle>
+                <uxap:ObjectPageDynamicHeaderTitle>
+                    <uxap:expandedHeading>
+                        <Title text="{i18n>appTitle}"/>
+                    </uxap:expandedHeading>
+                    <uxap:snappedHeading>
+                        <HBox>
+                            <!-- <Avatar
+                                src="sap-icon://product"
+                                class="sapUiMediumMarginEnd sapUiSmallMargin"
+                                displayShape="Square"
+                            /> -->
+                            <VBox>
+                                <Title text="{i18n>title}" />
+                                <Label text="{i18n>subTitle}" />
+                            </VBox>
+                        </HBox>
+                    </uxap:snappedHeading>
+                    <uxap:expandedContent>
+                        <Label text="{i18n>subTitle}" />
+                    </uxap:expandedContent>
+                    <uxap:snappedTitleOnMobile>
+                        <Title text="{i18n>title}" />
+                    </uxap:snappedTitleOnMobile>
+                    <uxap:actions>
+                        <Button
+                            press=".onOpenDialogRemito"
+                            icon="sap-icon://print"
+                            text="{i18n>print}"
+                            type="Emphasized"
+                            visible="true"
+                        />
+                        <Button
+                            type="Accept"
+                            press="abrirDialogFinalizacion"
+                            icon="sap-icon://save"
+                            text="{i18n>update}"
+                        />
+                        <Button
+                            type="Accept"
+                            press="abrirDialogFinalizacion"
+                            icon="sap-icon://activity-items"
+                            text="{i18n>list}"
+                        />
+                    </uxap:actions>
+                </uxap:ObjectPageDynamicHeaderTitle>
+            </uxap:headerTitle>
+            <!-- HEADER CONTENIDO -->
+
+            
+            <uxap:headerContent>
+                <FlexBox
+                    class="fondo"
+                    wrap="Wrap"
+                    fitContainer="true"
+                >
+                    <!-- <Avatar
+                        src="sap-icon://product"
+                        displayShape="Square"
+                        displaySize="L"
+                    /> -->
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>kunnr}:"
+                            labelFor="kunnr"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <Input
+                            id="kunnrInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{entregas>/F4kunnrSet}">
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{entregas>Kunnr}"
+                                    text="{entregas>Name}" />
+                            </suggestionItems>  
+                        </Input>
+                        <!-- <Input
+                            id="werks"
+                            textFormatMode="KeyValue"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="true"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{fbOptyp>Id}"
+                                    text="{fbOptyp>Description}"
+                                />
+                            </suggestionItems>
+                        </Input> -->
+                    </VBox>
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>wadat}:"
+                            labelFor="wadat"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <DatePicker
+                            id="wadat"
+                            required="true"
+                            change="onChangeState"
+                            value="{
 								path: 'oPostData>/FechaDesv',
 								type: 'sap.ui.model.odata.type.DateTime',
 								constraints: {
@@ -171,30 +140,55 @@
 									pattern: 'dd/MM/yyyy'
 								}
 							}"
-							valueFormat="dd/MM/yyyy"
-						/>
-					</VBox>
-				</FlexBox>
-			</uxap:headerContent>
-			<!-- SECCIONES -->
-			<uxap:sections>
-			<!-- CABECERA DE ENTREGAS-->
-			<uxap:ObjectPageSection title="{i18n>entregas}">
+                            valueFormat="dd/MM/yyyy"
+                        />
+ 
+                    </VBox>    
+
+    
+                </FlexBox>
+                <FlexBox
+                    alignContent="Stretch"
+                    alignItems="Stretch"
+                    backgroundDesign="Transparent"
+                    direction="Row"
+                    displayInline="false"
+                    fitContainer="false"                    
+                    justifyContent="End"
+                    wrap="NoWrap"
+                >
+             
+                                                               <Button
+                            tooltip="{i18n>filter}"
+                            text="Ir"
+                            press="onFilterPark"
+                        />  
+                 
+                </FlexBox>
+                                
+            </uxap:headerContent>
+            
+            <!-- SECCIONES -->
+            <uxap:sections>
+                <!-- CABECERA DE ENTREGAS-->
+
+                <uxap:ObjectPageSection title="{i18n>entregas}">
                     <uxap:subSections>
-                        <uxap:ObjectPageSubSection title="" titleUppercase="false">
+                        <uxap:ObjectPageSubSection
+                            title=""
+                            titleUppercase="false"
+                        >
                             <uxap:blocks>
-                               <core:Fragment fragmentName="ar.com.rizobacter.despacho.view.fragment.EntregasCabecera" type="XML" />
+                                <core:Fragment
+                                    fragmentName="ar.com.rizobacter.despacho.view.fragment.EntregasCabecera"
+                                    type="XML"
+                                />
                             </uxap:blocks>
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>
+                <!-- POSICIONES DE ENTREGAS-->
 
-
-
-
-
-			<!-- POSICIONES DE ENTREGAS-->	
-				  
                 <!--<uxap:ObjectPageSection title="Posiciones">
                     <uxap:subSections>
                         <uxap:ObjectPageSubSection title="Posiciones" titleUppercase="false">
@@ -204,17 +198,7 @@
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>-->
-
-
-			</uxap:sections>
-		</uxap:ObjectPageLayout>
-			<f:FlexibleColumnLayout id="flexibleColumnLayout" backgroundDesign="Solid">
-		<f:beginColumnPages>
-			<mvc:XMLView id="beginView" viewName="ar.com.rizobacter.despacho.view.EntregasPos"/>
-		</f:beginColumnPages>
-		<f:midColumnPages>
-			<mvc:XMLView id="detailView" viewName="ar.com.rizobacter.despacho.view.EntregasPos"/>
-		</f:midColumnPages>
-	</f:FlexibleColumnLayout>
-	</Page>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+    </Page>
 </mvc:View>

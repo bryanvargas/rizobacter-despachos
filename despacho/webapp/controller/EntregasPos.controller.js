@@ -17,20 +17,44 @@ sap.ui.define(
 			/**
 			 * @override
 			 */
-			onInit: function() {
-				debugger;
-				const oRouter = this.getOwnerComponent().getRouter(); //sap.ui.core.UIComponent.getRouterFor(this);
-				
-				oRouter.getRoute("RouteEntregasPos").attachBeforeMatched(this._onObjectMatch, this);
-			
+			onInit: function () {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.getRoute("RouteEntregasPos").attachPatternMatched(this._onObjectMatch, this);
 			},
 
-			_onObjectMatch: function (oEvent){
+			 _onObjectMatch: function (oEvent){
+			 	var that = this;
+			 	var vbeln = oEvent.getParameter("arguments").Vbeln,  
+			 	    aFilter = [];
+
+			 		aFilter.push(new Filter('Vbeln', FilterOperator.EQ , vbeln));
+
+			 		this.getView().getModel("entregas").read("/EntregaSet('" + vbeln + "')/nav_ent_to_pick", {
+			 			filters: aFilter,
+			 			success: function (odata) {
+			 				var jModel = new sap.ui.model.json.JSONModel(odata);
+			 				that.getView().byId("tablaPos").setModel(jModel);
+			 			}, error: function (oError) {
+			 			}.bind(that)
+			 		})
+			 },
+
+			_onReadFilters: function () {
 				debugger;
-				this.getView().bindElement({
-					path: "/" + window.decodeURIComponent(oEvent.getParameter("arguments").invoicePath),
-					model: "entregas"
-				});
+				var that = this;
+
+				var oModel = this.getOwnerComponent().getModel();
+				var oFilter = new sap.ui.model.Filter('Vbeln', FilterOperator.EQ, '80001614');
+
+				oModel.read("/EntPickSet", {
+					filters: [oFilter],
+					success: function (odata) {
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						that.getView().byId("tablaPos").setModel(jModel);
+					}, error: function (oError) {
+						console.log(oError);
+					}
+				})
 			}
-        });
+		});
 	});   
