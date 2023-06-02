@@ -32,8 +32,9 @@ sap.ui.define(
 			 		this.getView().getModel("entregas").read("/EntregaSet('" + vbeln + "')/nav_ent_to_pick", {
 			 			filters: aFilter,
 			 			success: function (odata) {
+							debugger;
 			 				var jModel = new sap.ui.model.json.JSONModel(odata);
-			 				that.getView().byId("tablaPos").setModel(jModel);
+			 				that.getView().byId("tablaEntregasCab").setModel(jModel);
 			 			}, error: function (oError) {
 			 			}.bind(that)
 			 		})

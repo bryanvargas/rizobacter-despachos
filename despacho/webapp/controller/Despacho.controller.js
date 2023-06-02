@@ -41,6 +41,24 @@ sap.ui.define(
 				this._filtersModel();
 			},
 
+			onFilterEntregas: function (oEvent) {
+				debugger;
+				var that = this;
+				var kunnr = that.byId("kunnrInput").getValue();
+					aFilter = [];
+
+					aFilter.push(new Filter('Kunnr', FilterOperator.EQ , kunnr));
+
+					this.getView().getModel("entregas").read("/EntCabSet", {
+						filters: aFilter,
+						success: function (odata) {
+							var jModel = new sap.ui.model.json.JSONModel(odata);
+							that.getView().byId("tablaPos").setModel(jModel);
+						}, error: function (oError) {
+						}.bind(that)
+					})
+			},
+
 			_filtersModel: function() {
 				let oModel = {
 					Vbeln: ""
@@ -535,8 +553,13 @@ sap.ui.define(
 				if (range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
 				return ws;
 			},
-	
 
+			// HISTORICOS
+			onOpenHistoricos: function (oEvent) {
+				debugger;
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("RouteHistoricos")
+			}	
 
 		});
 	});

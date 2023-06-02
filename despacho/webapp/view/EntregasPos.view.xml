@@ -30,7 +30,7 @@
 							</fb:filterGroupItems>
 						</fb:FilterBar> -->
 
-						<Table id="tablaPos" items="{/results}" noDataText="Algo de posiciones" growing="true"
+						<Table id="tablaEntregasCab" items="{/results}" noDataText="Algo de posiciones" growing="true"
 							growingThreshold="10" growingScrollToLoad="false" growingTriggerText="Ver más" fixedLayout="false" alternateRowColors="true">
 							<headerToolbar>
 								<OverflowToolbar>

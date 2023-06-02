@@ -3,78 +3,130 @@
     xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
     xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
     xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri="http://reds4:8000/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value"
+        xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://reds4:8000/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL')/$value"
+        xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://reds4:8000/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value"
+        xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://reds4:8000/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL')/$value"
+        xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="Aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="http://reds4:8000/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value"
+        xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZOS_DESPACHO_SRV" xml:lang="es" sap:schema-version="1"
+        <Schema Namespace="ZCDS_GETLOTES_CDS" xml:lang="es" sap:schema-version="1"
             xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-            <EntityType Name="EntCab" sap:content-version="1">
+            <EntityType Name="ZCDS_GETLOTESType" sap:label="Obtener lotes con cantidad de libre utilizacion" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Vbeln"/>
+                    <PropertyRef Name="p_matnr"/>
+                    <PropertyRef Name="p_werks"/>
+                    <PropertyRef Name="p_lgort"/>
+                    <PropertyRef Name="Material"/>
+                    <PropertyRef Name="Centro"/>
+                    <PropertyRef Name="Almacen"/>
                 </Key>
-                <Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Entrega" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Dest.mercancías" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
-                <Property Name="KunnrDesc" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Nombre" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="MatnrDesc" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lfimg" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:unit="Vrkme" sap:label="Cantidad" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Vrkme" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="UM" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
-                <Property Name="Wadat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha SM" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
-                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Centro" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="WerksDesc" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Descripcion" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Material"/>
+                <Property Name="p_werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Centro"/>
+                <Property Name="p_lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Almacén"/>
+                <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Material" sap:quickinfo="Número de material"/>
+                <Property Name="Centro" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Centro"/>
+                <Property Name="Almacen" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Almacén"/>
+                <Property Name="Lote" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Lote" sap:quickinfo="Número de lote"/>
+                <Property Name="Stock" Type="Edm.Decimal" Precision="13" Scale="3"/>
+                <NavigationProperty Name="Parameters" Relationship="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" FromRole="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" ToRole="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:filterable="false"/>
             </EntityType>
-            <EntityType Name="EntPick" sap:content-version="1">
+            <EntityType Name="ZCDS_GETLOTESParameters" sap:semantics="parameters" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Vbeln"/>
+                    <PropertyRef Name="p_matnr"/>
+                    <PropertyRef Name="p_werks"/>
+                    <PropertyRef Name="p_lgort"/>
                 </Key>
-                <Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Entrega" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Posnr" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Posición" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="MatnrDesc" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Centro" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Almacen" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lfimg" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Cantidad Total" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Pikmg" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Ctd.picking" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Charg" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Lote" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Vrkme" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="UM" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+                <Property Name="p_matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Centro" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="p_lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Almacén" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="Set" Relationship="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" FromRole="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" ToRole="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
             </EntityType>
-            <EntityType Name="Entrega" m:HasStream="true" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Vbeln"/>
-                </Key>
-                <Property Name="Vbeln" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Entrega" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <NavigationProperty Name="nav_ent_to_pick" Relationship="ZOS_DESPACHO_SRV.asoc_ent_to_pick" FromRole="FromRole_asoc_ent_to_pick" ToRole="ToRole_asoc_ent_to_pick"/>
-            </EntityType>
-            <EntityType Name="F4kunnr" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Kunnr"/>
-                </Key>
-                <Property Name="Kunnr" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Destinatario" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Name" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Nombre" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-            </EntityType>
-            <Association Name="asoc_ent_to_pick" sap:content-version="1">
-                <End Type="ZOS_DESPACHO_SRV.Entrega" Multiplicity="1" Role="FromRole_asoc_ent_to_pick"/>
-                <End Type="ZOS_DESPACHO_SRV.EntPick" Multiplicity="*" Role="ToRole_asoc_ent_to_pick"/>
-                <ReferentialConstraint>
-                    <Principal Role="FromRole_asoc_ent_to_pick">
-                        <PropertyRef Name="Vbeln"/>
-                    </Principal>
-                    <Dependent Role="ToRole_asoc_ent_to_pick">
-                        <PropertyRef Name="Vbeln"/>
-                    </Dependent>
-                </ReferentialConstraint>
+            <Association Name="assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:content-version="1">
+                <End Type="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESParameters" Multiplicity="1" Role="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
+                <End Type="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESType" Multiplicity="*" Role="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
             </Association>
-            <EntityContainer Name="ZOS_DESPACHO_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="EntCabSet" EntityType="ZOS_DESPACHO_SRV.EntCab" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="EntPickSet" EntityType="ZOS_DESPACHO_SRV.EntPick" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="EntregaSet" EntityType="ZOS_DESPACHO_SRV.Entrega" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="F4kunnrSet" EntityType="ZOS_DESPACHO_SRV.F4kunnr" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
-                <AssociationSet Name="asoc_ent_to_pickSet" Association="ZOS_DESPACHO_SRV.asoc_ent_to_pick" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
-                    <End EntitySet="EntregaSet" Role="FromRole_asoc_ent_to_pick"/>
-                    <End EntitySet="EntPickSet" Role="ToRole_asoc_ent_to_pick"/>
+            <EntityContainer Name="ZCDS_GETLOTES_CDS_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="ZCDS_GETLOTESSet" EntityType="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ZCDS_GETLOTES" EntityType="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="assoc_CCAB281F9920B9B03B87FA86655DFA34" Association="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZCDS_GETLOTES" Role="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
+                    <End EntitySet="ZCDS_GETLOTESSet" Role="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
                 </AssociationSet>
             </EntityContainer>
-            <atom:link rel="self" href="http://reds4:8000/sap/opu/odata/sap/ZOS_DESPACHO_SRV/$metadata"
+            <Annotations Target="ZCDS_GETLOTES_CDS.ZCDS_GETLOTES_CDS_Entities"
+                xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="None"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ZCDS_GETLOTES_CDS.ZCDS_GETLOTES_CDS_Entities/ZCDS_GETLOTES"
+                xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>p_matnr</PropertyPath>
+                                <PropertyPath>p_werks</PropertyPath>
+                                <PropertyPath>p_lgort</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
+                                    <PropertyValue Property="FilterRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Filterable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>p_matnr</PropertyPath>
+                                <PropertyPath>p_werks</PropertyPath>
+                                <PropertyPath>p_lgort</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <atom:link rel="self" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETLOTES_CDS/$metadata"
                 xmlns:atom="http://www.w3.org/2005/Atom"/>
-                <atom:link rel="latest-version" href="http://reds4:8000/sap/opu/odata/sap/ZOS_DESPACHO_SRV/$metadata"
+                <atom:link rel="latest-version" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETLOTES_CDS/$metadata"
                     xmlns:atom="http://www.w3.org/2005/Atom"/>
                 </Schema>
             </edmx:DataServices>

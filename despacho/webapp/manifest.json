@@ -23,6 +23,14 @@
           "odataVersion": "2.0",
           "localUri": "localService/metadata.xml"
         }
+      },
+      "ZCDS_GETLOTES_CDS": {
+        "uri": "/sap/opu/odata/sap/ZCDS_GETLOTES_CDS/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
       }
     }
   },
@@ -77,17 +85,26 @@
           "defaultCountMode": "Inline",
           "refreshAfterChange": false
         }
+      },
+      "": {
+        "dataSource": "ZCDS_GETLOTES_CDS",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
+        }
       }
     },
     "resources": {
       "css": [
         {
           "uri": "css/style.css"
-        }        
+        }
       ],
       "js": [
         {
-            "uri": "libs/FileSaver.js"
+          "uri": "libs/FileSaver.js"
         },
         {
           "uri": "libs/xlsx.core.min.js"
@@ -118,6 +135,13 @@
           "target": [
             "TargetEntregasPos"
           ]
+        },
+        {
+          "name": "RouteHistoricos",
+          "pattern": "Historicos",
+          "target": [
+            "TargetHistoricos"
+          ]
         }
       ],
       "targets": {
@@ -137,6 +161,11 @@
           "viewType": "XML",
           "viewName": "EntregasPos",
           "viewId": "EntregasPos"
+        },
+        "TargetHistoricos": {
+          "viewType": "XML",
+          "viewName": "Historicos",
+          "viewId": "Historicos"
         }
       }
     },
