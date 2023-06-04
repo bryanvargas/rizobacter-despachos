@@ -90,10 +90,11 @@
                             id="kunnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
-                            valueHelpOnly="true"
+                            valueHelpOnly="false"
+                            valueLiveUpdate="true"
                             editable="true"
                             enabled="true"
-                            valueHelpRequest=".onValueHelpRequest"
+                            valueHelpRequest="onValueHelpRequest"
                             suggestionItems="{entregas>/F4kunnrSet}"
                         >
                             <suggestionItems>
@@ -113,8 +114,8 @@
                             labelFor="wadat"
                             class="sapUiTinyMarginBottom"
                         />
-                        <DatePicker
-                            id="wadat"
+                        <!-- <DatePicker
+                            id="wadatInput"
                             required="true"
                             change="onChangeState"
                             value="{
@@ -124,12 +125,24 @@
 									displayFormat: 'Date'
 								},
 								formatOptions: {
-									UTC: true,
+									UTC: false,
 									pattern: 'dd/MM/yyyy'
 								}
 							}"
                             valueFormat="dd/MM/yyyy"
+                        /> -->
+                        <DatePicker
+                            id="wadatInput"
+                            type= 'sap.ui.model.type.DateTime'
+                            placeholder="Ingrese una fecha"
+                            valueFormat="YYYY-MM-ddTHH:mm:ss"
+                            valueStateText="Enter a valid date..."
+                            displayFormat="dd/MM/YYYY"
+						    pattern= 'YYYY-MM-ddTHH:mm:ss'
+                            required="true"
+                            change="onChangeState"
                         />
+                        
                     </VBox>
                 </FlexBox>
                 <FlexBox
@@ -157,7 +170,7 @@
                         tooltip="{i18n>filter}"
                         icon="sap-icon://clear-filter"
                         text="Limpiar Filtro"
-                        press="onFilterEntregas"
+                        press="onCleanFilterEntregas"
                     />
                     
                 </FlexBox>

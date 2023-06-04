@@ -24,51 +24,19 @@
         <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
     </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZCDS_GETLOTES_CDS" xml:lang="es" sap:schema-version="1"
+        <Schema Namespace="ZCDS_GETMATERIAL_CDS" xml:lang="es" sap:schema-version="1"
             xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-            <EntityType Name="ZCDS_GETLOTESType" sap:label="Obtener lotes con cantidad de libre utilizacion" sap:content-version="1">
+            <EntityType Name="ZCDS_GETMATERIALType" sap:label="Obtener Materiales" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="p_matnr"/>
-                    <PropertyRef Name="p_werks"/>
-                    <PropertyRef Name="p_lgort"/>
                     <PropertyRef Name="Material"/>
-                    <PropertyRef Name="Centro"/>
-                    <PropertyRef Name="Almacen"/>
                 </Key>
-                <Property Name="p_matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Material"/>
-                <Property Name="p_werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Centro"/>
-                <Property Name="p_lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Almacén"/>
                 <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:label="Material" sap:quickinfo="Número de material"/>
-                <Property Name="Centro" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Centro"/>
-                <Property Name="Almacen" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Almacén"/>
-                <Property Name="Lote" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Lote" sap:quickinfo="Número de lote"/>
-                <Property Name="Stock" Type="Edm.Decimal" Precision="13" Scale="3"/>
-                <NavigationProperty Name="Parameters" Relationship="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" FromRole="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" ToRole="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:filterable="false"/>
+                <Property Name="Descripcion" Type="Edm.String" MaxLength="40" sap:label="Texto breve material" sap:quickinfo="Texto breve de material"/>
             </EntityType>
-            <EntityType Name="ZCDS_GETLOTESParameters" sap:semantics="parameters" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="p_matnr"/>
-                    <PropertyRef Name="p_werks"/>
-                    <PropertyRef Name="p_lgort"/>
-                </Key>
-                <Property Name="p_matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Centro" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="p_lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:parameter="mandatory" sap:label="Almacén" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <NavigationProperty Name="Set" Relationship="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" FromRole="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34" ToRole="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
-            </EntityType>
-            <Association Name="assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:content-version="1">
-                <End Type="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESParameters" Multiplicity="1" Role="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
-                <End Type="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESType" Multiplicity="*" Role="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
-            </Association>
-            <EntityContainer Name="ZCDS_GETLOTES_CDS_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="ZCDS_GETLOTESSet" EntityType="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:addressable="false" sap:content-version="1"/>
-                <EntitySet Name="ZCDS_GETLOTES" EntityType="ZCDS_GETLOTES_CDS.ZCDS_GETLOTESParameters" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <AssociationSet Name="assoc_CCAB281F9920B9B03B87FA86655DFA34" Association="ZCDS_GETLOTES_CDS.assoc_CCAB281F9920B9B03B87FA86655DFA34" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
-                    <End EntitySet="ZCDS_GETLOTES" Role="FromRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
-                    <End EntitySet="ZCDS_GETLOTESSet" Role="ToRole_assoc_CCAB281F9920B9B03B87FA86655DFA34"/>
-                </AssociationSet>
+            <EntityContainer Name="ZCDS_GETMATERIAL_CDS_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="ZCDS_GETMATERIAL" EntityType="ZCDS_GETMATERIAL_CDS.ZCDS_GETMATERIALType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
             </EntityContainer>
-            <Annotations Target="ZCDS_GETLOTES_CDS.ZCDS_GETLOTES_CDS_Entities"
+            <Annotations Target="ZCDS_GETMATERIAL_CDS.ZCDS_GETMATERIAL_CDS_Entities"
                 xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Aggregation.ApplySupported">
                     <Record>
@@ -83,50 +51,9 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="ZCDS_GETLOTES_CDS.ZCDS_GETLOTES_CDS_Entities/ZCDS_GETLOTES"
-                xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonFilterableProperties">
-                            <Collection>
-                                <PropertyPath>p_matnr</PropertyPath>
-                                <PropertyPath>p_werks</PropertyPath>
-                                <PropertyPath>p_lgort</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Parameters"/>
-                                    <PropertyValue Property="FilterRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Filterable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.SortRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonSortableProperties">
-                            <Collection>
-                                <PropertyPath>p_matnr</PropertyPath>
-                                <PropertyPath>p_werks</PropertyPath>
-                                <PropertyPath>p_lgort</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-            </Annotations>
-            <atom:link rel="self" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETLOTES_CDS/$metadata"
+            <atom:link rel="self" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETMATERIAL_CDS/$metadata"
                 xmlns:atom="http://www.w3.org/2005/Atom"/>
-                <atom:link rel="latest-version" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETLOTES_CDS/$metadata"
+                <atom:link rel="latest-version" href="http://reds4:8000/sap/opu/odata/sap/ZCDS_GETMATERIAL_CDS/$metadata"
                     xmlns:atom="http://www.w3.org/2005/Atom"/>
                 </Schema>
             </edmx:DataServices>

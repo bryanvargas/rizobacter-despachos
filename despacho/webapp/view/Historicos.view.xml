@@ -20,7 +20,7 @@
             <uxap:headerTitle>
                 <uxap:ObjectPageDynamicHeaderTitle>
                     <uxap:expandedHeading>
-                        <Title text="{i18n>appTitle}" />
+                        <Title text="{i18n>historico.appTitle}" />
                     </uxap:expandedHeading>
                     <uxap:snappedHeading>
                         <HBox>
@@ -30,13 +30,13 @@
                                 displayShape="Square"
                             /> -->
                             <VBox>
-                                <Title text="{i18n>title}" />
-                                <Label text="{i18n>subTitle}" />
+                                <Title text="{i18n>historico.subTitle}" />
+                                <Label text="{i18n>historico.subTitle}" />
                             </VBox>
                         </HBox>
                     </uxap:snappedHeading>
                     <uxap:expandedContent>
-                        <Label text="{i18n>subTitle}" />
+                        <Label text="{i18n>historico.subTitle}" />
                     </uxap:expandedContent>
                     <uxap:snappedTitleOnMobile>
                         <Title text="{i18n>title}" />
@@ -84,7 +84,7 @@
                             id="kunnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
-                            valueHelpOnly="true"
+                            valueHelpOnly="false"
                             editable="true"
                             enabled="true"
                             valueHelpRequest=".onValueHelpRequest"
@@ -108,19 +108,19 @@
                             class="sapUiTinyMarginBottom"
                         />
                         <Input
-                            id="MatnrInput"
+                            id="matnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
-                            valueHelpOnly="true"
+                            valueHelpOnly="false"
                             editable="true"
                             enabled="true"
                             valueHelpRequest=".onValueHelpRequest"
-                            suggestionItems="{entregas>/F4kunnrSet}"
+                            suggestionItems="{materiales>/ZCDS_GETMATERIAL}"
                         >
                             <suggestionItems>
                                 <core:ListItem
-                                    key="{entregas>Kunnr}"
-                                    text="{entregas>Name}"
+                                    key="{materiales>Material}"
+                                    text="{materiales>Descripcion}"
                                 />
                             </suggestionItems>
                         </Input>

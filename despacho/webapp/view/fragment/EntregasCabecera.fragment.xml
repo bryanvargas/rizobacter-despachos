@@ -10,7 +10,7 @@
             showIcon="true"
             class="sapUiTinyMargin"
         />
-        <Table
+        <!-- <Table
             id="tablaEntregasCab"  
             inset="false"
             width="auto"
@@ -21,6 +21,25 @@
             alternateRowColors="true"
             items="{
                 path: 'entregas>/EntCabSet',
+                sorter: {
+                    path: 'Vbeln',
+                    descending: false
+                }
+            }"
+            busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+            updateFinished=".onUpdateFinished"
+        > -->
+        <Table
+            id="tablaEntregas"  
+            inset="false"
+            width="auto"
+            class="sapUiResponsiveMargin"
+            growing="true"
+            growingThreshold="20"
+            growingScrollToLoad="true"
+            alternateRowColors="true"
+            items="{
+                path: '/results',
                 sorter: {
                     path: 'Vbeln',
                     descending: false
@@ -45,7 +64,7 @@
                             enableSuggestions="false"
                             enabled="true"
                             maxLength="0"
-                            placeholder=""
+                            placeholder="Buscar nro de entrega"
                             showRefreshButton="false"
                             showSearchButton="true"
                             value="{
@@ -53,8 +72,8 @@
                             }"
                             visible="true"
                             width="20rem"
-                            search=".filterGlobally"
-                            liveChange="onFilter"
+                            search="onSearch"
+                            liveChange="onSearch"
                         >
                             <suggestionItems>
                             </suggestionItems>
@@ -177,7 +196,7 @@
 
                         <ObjectStatus
                             text="{
-                                path: 'entregas>Vbeln',
+                                path: 'Vbeln',
                                 formatter: '.formatter.quitarCero'
                             }"
                             state="Information"
@@ -189,7 +208,7 @@
                             state="Information"
                         /> -->
                         <Text text="{
-                            path: 'entregas>Kunnr',
+                            path: 'Kunnr',
                             formatter: '.formatter.quitarCero'
                         }"/> 
                         <!-- <Input
@@ -209,24 +228,24 @@
                             <Text text="{entregas>NameWe}"/>
                             <StepInput width="6rem"/>
                         </VBox> -->
-                        <Text text="{entregas>KunnrDesc}"/>
+                        <Text text="{KunnrDesc}"/>
                         <ObjectStatus
                             text="{
-                                path: 'entregas>Matnr',
+                                path: 'Matnr',
                                 formatter: '.formatter.quitarCero'
                             }"
                         />
-                        <Text text="{entregas>MatnrDesc}"/>
+                        <Text text="{MatnrDesc}"/>
                         <VBox alignItems="Start">
-                            <Text text="{entregas>Lfimg}"/>
+                            <Text text="{Lfimg}"/>
                             <StepInput width="6rem"/>
                         </VBox>
                         <ObjectStatus
-                            text="{entregas>Vrkme}"
+                            text="{Vrkme}"
                         />
                         <Text
                             text="{
-                                path: 'entregas>Wadat',
+                                path: 'Wadat',
                                 type: 'sap.ui.model.type.Date',
                                 formatOptions: {
                                     pattern: 'dd/MM/yyyy',
@@ -240,8 +259,8 @@
                             visible="true"
                             width="auto"
                         />
-                        <Text text="{entregas>Werks}"/>
-                        <Text text="{entregas>WerksDesc}"/>
+                        <Text text="{Werks}"/>
+                        <Text text="{WerksDesc}"/>
                         <!--<core:Icon
                             src="{
                                 path: 'entregas>Status',

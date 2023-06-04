@@ -4,21 +4,43 @@ sap.ui.define(
 		'sap/ui/core/Fragment',
 		'sap/ui/model/json/JSONModel',
 		'../model/DespachoFormatter',
+		'../model/models',
 		'sap/ui/model/Filter',
 		'sap/ui/model/FilterOperator',
 	],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, Filter, FilterOperator) {
+	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Filter, FilterOperator) {
 		'use strict';
 
 		return BaseController.extend("ar.com.rizobacter.despacho.controller.Despacho", {
 			formatter: Despachoformatter,
 			onInit: function () {
+
+				const oFiltrosEntregas = new sap.ui.model.json.JSONModel({
+					Vbeln: ""
+				});
+
+				this.getView().setModel(oFiltrosEntregas, "oFiltrosEntregas");
+
 				var oViewModel,
 					iOriginalBusyDelay,
-					oTable = this.byId("tablaEntregasCab");
+					oTable = this.byId("tablaEntregas");
+
+
+				// this.getView().setBusy(true);
+
+				// this.getOwnerComponent().getModel("entregas").read("/EntCabSet", {
+				// 	success: function (odata) {
+				// 		this.getView().setBusy(false);
+				// 		var jModel = new sap.ui.model.json.JSONModel(odata);
+				// 		this.getView().byId("tablaEntregas").setModel(jModel);
+				// 		}.bind(this), 
+				// 	error: function (oError) {
+				// 		console.log(oError)
+				// 		}.bind(this)
+				// })	
 
 				iOriginalBusyDelay = oTable.getBusyIndicatorDelay();
 
@@ -38,35 +60,95 @@ sap.ui.define(
 
 				this._oTextos = this.getOwnerComponent().getModel("i18n").getResourceBundle();
 				this._oGlobalBusyDialog = new sap.m.BusyDialog();
+				this._getEntregas();
 				this._filtersModel();
+			},
+
+			onSearch: function (oEvent) {
+				debugger;
+				const oViewModel = this.getView().getModel("filters");
+				const oTablaEntregas = this.getView().byId("tablaEntregas");
+				const oBinding = oTablaEntregas.getBinding("items");
+
+				let oFilters = [];
+
+				if (oViewModel.getProperty("/Vbeln")) {
+					oFilters.push(new Filter("Vbeln", FilterOperator.Contains, oViewModel.getProperty("/Vbeln")));
+				};
+
+				oBinding.filter(oFilters);
 			},
 
 			onFilterEntregas: function (oEvent) {
 				debugger;
 				var that = this;
-				var kunnr = that.byId("kunnrInput").getValue();
-					aFilter = [];
+				var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+					pattern: "YYYY-MM-dd"
+				});
+				var wadat = that.byId("wadatInput").getValue();
+				var oDate = oDateFormat.format(oDateFormat.parse(wadat));
 
-					aFilter.push(new Filter('Kunnr', FilterOperator.EQ , kunnr));
 
-					this.getView().getModel("entregas").read("/EntCabSet", {
-						filters: aFilter,
-						success: function (odata) {
-							var jModel = new sap.ui.model.json.JSONModel(odata);
-							that.getView().byId("tablaPos").setModel(jModel);
-						}, error: function (oError) {
-						}.bind(that)
-					})
+				var kunnr = that.byId("kunnrInput").getValue(),
+
+					// aFilter = [];
+
+					// aFilter.push(new Filter("Kunnr", FilterOperator.EQ , kunnr));
+					// //aFilter.push(new Filter("Wadat", FilterOperator.EQ , wadat));
+					oFilterEntregas = new sap.ui.model.Filter({
+						filters: [
+							new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
+							new sap.ui.model.Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate)
+						],
+						and: true
+					});
+
+
+
+				this.getView().getModel("entregas").read("/EntCabSet", {
+					filters: [oFilterEntregas],
+					success: function (odata) {
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						that.getView().byId("tablaEntregas").setModel(jModel);
+					}, error: function (oError) {
+						debugger;
+						that.getView().byId("tablaEntregas").setModel(models.entCabModel());
+					}.bind(that)
+				})
+			},
+			onCleanFilterEntregas: function () {
+				var that = this;
+				if (that.byId("wadatInput").getValue() !== "" || that.byId("kunnrInput").getValue() !== "") {
+					that.byId("wadatInput").setValue("");
+					that.byId("kunnrInput").setValue("");
+					this._getEntregas();
+				}
+
 			},
 
-			_filtersModel: function() {
+
+			_getEntregas: function () {
+				this.getView().setBusy(true);
+				this.getOwnerComponent().getModel("entregas").read("/EntCabSet", {
+					success: function (odata) {
+						this.getView().setBusy(false);
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						this.getView().byId("tablaEntregas").setModel(jModel);
+					}.bind(this),
+					error: function (oError) {
+						console.log(oError)
+					}.bind(this)
+				});
+			},
+
+			_filtersModel: function () {
 				let oModel = {
 					Vbeln: ""
 				};
 				this.getView().setModel(new JSONModel(oModel), "filters");
 			},
 
-			onFilter : function() {
+			onFilter: function () {
 				let oModel = this.getView().getModel("filters");
 
 				let oFilters = oModel.getData();
@@ -117,7 +199,7 @@ sap.ui.define(
 			},
 
 			filterGlobally: function (oEvent) {
-				debugger; 
+				debugger;
 				var sQuery = oEvent.getParameter("query");
 				this._oGlobalFilter = null;
 
@@ -254,42 +336,42 @@ sap.ui.define(
 
 			//*************************************************
 			//*************************************************
-			
-			onValueHelpRequest: function (oEvent) {
-                var that = this;
-                var oInput = oEvent.getSource(),
-                    sInputValue = oEvent.getSource().getValue(),
-                    oView = this.getView();
 
-                if (this._oValueHelpDialog) {
-                    this._oValueHelpDialog.destroy();
-                }
-                
-                this._kunnrDialogInput = oInput;
-                Fragment.load({
-                    id: oView.getId(),
-                    name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
-                    controller: this
-                }).then(function (oDialog) {
-                    that._oValueHelpDialog = oDialog;
-                    oView.addDependent(oDialog);
-                    var filtro = [];
-                    var sInputId = /[a-z]+$/.exec((/Despacho--[a-z]+/.exec(oInput.getId())[0]))[0];
-                    switch (sInputId) {
-                        case "kunnr":
-                            oDialog.bindAggregation("items", {
-                                path: 'entregas>/F4kunnrSet',
-                                filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
-                                template: new sap.m.StandardListItem({
-                                    title: '{entregas>Kunnr}',
-                                    description: '{entregas>Name}'
-                                })
-                            });
+			onValueHelpRequest: function (oEvent) {
+				var that = this;
+				var oInput = oEvent.getSource(),
+					sInputValue = oEvent.getSource().getValue(),
+					oView = this.getView();
+
+				if (this._oValueHelpDialog) {
+					this._oValueHelpDialog.destroy();
+				}
+
+				this._kunnrDialogInput = oInput;
+				Fragment.load({
+					id: oView.getId(),
+					name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
+					controller: this
+				}).then(function (oDialog) {
+					that._oValueHelpDialog = oDialog;
+					oView.addDependent(oDialog);
+					var filtro = [];
+					var sInputId = /[a-z]+$/.exec((/Despacho--[a-z]+/.exec(oInput.getId())[0]))[0];
+					switch (sInputId) {
+						case "kunnr":
+							oDialog.bindAggregation("items", {
+								path: 'entregas>/F4kunnrSet',
+								filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
+								template: new sap.m.StandardListItem({
+									title: '{entregas>Kunnr}',
+									description: '{entregas>Name}'
+								})
+							});
 							that._oValueHelpDialog._Field = "kunnr";
-                            break;
-							
-							
-                    }
+							break;
+
+
+					}
 					if (sInputId === "kunnr") {
 						oDialog.getBinding("items").filter([
 							new Filter("Kunnr", FilterOperator.EQ, sInputValue),
@@ -297,34 +379,34 @@ sap.ui.define(
 						]);
 					}
 
-                    oDialog.open(sInputValue);
+					oDialog.open(sInputValue);
 
-                    return oDialog;
-                });
+					return oDialog;
+				});
 
-            },
+			},
 			onValueHelpSearch: function (oEvent) {
 				var sValue = oEvent.getParameter("value");
 
-                if (this._oValueHelpDialog._Field === "kunnr") {
-                    oEvent.getSource().getBinding("items").filter([
-                        new Filter("Kunnr", FilterOperator.Contains, sValue)
-                    ]);               
-                }
+				if (this._oValueHelpDialog._Field === "kunnr") {
+					oEvent.getSource().getBinding("items").filter([
+						new Filter("Kunnr", FilterOperator.Contains, sValue)
+					]);
+				}
 				//var sValue = oEvent.getParameter("value");
 				//var oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
-	
+
 				//oEvent.getSource().getBinding("items").filter([oFilter]);
 			},
-	
+
 			onValueHelpClose: function (oEvent) {
 				var oSelectedItem = oEvent.getParameter("selectedItem");
 				oEvent.getSource().getBinding("items").filter([]);
-	
+
 				if (!oSelectedItem) {
 					return;
 				}
-	
+
 				this._kunnrDialogInput.setValue(oSelectedItem.getTitle());
 			},
 
@@ -354,14 +436,14 @@ sap.ui.define(
 					//Agregar hojas al XLS
 					//this._agregarPaginaLibroExcel(oLibro, oDatosResultados, that.oTextos.getText("3WMTitlePage"));
 					this._agregarPaginaLibroExcel(oLibro, oDatosResultados, "3WMTitlePage");
-	
+
 					var filename = "Reporte Despachos - Entregas " + new Date().toDateString();
-	
+
 					this._generarExcel(oLibro, filename);
 					this._oGlobalBusyDialog.close();
-	
+
 				} else {
-	
+
 					//sap.m.MessageToast.show(that.oTextos.getText("Error al generar XLS"));
 					sap.m.MessageToast.show("Error al generar XLS");
 				}
@@ -379,7 +461,7 @@ sap.ui.define(
 				var oTablaPrecargados = this.getView().byId("tablaEntregasCab");
 				var aItems = oTablaPrecargados.getItems();
 				var aDatos3wn = [];
-	
+
 				//Agregar encabezados columnas
 				aDatos3wn.push(this._agregarLineaHojaExcel("", [
 					this._oTextos.getText("entrega.vbeln"),
@@ -391,18 +473,18 @@ sap.ui.define(
 					this._oTextos.getText("entrega.vrkme"),
 					this._oTextos.getText("entrega.wadat"),
 					this._oTextos.getText("entrega.werks"),
-					
+
 				]));
-	
+
 				//Agregar solo postulaciones seleccionadas
 				for (var i = 0; i < aItems.length; i++) {
-	
+
 					var oResultados = aItems[i].getBindingContext("entregas").getObject();
-	
+
 					var sEstadoDescrip;
-	
+
 					switch (oResultados.Statdoc) {
-	
+
 						case "00":
 							sEstadoDescrip = "Pre-Carga";
 							break;
@@ -428,10 +510,10 @@ sap.ui.define(
 							sEstadoDescrip = "Contabilizado";
 							break;
 					}
-	
+
 					aDatos3wn.push(this._agregarLineaHojaExcel("", [
 						oResultados.Vbeln,
-	
+
 						oResultados.Kunnr,
 						oResultados.KunnrDesc,
 						oResultados.Matnr,
@@ -443,9 +525,9 @@ sap.ui.define(
 						oResultados.WerksDesc,
 					]));
 				}
-	
+
 				return aDatos3wn;
-	
+
 			},
 			_agregarLineaHojaExcel: function (pvTipoLinea, paDatos) {
 				return {
@@ -462,7 +544,7 @@ sap.ui.define(
 				for (var i = 0; i < poDatos.length; i++) {
 					var value = Object.values(poDatos[i].Datos);
 					for (var j = 0; j < value.length; j++) {
-	
+
 						if (value[j]) {
 							objectMaxLength[j] = objectMaxLength[j] >= value[j].toString().length ? objectMaxLength[j] : value[j].toString().length;
 						}
@@ -485,7 +567,7 @@ sap.ui.define(
 					bookType: "xlsx",
 					type: "binary"
 				});
-	
+
 				//Generar la descarga
 				function s2ab(s) {
 					var buf = new ArrayBuffer(s.length);
@@ -493,11 +575,11 @@ sap.ui.define(
 					for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
 					return buf;
 				}
-	
+
 				saveAs(new Blob([s2ab(wbout)], {
 					type: "application/octet-stream"
 				}), pvNombreArchivo + ".xlsx");
-	
+
 			},
 
 			_sheetFromArrayOfArrays: function (aData) {
@@ -531,7 +613,7 @@ sap.ui.define(
 							c: C,
 							r: R
 						});
-	
+
 						if (typeof cell.v === 'number') cell.t = 'n';
 						else if (typeof cell.v === 'boolean') cell.t = 'b';
 						else if (cell.v instanceof Date) {
@@ -559,7 +641,7 @@ sap.ui.define(
 				debugger;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("RouteHistoricos")
-			}	
+			}
 
 		});
 	});

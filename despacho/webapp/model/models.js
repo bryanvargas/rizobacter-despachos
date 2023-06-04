@@ -13,6 +13,21 @@ sap.ui.define([
     function (JSONModel, Device) {
         "use strict";
 
+
+        var gEntCabModel = new JSONModel({
+            "Vbeln": "",
+            "Kunnr": "",
+            "KunnrDesc": "",
+            "Matnr": "",
+            "MatnrDesc": "", 
+            "Lfimg": "",
+            "Vrkme": "",
+            "Wadat": "",
+            "Werks": "",
+            "WerksDesc": "",
+        });
+
+
         return {
             createDeviceModel: function () {
                 var oModel = new JSONModel(Device);
@@ -24,6 +39,9 @@ sap.ui.define([
             var oData = {};
             oModel.setData(oData);
             return oModel;
-        }
+        },
+        entCabModel: function() {
+            return gEntCabModel;
+        },
     };
 });

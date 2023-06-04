@@ -31,6 +31,14 @@
           "odataVersion": "2.0",
           "localUri": "localService/metadata.xml"
         }
+      },
+      "ZCDS_GETMATERIAL_CDS": {
+        "uri": "/sap/opu/odata/sap/ZCDS_GETMATERIAL_CDS/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
       }
     }
   },
@@ -86,8 +94,17 @@
           "refreshAfterChange": false
         }
       },
-      "": {
+      "lotes": {
         "dataSource": "ZCDS_GETLOTES_CDS",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
+        }
+      },
+      "materiales": {
+        "dataSource": "ZCDS_GETMATERIAL_CDS",
         "preload": true,
         "settings": {
           "defaultBindingMode": "TwoWay",
