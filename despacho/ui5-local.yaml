@@ -28,8 +28,6 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        destination: HB4_BACKEND_SAP
-        url: http://reds4:8000
         ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
