@@ -27,6 +27,20 @@ sap.ui.define([
             "WerksDesc": "",
         });
 
+        var gHistoModel = new JSONModel({
+            "Vbeln": "",
+            "Xblnr": "",
+            "Kunnr": "",
+            "KunnrDesc": "",
+            "Matnr": "", 
+            "MatnrDesc": "",
+            "Charg": "",
+            "Lfimg": "",
+            "Vrkme": "",
+            "WerksDesc": "",
+            "WadatIst": "",
+        });
+
 
         return {
             createDeviceModel: function () {
@@ -42,6 +56,9 @@ sap.ui.define([
         },
         entCabModel: function() {
             return gEntCabModel;
+        },
+        histoModel: function() {
+            return gHistoModel;
         },
     };
 });

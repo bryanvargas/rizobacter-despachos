@@ -1,0 +1,138 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Panel>
+        <VBox>
+            <MessageStrip
+                text="{worklistView>/worklistTableTitle}"
+                type="Information"
+                showIcon="true"
+                class="sapUiTinyMargin"
+            />
+
+            <Table
+                id="tablaPasiciones"
+                mode="SingleSelect"
+                items="{/results}"
+                noDataText="Algo de posiciones"
+                growing="true"
+                growingThreshold="10"
+                growingScrollToLoad="false"
+                growingTriggerText="Ver más"
+                fixedLayout="false"
+                alternateRowColors="true"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <!-- <ToolbarSpacer/>
+									<Button icon="sap-icon://save" text="Grabar"/> -->
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.vbeln}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.posnr}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.matnr}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.matnrDesc}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.werks}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.lgort}" />
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="{i18n>entrega.pos.lfimg}" />
+                        </header>
+                    </Column>
+                    <Column
+                        hAlign="Center"
+                        width="10rem"
+                    >
+                        <header>
+                            <Label text="{i18n>entrega.pos.pikmg}" />
+                        </header>
+                    </Column>
+                    <Column
+                        hAlign="Center"
+                        width="10rem"
+                    >
+                        <header>
+                            <Label text="{i18n>entrega.pos.charg}" />
+                        </header>
+                    </Column>
+                    <Column
+                        hAlign="Center"
+                        width="10rem"
+                    >
+                        <header>
+                            <Label text="{i18n>entrega.pos.vrkme}" />
+                        </header>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem
+                        type="Active"
+                        press="onPicking"
+                        highlight="Information"
+                    >
+                        <cells>
+                            <Label
+                                text="{Vbeln}"
+                                design="Bold"
+                            />
+                            <Text text="{Posnr}" />
+                            <Text text="{Matnr}" />
+                            <Text text="{MatnrDesc}" />
+                            <Text text="{Werks}" />
+                            <Text text="{Lgort}" />
+                            <Text text="{Lfimg}" />
+                            <Text text="{Pikmg}" />
+                        <Input
+                            id="chargInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="false"
+                            editable="true"
+                            enabled="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{lotes>/ZCDS_GETLOTES}"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{lotes>p_matnr}"
+                                    text="{lotes>p_werks}"
+                                />
+                            </suggestionItems>
+                        </Input>
+                            <!-- <Text text="{Charg}" /> -->
+                            <Text text="{Vrkme}" />
+                            <!-- <core:Icon src="{modeloVuelos>Icono}" size="1.5rem" color="{modeloVuelos>Color}"/>
+										<core:Icon src="sap-icon://alert" size="1.5rem" color="#FABD64" visible="{modeloVuelos>Modificaciones}"/> -->
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

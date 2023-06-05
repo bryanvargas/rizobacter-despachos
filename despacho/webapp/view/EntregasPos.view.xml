@@ -1,114 +1,126 @@
-<mvc:View controllerName="ar.com.rizobacter.despacho.controller.EntregasPos"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+<mvc:View
+	controllerName="ar.com.rizobacter.despacho.controller.EntregasPos"
+    xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
-    xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:smartTable="sap.ui.comp.smarttable"
-    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar">
-    <Page id="idPrincipalPage" title="{i18n>title}">
-        <content>
-            <!-- <fb:FilterBar reset="onReset" search=".handleGetSeguimientoAFES" showRestoreButton="true" showClearButton="true">
-							<fb:filterGroupItems>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="A" label="{i18n>Principal.FiltroVuelo.Label}" partOfCurrentVariant="true"
-									visibleInFilterBar="true">
-									<fb:control>
-										<SearchField showSearchButton="false" placeholder="{i18n>Principal.FiltroVuelo.Placeholder}"/>
-									</fb:control>
-								</fb:FilterGroupItem>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="B" label="{i18n>Principal.FiltroOrigen.Label}" partOfCurrentVariant="true"
-									visibleInFilterBar="true">
-									<fb:control>
-										<MultiComboBox placeholder="{i18n>Principal.FiltroOrigen.Placeholder}"/>
-									</fb:control>
-								</fb:FilterGroupItem>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="C" label="{i18n>Principal.FiltroDestino.Label}" partOfCurrentVariant="true"
-									visibleInFilterBar="true">
-									<fb:control>
-										<MultiComboBox placeholder="{i18n>Principal.FiltroDestino.Placeholder}"/>
-									</fb:control>
-								</fb:FilterGroupItem>
-							</fb:filterGroupItems>
-						</fb:FilterBar> -->
+    xmlns:uxap="sap.uxap"
+    displayBlock="true"
+    height="100%"
+    busyIndicatorDelay="0"
+>
+    <Page
+        id="page"
+        showNavButton="true"
+        showHeader="true"
+    >
+        <uxap:ObjectPageLayout id="ObjectPageLayout">
+            <!-- HEADER TITULO -->
+            <uxap:headerTitle>
+                <uxap:ObjectPageDynamicHeaderTitle>
+                    <uxap:expandedHeading>
+                        <Title text="{i18n>entrega.pos.appTitle}" />
+                    </uxap:expandedHeading>
+                    <uxap:snappedHeading>
+                    </uxap:snappedHeading>
 
-						<Table id="tablaEntregasCab" items="{/results}" noDataText="Algo de posiciones" growing="true"
-							growingThreshold="10" growingScrollToLoad="false" growingTriggerText="Ver más" fixedLayout="false" alternateRowColors="true">
-							<headerToolbar>
-								<OverflowToolbar>
-									<ToolbarSpacer/>
-									<Button icon="sap-icon://save" text="Grabar"/>
-								</OverflowToolbar>
-							</headerToolbar>
-							<columns>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.vbeln}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.posnr}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.matnr}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.matnrDesc}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.werks}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.lgort}"/>
-									</header>
-								</Column>
-								<Column>
-									<header>
-										<Label text="{i18n>entrega.pos.lfimg}"/>
-									</header>
-								</Column>
-								<Column hAlign="Center" width="10rem"> 
-									<header>
-										<Label text="{i18n>entrega.pos.pikmg}"/>
-									</header>
-								</Column>
-								<Column hAlign="Center" width="10rem"> 
-									<header>
-										<Label text="{i18n>entrega.pos.charg}"/>
-									</header>
-								</Column>
-								<Column hAlign="Center" width="10rem"> 
-									<header>
-										<Label text="{i18n>entrega.pos.vrkme}"/>
-									</header>
-								</Column>
-							</columns>
-							<items>
-								<ColumnListItem type="Active" press="onPicking" highlight="Information">
-									<cells>
-										<Label text="{Vbeln}" design="Bold"/>
-										<Text text="{Posnr}"/>
-										<Text text="{Matnr}"/>
-										<Text text="{MatnrDesc}"/>
-										<Text text="{Werks}"/>
-										<Text text="{Lgort}"/>
-										<Text text="{Lfimg}"/>
-										<Text text="{Pikmg}"/>
-										<Text text="{Charg}"/>
-										<Text text="{Vrkme}"/>
-										<!-- <core:Icon src="{modeloVuelos>Icono}" size="1.5rem" color="{modeloVuelos>Color}"/>
-										<core:Icon src="sap-icon://alert" size="1.5rem" color="#FABD64" visible="{modeloVuelos>Modificaciones}"/> -->
-									</cells>
-								</ColumnListItem>
-							</items>
-						</Table>
-        </content>
+                    <uxap:snappedTitleOnMobile>
+                        <Title text="{i18n>title}" />
+                    </uxap:snappedTitleOnMobile>
+                    <!-- <uxap:actions>
+                        <Button
+                            press=".onOpenDialogRemito"
+                            icon="sap-icon://print"
+                            text="{i18n>print}"
+                            type="Emphasized"
+                            visible="true"
+                        />
+                        <Button
+                            type="Accept"
+                            press="abrirDialogFinalizacion"
+                            icon="sap-icon://save"
+                            text="{i18n>update}"
+                        />
+                    </uxap:actions> -->
+                </uxap:ObjectPageDynamicHeaderTitle>
+            </uxap:headerTitle>
+
+            <!-- HEADER CONTENIDO -->
+            <uxap:headerContent>
+                <FlexBox
+                    class="fondo"
+                    wrap="Wrap"
+                    fitContainer="true"
+                >
+                    <!-- <Avatar
+                        src="sap-icon://product"
+                        displayShape="Square"
+                        displaySize="L"
+                    /> -->
+                    <VBox
+                        class=""
+                        alignItems="Start"
+                    >
+                        <Label
+                            text="{i18n>entrega.pos.descArea}:"
+                            labelFor="kunnr"
+                            class="sapUiTinyMarginBottom"
+                        />
+<TextArea id="descTextarea"
+	cols="50"
+	growing="false"
+	growingMaxLines="0"
+	height=""
+	maxLength="0"
+	rows="2"
+	showExceededText="false"
+	valueLiveUpdate="false"
+	wrapping="None"
+>
+	
+</TextArea>
+                    </VBox>
+                </FlexBox>
+                <FlexBox
+                    alignContent="Stretch"
+                    alignItems="Stretch"
+                    backgroundDesign="Transparent"
+                    direction="Row"
+                    displayInline="false"
+                    fitContainer="false"
+                    justifyContent="End"
+                    wrap="NoWrap"
+                >
+				          
+                    <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://save"
+                        text="Picking"
+                        press="onSavePicking"
+                    />
+                    
+                </FlexBox>
+            </uxap:headerContent>
+
+            <!-- SECCIONES -->
+            <uxap:sections>
+                <!-- CABECERA DE ENTREGAS-->
+
+                <uxap:ObjectPageSection title="{i18n>entregas}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection
+                            title=""
+                            titleUppercase="false"
+                        >
+                            <uxap:blocks>
+                                <core:Fragment
+                                    fragmentName="ar.com.rizobacter.despacho.view.fragment.Posiciones"
+                                    type="XML"
+                                />
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
     </Page>
 </mvc:View>

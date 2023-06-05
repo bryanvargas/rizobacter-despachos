@@ -31,13 +31,13 @@
         > -->
         <Table
             id="tablaEntregas"  
-            inset="false"
             width="auto"
             class="sapUiResponsiveMargin"
             growing="true"
-            growingThreshold="20"
-            growingScrollToLoad="true"
+            growingThreshold="10"
+            growingScrollToLoad="false"
             alternateRowColors="true"
+            growingTriggerText="Ver más"
             items="{
                 path: '/results',
                 sorter: {

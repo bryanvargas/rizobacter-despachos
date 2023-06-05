@@ -28,20 +28,6 @@ sap.ui.define(
 					iOriginalBusyDelay,
 					oTable = this.byId("tablaEntregas");
 
-
-				// this.getView().setBusy(true);
-
-				// this.getOwnerComponent().getModel("entregas").read("/EntCabSet", {
-				// 	success: function (odata) {
-				// 		this.getView().setBusy(false);
-				// 		var jModel = new sap.ui.model.json.JSONModel(odata);
-				// 		this.getView().byId("tablaEntregas").setModel(jModel);
-				// 		}.bind(this), 
-				// 	error: function (oError) {
-				// 		console.log(oError)
-				// 		}.bind(this)
-				// })	
-
 				iOriginalBusyDelay = oTable.getBusyIndicatorDelay();
 
 				oViewModel = new JSONModel({
@@ -90,11 +76,6 @@ sap.ui.define(
 
 
 				var kunnr = that.byId("kunnrInput").getValue(),
-
-					// aFilter = [];
-
-					// aFilter.push(new Filter("Kunnr", FilterOperator.EQ , kunnr));
-					// //aFilter.push(new Filter("Wadat", FilterOperator.EQ , wadat));
 					oFilterEntregas = new sap.ui.model.Filter({
 						filters: [
 							new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
@@ -128,7 +109,7 @@ sap.ui.define(
 
 
 			_getEntregas: function () {
-				this.getView().setBusy(true);
+				// this.getView().setBusy(true);
 				this.getOwnerComponent().getModel("entregas").read("/EntCabSet", {
 					success: function (odata) {
 						this.getView().setBusy(false);
@@ -418,7 +399,8 @@ sap.ui.define(
 				// 	Kunnr: window.encodeURIComponent(oItem.getBindingContext("entregas").getPath().substr(1))
 				// });
 
-				var vbeln = oEvent.getSource().getBindingContext("entregas").getObject().Vbeln;
+				//var vbeln = oEvent.getSource().getBindingContext("entregas").getObject().Vbeln;
+				var vbeln = oEvent.getSource().getBindingContext().getObject().Vbeln;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("RouteEntregasPos", {
 					Vbeln: vbeln
@@ -426,7 +408,7 @@ sap.ui.define(
 			},
 
 			onExportxlsEntregas: function (oEvent) {
-				if (this.getView().byId("tablaEntregasCab").getItems().length > 0) {
+				if (this.getView().byId("tablaEntregas").getItems().length > 0) {
 
 					this._oGlobalBusyDialog.setText("DescargandoInformacion");
 					this._oGlobalBusyDialog.open();
@@ -458,7 +440,7 @@ sap.ui.define(
 
 			_armarDatos3WMParkeadas: function () {
 
-				var oTablaPrecargados = this.getView().byId("tablaEntregasCab");
+				var oTablaPrecargados = this.getView().byId("tablaEntregas");
 				var aItems = oTablaPrecargados.getItems();
 				var aDatos3wn = [];
 
@@ -479,8 +461,8 @@ sap.ui.define(
 				//Agregar solo postulaciones seleccionadas
 				for (var i = 0; i < aItems.length; i++) {
 
-					var oResultados = aItems[i].getBindingContext("entregas").getObject();
-
+					//var oResultados = aItems[i].getBindingContext("entregas").getObject();
+					var oResultados = aItems[i].getBindingContext().getObject();
 					var sEstadoDescrip;
 
 					switch (oResultados.Statdoc) {

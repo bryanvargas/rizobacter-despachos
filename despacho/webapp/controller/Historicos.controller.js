@@ -4,13 +4,14 @@ sap.ui.define(
         'sap/ui/core/Fragment',
         'sap/ui/model/json/JSONModel',
         '../model/DespachoFormatter',
+        '../model/models',
         'sap/ui/model/Filter',
         'sap/ui/model/FilterOperator',
     ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, Filter, FilterOperator) {
+    function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Filter, FilterOperator) {
         'use strict';
 
         return BaseController.extend("ar.com.rizobacter.despacho.controller.Historicos", {
@@ -20,6 +21,8 @@ sap.ui.define(
             onInit: function () {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("RouteHistoricos").attachPatternMatched(this._onObjectMatch, this);
+
+                this._getHistorico();
             },
 
             _onObjectMatch: function (oEvent) {
@@ -143,6 +146,58 @@ sap.ui.define(
                         console.log(oError);
                     }
                 })
-            }
+            },
+            
+			onFilterHistorico: function (oEvent) {
+				debugger;
+				var that = this;
+
+				let kunnr = that.byId("kunnrInput").getValue(),
+                    matnr = that.byId("matnrInput").getValue(),
+
+					oFilterHistorico = new sap.ui.model.Filter({
+						filters: [
+							new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
+							new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr)
+						],
+						and: true
+					});
+
+
+
+				this.getView().getModel("entregas").read("/EntHistSet", {
+					filters: [oFilterHistorico],
+					success: function (odata) {
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						that.getView().byId("tablaEntregas").setModel(jModel);
+					}, error: function (oError) {
+						debugger;
+						that.getView().byId("tablaHistoricos").setModel(models.histoModel());
+					}.bind(that)
+				})
+			},
+			onClearFilterHistorico: function () {
+				var that = this;
+				if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
+					that.byId("kunnrInput").setValue("");
+					that.byId("matnrInput").setValue("");
+					this._getHistorico();
+				}
+
+			},
+
+            _getHistorico: function () {
+				this.getView().setBusy(true);
+				this.getOwnerComponent().getModel("entregas").read("/EntHistSet", {
+					success: function (odata) {
+						this.getView().setBusy(false);
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						this.getView().byId("tablaHistoricos").setModel(jModel);
+					}.bind(this),
+					error: function (oError) {
+						console.log(oError)
+					}.bind(this)
+				});
+			},
         });
     });   
