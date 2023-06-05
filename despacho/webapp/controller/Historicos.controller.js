@@ -76,8 +76,8 @@ sap.ui.define(
                                 path: 'materiales>/ZCDS_GETMATERIAL',
                                 //filters: [new Filter('Material', FilterOperator.EQ, sInputValue)],
                                 template: new sap.m.StandardListItem({
-                                    title: '{materiales>Material}',
-                                    description: '{materiales>Descripcion}'
+                                    title: '{materiales>Descripcion}',
+                                    description: '{materiales>Material}'
                                 })
                             });
                             that._oValueHelpDialog._Field = "matnr";
@@ -108,9 +108,9 @@ sap.ui.define(
                 debugger;
                 var sValue = oEvent.getParameter("value");
 
-                if (this._oValueHelpDialog._Field === "kunnr") {
+                if (this._oValueHelpDialog._Field === "matnr") {
                     oEvent.getSource().getBinding("items").filter([
-                        new Filter("Kunnr", FilterOperator.Contains, sValue)
+                        new Filter("Material", FilterOperator.Contains, sValue)
                     ]);
                 }
                 //var sValue = oEvent.getParameter("value");
@@ -199,5 +199,19 @@ sap.ui.define(
 					}.bind(this)
 				});
 			},
+
+            onPrintRemito: function () {
+                debugger;
+                this.getOwnerComponent().getModel("entregas").read("/EntregaSet('80001610')/$value", {
+					success: function (odata) {
+						this.getView().setBusy(false);
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						//this.getView().byId("tablaHistoricos").setModel(jModel);
+					}.bind(this),
+					error: function (oError) {
+						console.log(oError)
+					}.bind(this)
+				});
+            }
         });
     });   

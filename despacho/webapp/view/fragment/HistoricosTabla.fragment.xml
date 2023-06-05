@@ -209,7 +209,9 @@
                         />
                         <Text text="{Vrkme}"/>
                         <Text text="{WerksDesc}"/>
-                        <Text
+                        <Text text="{WadatIst}"/>
+
+                        <!-- <Text
                             text="{
                                 path: 'WadatIst',
                                 type: 'sap.ui.model.type.Date',
@@ -224,7 +226,7 @@
                             textDirection="Inherit"
                             visible="true"
                             width="auto"
-                        />
+                        /> -->
                         <!--<core:Icon
                             src="{
                                 path: 'entregas>Status',

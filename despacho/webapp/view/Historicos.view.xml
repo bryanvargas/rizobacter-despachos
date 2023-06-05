@@ -41,18 +41,18 @@
                     </uxap:snappedTitleOnMobile>
                     <uxap:actions>
                         <Button
-                            press=".onOpenDialogRemito"
+                            press=".onPrintRemito"
                             icon="sap-icon://print"
                             text="{i18n>print}"
                             type="Emphasized"
                             visible="true"
                         />
-                        <Button
+                        <!-- <Button
                             type="Accept"
                             press="abrirDialogFinalizacion"
                             icon="sap-icon://save"
                             text="{i18n>update}"
-                        />
+                        /> -->
                     </uxap:actions>
                 </uxap:ObjectPageDynamicHeaderTitle>
             </uxap:headerTitle>
@@ -117,8 +117,8 @@
                         >
                             <suggestionItems>
                                 <core:ListItem
-                                    key="{materiales>Material}"
-                                    text="{materiales>Descripcion}"
+                                    key="{materiales>Descripcion}"
+                                    text="{materiales>Material}"
                                 />
                             </suggestionItems>
                         </Input>

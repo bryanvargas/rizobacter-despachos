@@ -69,7 +69,7 @@ sap.ui.define(
 				debugger;
 				var that = this;
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
-					pattern: "YYYY-MM-dd"
+					pattern: "YYYYMMdd"
 				});
 				var wadat = that.byId("wadatInput").getValue();
 				var oDate = oDateFormat.format(oDateFormat.parse(wadat));
@@ -78,10 +78,10 @@ sap.ui.define(
 				var kunnr = that.byId("kunnrInput").getValue(),
 					oFilterEntregas = new sap.ui.model.Filter({
 						filters: [
-							new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
+							//new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
 							new sap.ui.model.Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate)
 						],
-						and: true
+						and: false
 					});
 
 
@@ -109,6 +109,7 @@ sap.ui.define(
 
 
 			_getEntregas: function () {
+				debugger;
 				// this.getView().setBusy(true);
 				this.getOwnerComponent().getModel("entregas").read("/EntCabSet", {
 					success: function (odata) {

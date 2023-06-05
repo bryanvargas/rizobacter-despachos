@@ -131,5 +131,12 @@ sap.ui.define(
 
 				this._kunnrDialogInput.setValue(oSelectedItem.getTitle());
 			},
+
+			// onSavePicking: function () {
+			// 	debugger;
+			// 	var oItem= this.getView().byId("table").getSelectedItem();
+			// 	var oEntregas = oItem.getBindingContext("entregas").getObject();
+			// 	var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+			// }
 		});
 	});   
