@@ -5,8 +5,13 @@
 
 	<SelectDialog
 		id="selectDialog"
+		confirmButtonText="Confirmar"
+		contentHeight="300px"
+		contentWidth="100px"
+		draggable="false"
 		search=".onValueHelpSearch"
 		confirm=".onValueHelpClose"
 		cancel=".onValueHelpClose"> 
 	</SelectDialog>
+
 </c:FragmentDefinition>

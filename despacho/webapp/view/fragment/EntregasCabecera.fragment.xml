@@ -80,10 +80,10 @@
                         </SearchField>
                         <!-- <ToolbarSpacer width=""/>
                         <ToolbarSpacer width=""/> -->
-                        <Button
+                        <!-- <Button
                             icon="sap-icon://add"
                             press=".onAddLine"
-                        />
+                        /> -->
                         <Button
                             tooltip="{i18n>sort}"
                             icon="sap-icon://sort"
@@ -236,10 +236,11 @@
                             }"
                         />
                         <Text text="{MatnrDesc}"/>
-                        <VBox alignItems="Start">
+                        <Text text="{Lfimg}"/>
+                        <!-- <VBox alignItems="Start">
                             <Text text="{Lfimg}"/>
                             <StepInput width="6rem"/>
-                        </VBox>
+                        </VBox> -->
                         <ObjectStatus
                             text="{Vrkme}"
                         />

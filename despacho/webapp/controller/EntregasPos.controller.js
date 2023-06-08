@@ -60,7 +60,10 @@ sap.ui.define(
 
 			
 			onValueHelpRequest: function (oEvent) {
+				debugger;
 				var that = this;
+
+				let valuesRow = oEvent.getSource().getBindingContext().getObject();
 				var oInput = oEvent.getSource(),
 					sInputValue = oEvent.getSource().getValue(),
 					oView = this.getView();
@@ -69,7 +72,7 @@ sap.ui.define(
 					this._oValueHelpDialog.destroy();
 				}
 
-				this._kunnrDialogInput = oInput;
+				this._chargDialogInput = oInput;
 				Fragment.load({
 					id: oView.getId(),
 					name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
@@ -78,26 +81,30 @@ sap.ui.define(
 					that._oValueHelpDialog = oDialog;
 					oView.addDependent(oDialog);
 					var filtro = [];
-					var sInputId = /[a-z]+$/.exec((/Despacho--[a-z]+/.exec(oInput.getId())[0]))[0];
+					debugger;
+					var sInputId = /[a-z]+$/.exec((/EntregasPos--[a-z]+/.exec(oInput.getId())[0]))[0];
 					switch (sInputId) {
-						case "kunnr":
+						case "charg":
 							oDialog.bindAggregation("items", {
-								path: 'entregas>/F4kunnrSet',
-								filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
+								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + valuesRow.Matnr + "',p_werks='" + valuesRow.Werks + "',p_lgort='" + valuesRow.Lgort + "')/Set",
+								//path: "lotes>/ZCDS_GETLOTES('" + valuesRow.Matnr + "'," + "'"  + valuesRow.Werks + "'," +  "'" + valuesRow.Lgort + "')/Set",
+								//filters: [new Filter('Charg', FilterOperator.EQ, sInputValue)],
 								template: new sap.m.StandardListItem({
-									title: '{entregas>Kunnr}',
-									description: '{entregas>Name}'
+									title: '{lotes>Lote}',
+									info: 'Cantidad',
+									description: '{lotes>Stock}'
+									
 								})
 							});
-							that._oValueHelpDialog._Field = "kunnr";
+							that._oValueHelpDialog._Field = "charg";
 							break;
 
 
 					}
-					if (sInputId === "kunnr") {
+					if (sInputId === "charg") {
 						oDialog.getBinding("items").filter([
-							new Filter("Kunnr", FilterOperator.EQ, sInputValue),
-							new Filter("Name", FilterOperator.EQ, sInputValue)
+							// new Filter("Kunnr", FilterOperator.EQ, sInputValue),
+							// new Filter("Name", FilterOperator.EQ, sInputValue)
 						]);
 					}
 
@@ -110,9 +117,9 @@ sap.ui.define(
 			onValueHelpSearch: function (oEvent) {
 				var sValue = oEvent.getParameter("value");
 
-				if (this._oValueHelpDialog._Field === "kunnr") {
+				if (this._oValueHelpDialog._Field === "charg") {
 					oEvent.getSource().getBinding("items").filter([
-						new Filter("Kunnr", FilterOperator.Contains, sValue)
+						//new Filter("Kunnr", FilterOperator.Contains, sValue)
 					]);
 				}
 				//var sValue = oEvent.getParameter("value");
@@ -129,14 +136,76 @@ sap.ui.define(
 					return;
 				}
 
-				this._kunnrDialogInput.setValue(oSelectedItem.getTitle());
+				this._chargDialogInput.setValue(oSelectedItem.getTitle());
 			},
 
-			// onSavePicking: function () {
-			// 	debugger;
-			// 	var oItem= this.getView().byId("table").getSelectedItem();
-			// 	var oEntregas = oItem.getBindingContext("entregas").getObject();
-			// 	var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
-			// }
+			 onSavePicking: function () {
+			 	debugger;
+			 	var oItem= this.getView().byId("tablaPasiciones").getSelectedItem();
+				if (oItem !== null) {
+					
+
+			 	var oEntregas = oItem.getBindingContext().getObject();
+			 	var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+				var textArea = this.getView().byId("descTextarea").getValue();
+				//  var body = {
+				// 	Vbeln:oEntregas.Vbeln,
+				// 	Posnr:oEntregas.Posnr,
+				// 	Matnr:oEntregas.Matnr,
+				// 	Werks:oEntregas.Werks,					
+				// 	Lgort:oEntregas.Lgort,	
+				// 	Lfimg:oEntregas.Lfimg,
+				// 	Pikmg:oEntregas.Pikmg,
+				// 	Charg:oEntregas.Charg
+				// };
+				var body = {
+					Vbeln : "80001456",
+					Textocab: textArea,
+					nav_entdp_to_pick: [
+						{
+							// Vbeln:"80001456",
+							// Posnr:"000010",
+							// Matnr:"200012",
+							// Werks: "1010",					
+							// Lgort:"1105",	
+							// Lfimg:"1.000",
+							// Pikmg:"1.000",
+							// Charg:"0000000247"
+							// 	Vbeln:oEntregas.Vbeln,
+				Posnr:oEntregas.Posnr,
+				Matnr:oEntregas.Matnr,
+				Werks:oEntregas.Werks,					
+				Lgort:oEntregas.Lgort,	
+				Lfimg:oEntregas.Lfimg,
+				Pikmg:oEntregas.Pikmg,
+				Charg:oEntregas.Charg
+						}
+
+					],
+					nav_entdp_to_ret: [
+						{
+							Type:"",
+							Id:"",
+							Number:"",
+							Message:""
+						}
+					]
+				};
+
+				this.getView().getModel("entregas").create("/EntregaDPSet", body, {
+					success: function () {
+						MessageToast.show("Se grabo exitosamente");
+						console.log("Se grabo exitosamente");
+					}.bind(this),
+					error: function (e) {
+						MessageToast.show("No se realizo el Picking");
+						console.log("Se grabo NO exitosamente");
+					}.bind(this)
+				});
+
+			} else {
+					MessageToast.show('Seleccione una entrega');
+				}
+			 }
 		});
 	});   

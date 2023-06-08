@@ -123,6 +123,45 @@
                             </suggestionItems>
                         </Input>
                     </VBox>
+                     <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>historico.wadatIst}:"
+                            labelFor="wadatIst"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <!-- <DatePicker
+                            id="wadatInput"
+                            required="true"
+                            change="onChangeState"
+                            value="{
+								path: 'oPostData>/FechaDesv',
+								type: 'sap.ui.model.odata.type.DateTime',
+								constraints: {
+									displayFormat: 'Date'
+								},
+								formatOptions: {
+									UTC: false,
+									pattern: 'dd/MM/yyyy'
+								}
+							}"
+                            valueFormat="dd/MM/yyyy"
+                        /> -->
+                        <DatePicker
+                            id="wadatIstInput"
+                            type= 'sap.ui.model.type.DateTime'
+                            placeholder="Ingrese una fecha"
+                            valueFormat="YYYY-MM-ddTHH:mm:ss"
+                            valueStateText="Enter a valid date..."
+                            displayFormat="dd/MM/YYYY"
+						    pattern= 'YYYY-MM-ddTHH:mm:ss'
+                            required="true"
+                            change="onChangeState"
+                        />
+                        
+                    </VBox>
                 </FlexBox>
                 <FlexBox
                     alignContent="Stretch"

@@ -25,8 +25,41 @@
             >
                 <headerToolbar>
                     <OverflowToolbar>
-                        <!-- <ToolbarSpacer/>
-									<Button icon="sap-icon://save" text="Grabar"/> -->
+ <content>
+                        <!-- <ToolbarSpacer /> -->
+                        <ToolbarSpacer width=""/>
+                        <ToolbarSpacer width=""/>
+
+                        <!-- <ToolbarSpacer width=""/>
+                        <ToolbarSpacer width=""/> -->
+                        <Button
+                            icon="sap-icon://add"
+                            press=".onAddLine"
+                        /> 
+                        <!-- <Button
+                            tooltip="{i18n>sort}"
+                            icon="sap-icon://sort"
+                            press="onSortPark"
+                        />
+                        <Button
+                            tooltip="{i18n>filter}"
+                            icon="sap-icon://filter"
+                            press="onFilterPark"
+                        />
+                        <Button
+                            tooltip="{i18n>clnFlt}"
+                            icon="sap-icon://clear-filter"
+                            press="onClearFilterPark"
+                        />
+                        <Button
+                            tooltip="{i18n>dwnXls}"
+                            icon="sap-icon://excel-attachment"
+                            press="onExportxlsEntregas"
+                        /> -->
+                        <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
+                        <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
+                iconDensityAware="false" press="onEditPDF" />-->
+                    </content>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
@@ -101,13 +134,16 @@
                                 text="{Vbeln}"
                                 design="Bold"
                             />
-                            <Text text="{Posnr}" />
+                            <Text text="{
+                            path: 'Posnr',
+                            formatter: '.formatter.quitarCero'
+                        }"/> 
                             <Text text="{Matnr}" />
                             <Text text="{MatnrDesc}" />
                             <Text text="{Werks}" />
                             <Text text="{Lgort}" />
                             <Text text="{Lfimg}" />
-                            <Text text="{Pikmg}" />
+                            <Input type="Text" editable="true" id="PikmgId" />
                         <Input
                             id="chargInput"
                             showSuggestion="true"

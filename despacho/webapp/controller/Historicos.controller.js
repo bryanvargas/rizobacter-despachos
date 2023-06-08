@@ -23,6 +23,7 @@ sap.ui.define(
                 oRouter.getRoute("RouteHistoricos").attachPatternMatched(this._onObjectMatch, this);
 
                 this._getHistorico();
+                this._filtersModel();
             },
 
             _onObjectMatch: function (oEvent) {
@@ -150,26 +151,57 @@ sap.ui.define(
             
 			onFilterHistorico: function (oEvent) {
 				debugger;
+                const aFilter = [];
 				var that = this;
 
-				let kunnr = that.byId("kunnrInput").getValue(),
-                    matnr = that.byId("matnrInput").getValue(),
+                let oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+					pattern: "YYYYMMdd"
+				}),
 
-					oFilterHistorico = new sap.ui.model.Filter({
-						filters: [
-							new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
-							new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr)
-						],
-						and: true
-					});
+				 kunnr = that.byId("kunnrInput").getValue(),
+                 matnr = that.byId("matnrInput").getValue(),
+                 wadatIst = that.byId("wadatIstInput").getValue(),
+                 oDate = oDateFormat.format(oDateFormat.parse(wadatIst));
+                
+                if (kunnr !== "") {
+                    aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+                };
 
+                if (matnr !== "") {
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
+                };
 
+                if (wadatIst !== "") {
+					aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+				};
+
+                if (kunnr !== "" && matnr !== "" && wadatIst !== "") {
+                    aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                };
+
+                if (kunnr !== "" && matnr !== "") {
+                    aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
+                };
+
+                if (kunnr !== "" && wadatIst !== "") {
+                    aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                    
+                };
+
+                if (matnr !== "" && wadatIst !== "") {
+                    aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                };
 
 				this.getView().getModel("entregas").read("/EntHistSet", {
-					filters: [oFilterHistorico],
+					filters: [aFilter],
 					success: function (odata) {
 						var jModel = new sap.ui.model.json.JSONModel(odata);
-						that.getView().byId("tablaEntregas").setModel(jModel);
+						that.getView().byId("tablaHistoricos").setModel(jModel);
 					}, error: function (oError) {
 						debugger;
 						that.getView().byId("tablaHistoricos").setModel(models.histoModel());
@@ -178,11 +210,12 @@ sap.ui.define(
 			},
 			onClearFilterHistorico: function () {
 				var that = this;
-				if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
+				//if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
 					that.byId("kunnrInput").setValue("");
 					that.byId("matnrInput").setValue("");
+                    that.byId("wadatIstInput").setValue("");
 					this._getHistorico();
-				}
+				//}
 
 			},
 
@@ -212,6 +245,27 @@ sap.ui.define(
 						console.log(oError)
 					}.bind(this)
 				});
-            }
+            },
+            onSearch: function (oEvent) {
+				debugger;
+				const oViewModel = this.getView().getModel("filters");
+				const oTablaEntregas = this.getView().byId("tablaHistoricos");
+				const oBinding = oTablaEntregas.getBinding("items");
+
+				let oFilters = [];
+
+				if (oViewModel.getProperty("/Vbeln")) {
+					oFilters.push(new Filter("Vbeln", FilterOperator.Contains, oViewModel.getProperty("/Vbeln")));
+				};
+
+				oBinding.filter(oFilters);
+			},
+
+            _filtersModel: function () {
+				let oModel = {
+					Vbeln: ""
+				};
+				this.getView().setModel(new JSONModel(oModel), "filters");
+			},
         });
     });   

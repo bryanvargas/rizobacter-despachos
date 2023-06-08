@@ -67,27 +67,40 @@ sap.ui.define(
 
 			onFilterEntregas: function (oEvent) {
 				debugger;
+				const aFilter = [];
 				var that = this;
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
 					pattern: "YYYYMMdd"
-				});
-				var wadat = that.byId("wadatInput").getValue();
-				var oDate = oDateFormat.format(oDateFormat.parse(wadat));
+				}),
 
+					wadat = that.byId("wadatInput").getValue(),
+					oDate = oDateFormat.format(oDateFormat.parse(wadat)),
+					kunnr = that.byId("kunnrInput").getValue();
 
-				var kunnr = that.byId("kunnrInput").getValue(),
-					oFilterEntregas = new sap.ui.model.Filter({
-						filters: [
-							//new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
-							new sap.ui.model.Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate)
-						],
-						and: false
-					});
+				if (wadat !== "") {
+					aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate));
+				};
+
+				if (kunnr !== "") {
+					aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+				};
+
+				if (kunnr !== "" && wadat !== "") {
+					aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
+					aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate));
+				};
+				// oFilterEntregas = new sap.ui.model.Filter({
+				// 	filters: [
+				// 		//new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr),
+				// 		new sap.ui.model.Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate)
+				// 	],
+				// 	and: false
+				// });
 
 
 
 				this.getView().getModel("entregas").read("/EntCabSet", {
-					filters: [oFilterEntregas],
+					filters: [aFilter],
 					success: function (odata) {
 						var jModel = new sap.ui.model.json.JSONModel(odata);
 						that.getView().byId("tablaEntregas").setModel(jModel);
@@ -343,9 +356,10 @@ sap.ui.define(
 						case "kunnr":
 							oDialog.bindAggregation("items", {
 								path: 'entregas>/F4kunnrSet',
-								filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
+								//filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
 								template: new sap.m.StandardListItem({
 									title: '{entregas>Kunnr}',
+
 									description: '{entregas>Name}'
 								})
 							});
@@ -354,12 +368,12 @@ sap.ui.define(
 
 
 					}
-					if (sInputId === "kunnr") {
-						oDialog.getBinding("items").filter([
-							new Filter("Kunnr", FilterOperator.EQ, sInputValue),
-							new Filter("Name", FilterOperator.EQ, sInputValue)
-						]);
-					}
+					// if (sInputId === "kunnr") {
+					// 	oDialog.getBinding("items").filter([
+					// 		new Filter("Kunnr", FilterOperator.EQ, sInputValue),
+					// 		new Filter("Name", FilterOperator.EQ, sInputValue)
+					// 	]);
+					// }
 
 					oDialog.open(sInputValue);
 
@@ -368,17 +382,17 @@ sap.ui.define(
 
 			},
 			onValueHelpSearch: function (oEvent) {
+				// var sValue = oEvent.getParameter("value");
+
+				// if (this._oValueHelpDialog._Field === "kunnr") {
+				// 	oEvent.getSource().getBinding("items").filter([
+				// 		new Filter("Kunnr", FilterOperator.EQ, sValue)
+				// 	]);
+				// }
 				var sValue = oEvent.getParameter("value");
+				var oFilter = new Filter("Kunnr", FilterOperator.EQ, sValue);
 
-				if (this._oValueHelpDialog._Field === "kunnr") {
-					oEvent.getSource().getBinding("items").filter([
-						new Filter("Kunnr", FilterOperator.Contains, sValue)
-					]);
-				}
-				//var sValue = oEvent.getParameter("value");
-				//var oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
-
-				//oEvent.getSource().getBinding("items").filter([oFilter]);
+				oEvent.getSource().getBinding("items").filter([oFilter]);
 			},
 
 			onValueHelpClose: function (oEvent) {
@@ -503,7 +517,8 @@ sap.ui.define(
 						oResultados.MatnrDesc,
 						oResultados.Lfimg,
 						oResultados.Vrkme,
-						(oResultados.Wadat) ? Despachoformatter.dateFormat(oResultados.Wadat) : "",
+						//(oResultados.Wadat) ? Despachoformatter.dateFormat(oResultados.Wadat) : "",
+						(oResultados.Wadat) ? oResultados.Wadat : "",
 						oResultados.Werks,
 						oResultados.WerksDesc,
 					]));

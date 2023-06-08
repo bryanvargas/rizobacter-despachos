@@ -56,7 +56,7 @@
                             text="{i18n>update}"
                         /> -->
                         <Button
-                            type="Accept"
+                            
                             press=".onOpenHistoricos"
                             icon="sap-icon://activity-items"
                             text="{i18n>list}"
@@ -72,11 +72,6 @@
                     wrap="Wrap"
                     fitContainer="true"
                 >
-                    <!-- <Avatar
-                        src="sap-icon://product"
-                        displayShape="Square"
-                        displaySize="L"
-                    /> -->
                     <VBox
                         class="sapUiSmallMargin"
                         alignItems="Center"
@@ -91,10 +86,9 @@
                             showSuggestion="true"
                             showValueHelp="true"
                             valueHelpOnly="false"
-                            valueLiveUpdate="true"
                             editable="true"
                             enabled="true"
-                            valueHelpRequest="onValueHelpRequest"
+                            valueHelpRequest=".onValueHelpRequest"
                             suggestionItems="{entregas>/F4kunnrSet}"
                         >
                             <suggestionItems>

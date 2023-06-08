@@ -10,7 +10,7 @@
             showIcon="true"
             class="sapUiTinyMargin"
         />
-        <Table id="tablaHistoricos" items="{/results}" noDataText="Algo de posiciones" growing="true"
+        <Table id="tablaHistoricos" mode="SingleSelect" items="{/results}" noDataText="Algo de posiciones" growing="true"
 							growingThreshold="10" growingScrollToLoad="false" growingTriggerText="Ver más" fixedLayout="false" alternateRowColors="true">
             <headerToolbar>
                 <OverflowToolbar
@@ -36,18 +36,18 @@
                             }"
                             visible="true"
                             width="20rem"
-                            search=".filterGlobally"
-                            liveChange="onFilter"
+                            search=".onSearch"
+                            liveChange="onSearch"
                         >
                             <suggestionItems>
                             </suggestionItems>
                         </SearchField>
                         <!-- <ToolbarSpacer width=""/>
                         <ToolbarSpacer width=""/> -->
-                        <Button
+                        <!-- <Button
                             icon="sap-icon://add"
                             press=".onAddLine"
-                        />
+                        /> -->
                         <Button
                             tooltip="{i18n>sort}"
                             icon="sap-icon://sort"
@@ -148,7 +148,7 @@
                 </Column> -->
             </columns>
             <items>
-                <ColumnListItem type="Navigation" press="navegateToEntregasPos">  
+                <ColumnListItem >  
                     <cells>
                         <core:Icon
                             src="sap-icon://monitor-payments"
@@ -207,7 +207,7 @@
                         <ObjectStatus
                             text="{entregas>Vrkme}"
                         />
-                        <Text text="{Vrkme}"/>
+                        <!-- <Text text="{Vrkme}"/> -->
                         <Text text="{WerksDesc}"/>
                         <Text text="{WadatIst}"/>
 
