@@ -103,7 +103,7 @@ sap.ui.define(
 					switch (sInputId) {
 						case "charg":
 							oDialog.bindAggregation("items", {
-								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + that._valuesRow.Matnr + "',p_werks='" + that._valuesRow.Werks + "')/Set",
+								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + valuesRow.Matnr + "',p_werks='" + valuesRow.Werks + "',p_lgort='" + valuesRow.Lgort + "')/Set",
 								//path: "lotes>/ZCDS_GETLOTES('" + valuesRow.Matnr + "'," + "'"  + valuesRow.Werks + "'," +  "'" + valuesRow.Lgort + "')/Set",
 								//filters: [new Filter('Charg', FilterOperator.EQ, sInputValue)],
 								template: new sap.m.StandardListItem({
