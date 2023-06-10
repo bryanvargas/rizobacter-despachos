@@ -62,109 +62,77 @@ sap.ui.define(
 			},
 
 
-			onValueHelpRequest1: function (oEvent) {
+			onValueHelpRequest: function (oEvent) {
+				debugger;
+				var oView = this.getView();
 
-				this.oQuestionDialog = new sap.m.Dialog({
-					title: "Aprobar solicitud",
-					type: 'Message',
-					content: [
-						new sap.m.Label({
-							text: "¿Desea aprobar la solicitud?",
-							labelFor: 'rejectDialogTextarea'
-						})
-					],
-					beginButton: new sap.m.Button({
-						type: sap.m.ButtonType.Emphasized,
-						text: 'Confirmar',
-						press: function () {
-							this.onApproveConfirm();
-						}.bind(this)
-					}),
-					endButton: new sap.m.Button({
-						type: sap.m.ButtonType.Reject,
-						text: 'Cancelar',
-						press: function () {
-							this.onCancelConfirm();
-						}.bind(this)
-					})
-				});
-				this.oQuestionDialog.open();
-				// debugger;
-				// var oView = this.getView();
+				var oModel = this.getOwnerComponent().getModel("lotes");
 
-				// var oModel = this.getOwnerComponent().getModel("lotes");
+				var newModel = new sap.ui.model.json.JSONModel();
 
-				// var newModel = new sap.ui.model.json.JSONModel();
+				if (this._valuesRow === null || this._valuesRow === undefined) {
+				 	this._valuesRow = oEvent.getSource().getBindingContext().getObject();
 
-				// if (this._valuesRow === null || this._valuesRow === undefined) {
-				// 	this._valuesRow = oEvent.getSource().getBindingContext().getObject();
-
-				// };
-				// var that = this;
-				// oModel.read("lotes>/ZCDS_GETLOTES(p_matnr='" + that._valuesRow.Matnr + "',p_werks='" + that._valuesRow.Werks + "',p_lgort='" + that._valuesRow.Lgort + "')/Set<", {
-
-				// 	success: function (oData) {
-
-				// 		var oModel3 = new sap.ui.model.json.JSONModel({
-
-				// 			Material: oData.Material,
-				// 			Lote: oData.Lote
-				// 		});
-
-				// 		newModel.setData(oData);
-
-				// 		//oView.setModel(oModel3); {Name}
-
-				// 		oView.setModel(newModel, "model");
-
-				// 		console.log(newModel);
-
-				// 		console.log(oModel3);
-
-				// 	},
-
-				// 	error: function (err) { }
-
-				// });
+				};
+				
 
 
 
-				// // create dialog lazily
+				var that = this;
 
-				// if (!this.byId("helloDialog")) {
+				let valuesRow = oEvent.getSource().getBindingContext().getObject();
+				var oInput = oEvent.getSource(),
+					sInputValue = oEvent.getSource().getValue(),
+					oView = this.getView();
 
-				// 	// load asynchronous XML fragment
+				if (this._oValueHelpDialog) {
+					this._oValueHelpDialog.destroy();
+				}
 
-				// 	Fragment.load({
+				this._chargDialogInput = oInput;
+				Fragment.load({
+					id: oView.getId(),
+					name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
+					controller: this
+				}).then(function (oDialog) {
+					that._oValueHelpDialog = oDialog;
+					oView.addDependent(oDialog);
+					var filtro = [];
+					debugger;
+					var sInputId = /[a-z]+$/.exec((/EntregasPos--[a-z]+/.exec(oInput.getId())[0]))[0];
+					switch (sInputId) {
+						case "charg":
+							oDialog.bindAggregation("items", {
+								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + that._valuesRow.Matnr + "',p_werks='" + that._valuesRow.Werks + "')/Set",
+								//path: "lotes>/ZCDS_GETLOTES('" + valuesRow.Matnr + "'," + "'"  + valuesRow.Werks + "'," +  "'" + valuesRow.Lgort + "')/Set",
+								//filters: [new Filter('Charg', FilterOperator.EQ, sInputValue)],
+								template: new sap.m.StandardListItem({
+									title: '{lotes>Lote}',
+									info: '{lotes>Almacen}',
+									description: '{lotes>Stock}'
+									
+								})
+							});
+							that._oValueHelpDialog._Field = "charg";
+							break;
 
-				// 		id: oView.getId(),
 
-				// 		name: "ar.com.rizobacter.despacho.view.fragment.ValueHelpDialog",
+					}
+					if (sInputId === "charg") {
+						oDialog.getBinding("items").filter([
+							// new Filter("Kunnr", FilterOperator.EQ, sInputValue),
+							// new Filter("Name", FilterOperator.EQ, sInputValue)
+						]);
+					}
 
-				// 		controller: this
+					oDialog.open(sInputValue);
 
-				// 	}).then(function (oDialog) {
+					return oDialog;
+				});				
 
-				// 		// connect dialog to the root view of this component (models, lifecycle)
-
-				// 		oView.addDependent(oDialog);
-
-				// 		//oDialog.setBindingContext(a);
-
-				// 		oDialog.open();
-
-				// 	});
-
-				// } else {
-
-				// 	this.byId("helloDialog").open();
-
-				// }
-
-				//alert(this.View().byId("_val0").getValue()); 
 
 			},
-			onValueHelpRequest: function (oEvent) {
+			onValueHelpReques2t: function (oEvent) {
 				debugger;
 				var oView = this.getView();
 
@@ -214,31 +182,31 @@ sap.ui.define(
 				if (oItem !== null) {
 
 
-					// ***************************************************************************
-					this.oQuestionDialog = new sap.m.Dialog({
-						title: "Picking",
-						type: 'Message',
-						content: [
-							new sap.m.Label({
-								text: "¿Desea realizar el picking?",
-								labelFor: 'rejectDialogTextarea'
-							})
-						],
-						beginButton: new sap.m.Button({
-							type: sap.m.ButtonType.Emphasized,
-							text: 'Confirmar'
-						}),
-						endButton: new sap.m.Button({
-							type: sap.m.ButtonType.Reject,
-							text: 'Cancelar',
-							press: function () {
-								this.onCancelConfirm();
-							}.bind(this)
-						})
-					});
-					this.oQuestionDialog.open();
+					// // ***************************************************************************
+					// this.oQuestionDialog = new sap.m.Dialog({
+					// 	title: "Picking",
+					// 	type: 'Message',
+					// 	content: [
+					// 		new sap.m.Label({
+					// 			text: "¿Desea realizar el picking?",
+					// 			labelFor: 'rejectDialogTextarea'
+					// 		})
+					// 	],
+					// 	beginButton: new sap.m.Button({
+					// 		type: sap.m.ButtonType.Emphasized,
+					// 		text: 'Confirmar'
+					// 	}),
+					// 	endButton: new sap.m.Button({
+					// 		type: sap.m.ButtonType.Reject,
+					// 		text: 'Cancelar',
+					// 		press: function () {
+					// 			this.onCancelConfirm();
+					// 		}.bind(this)
+					// 	})
+					// });
+					// this.oQuestionDialog.open();
 
-					// *****************************************************************************
+					// // *****************************************************************************
 
 
 					var oEntregas = oItem.getBindingContext().getObject();
