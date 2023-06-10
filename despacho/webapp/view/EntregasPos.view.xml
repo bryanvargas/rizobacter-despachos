@@ -97,6 +97,13 @@
                         text="Picking"
                         press="onSavePicking"
                     />
+
+                                        <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://remove"
+                        text="Remove"
+                        press="onRemove"
+                    />
                     
                 </FlexBox>
             </uxap:headerContent>

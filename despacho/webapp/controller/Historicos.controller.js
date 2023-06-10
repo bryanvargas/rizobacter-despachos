@@ -3,6 +3,7 @@ sap.ui.define(
         'sap/m/MessageToast',
         'sap/ui/core/Fragment',
         'sap/ui/model/json/JSONModel',
+        "sap/m/PDFViewer",
         '../model/DespachoFormatter',
         '../model/models',
         'sap/ui/model/Filter',
@@ -11,7 +12,7 @@ sap.ui.define(
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Filter, FilterOperator) {
+    function (BaseController, MessageToast, Fragment, JSONModel, PDFViewer, Despachoformatter, models, Filter, FilterOperator) {
         'use strict';
 
         return BaseController.extend("ar.com.rizobacter.despacho.controller.Historicos", {
@@ -64,7 +65,7 @@ sap.ui.define(
                         case "kunnr":
                             oDialog.bindAggregation("items", {
                                 path: 'entregas>/F4kunnrSet',
-                                filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
+                                //filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
                                 template: new sap.m.StandardListItem({
                                     title: '{entregas>Kunnr}',
                                     description: '{entregas>Name}'
@@ -148,21 +149,21 @@ sap.ui.define(
                     }
                 })
             },
-            
-			onFilterHistorico: function (oEvent) {
-				debugger;
+
+            onFilterHistorico: function (oEvent) {
+                debugger;
                 const aFilter = [];
-				var that = this;
+                var that = this;
 
                 let oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
-					pattern: "YYYYMMdd"
-				}),
+                    pattern: "YYYYMMdd"
+                }),
 
-				 kunnr = that.byId("kunnrInput").getValue(),
-                 matnr = that.byId("matnrInput").getValue(),
-                 wadatIst = that.byId("wadatIstInput").getValue(),
-                 oDate = oDateFormat.format(oDateFormat.parse(wadatIst));
-                
+                    kunnr = that.byId("kunnrInput").getValue(),
+                    matnr = that.byId("matnrInput").getValue(),
+                    wadatIst = that.byId("wadatIstInput").getValue(),
+                    oDate = oDateFormat.format(oDateFormat.parse(wadatIst));
+
                 if (kunnr !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
                 };
@@ -172,8 +173,8 @@ sap.ui.define(
                 };
 
                 if (wadatIst !== "") {
-					aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
-				};
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                };
 
                 if (kunnr !== "" && matnr !== "" && wadatIst !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
@@ -189,7 +190,7 @@ sap.ui.define(
                 if (kunnr !== "" && wadatIst !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
                     aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
-                    
+
                 };
 
                 if (matnr !== "" && wadatIst !== "") {
@@ -197,75 +198,93 @@ sap.ui.define(
                     aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
                 };
 
-				this.getView().getModel("entregas").read("/EntHistSet", {
-					filters: [aFilter],
-					success: function (odata) {
-						var jModel = new sap.ui.model.json.JSONModel(odata);
-						that.getView().byId("tablaHistoricos").setModel(jModel);
-					}, error: function (oError) {
-						debugger;
-						that.getView().byId("tablaHistoricos").setModel(models.histoModel());
-					}.bind(that)
-				})
-			},
-			onClearFilterHistorico: function () {
-				var that = this;
-				//if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
-					that.byId("kunnrInput").setValue("");
-					that.byId("matnrInput").setValue("");
-                    that.byId("wadatIstInput").setValue("");
-					this._getHistorico();
-				//}
+                this.getView().getModel("entregas").read("/EntHistSet", {
+                    filters: [aFilter],
+                    success: function (odata) {
+                        var jModel = new sap.ui.model.json.JSONModel(odata);
+                        that.getView().byId("tablaHistoricos").setModel(jModel);
+                    }, error: function (oError) {
+                        debugger;
+                        that.getView().byId("tablaHistoricos").setModel(models.histoModel());
+                    }.bind(that)
+                })
+            },
+            onClearFilterHistorico: function () {
+                var that = this;
+                //if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
+                that.byId("kunnrInput").setValue("");
+                that.byId("matnrInput").setValue("");
+                that.byId("wadatIstInput").setValue("");
+                this._getHistorico();
+                //}
 
-			},
+            },
 
             _getHistorico: function () {
-				this.getView().setBusy(true);
-				this.getOwnerComponent().getModel("entregas").read("/EntHistSet", {
-					success: function (odata) {
-						this.getView().setBusy(false);
-						var jModel = new sap.ui.model.json.JSONModel(odata);
-						this.getView().byId("tablaHistoricos").setModel(jModel);
-					}.bind(this),
-					error: function (oError) {
-						console.log(oError)
-					}.bind(this)
-				});
-			},
+                //this.getView().setBusy(true);
+                this.getOwnerComponent().getModel("entregas").read("/EntHistSet", {
+                    success: function (odata) {
+                        this.getView().setBusy(false);
+                        var jModel = new sap.ui.model.json.JSONModel(odata);
+                        this.getView().byId("tablaHistoricos").setModel(jModel);
+                    }.bind(this),
+                    error: function (oError) {
+                        console.log(oError)
+                    }.bind(this)
+                });
+            },
 
             onPrintRemito: function () {
                 debugger;
-                this.getOwnerComponent().getModel("entregas").read("/EntregaSet('80001610')/$value", {
-					success: function (odata) {
-						this.getView().setBusy(false);
-						var jModel = new sap.ui.model.json.JSONModel(odata);
-						//this.getView().byId("tablaHistoricos").setModel(jModel);
-					}.bind(this),
-					error: function (oError) {
-						console.log(oError)
-					}.bind(this)
-				});
+
+                var oItem = this.getView().byId("tablaHistoricos").getSelectedItem();
+                if (oItem !== null) {
+
+
+                    // window.print();
+                    // this.getOwnerComponent().getModel("entregas").read("/EntregaSet('80001610')/$value", {
+                    // 	success: function (odata, response) {
+                    // 		//this.getView().setBusy(false);
+                    // 		var jModel = new sap.ui.model.json.JSONModel(odata);
+                    // 		//this.getView().byId("tablaHistoricos").setModel(jModel);
+                    // 	}.bind(this),
+                    // 	error: function (oError) {
+                    // 		console.log(oError)
+                    // 	}.bind(this)
+                    // });
+
+                    var opdfViewer = new PDFViewer();
+                    this.getView().addDependent(opdfViewer);
+                    var sServiceURL = this.getView().getModel("entregas").sServiceUrl;
+                    var sSource = sServiceURL + "/EntregaSet('80001610')/$value";
+                    window.open(sSource);
+                    //opdfViewer.setSource(sSource);
+                    //opdfViewer.setTitle( "My PDF");
+                    //opdfViewer.open();	
+                } else {
+					MessageToast.show('Seleccione una entrega');
+				};
             },
             onSearch: function (oEvent) {
-				debugger;
-				const oViewModel = this.getView().getModel("filters");
-				const oTablaEntregas = this.getView().byId("tablaHistoricos");
-				const oBinding = oTablaEntregas.getBinding("items");
+                debugger;
+                const oViewModel = this.getView().getModel("filters");
+                const oTablaEntregas = this.getView().byId("tablaHistoricos");
+                const oBinding = oTablaEntregas.getBinding("items");
 
-				let oFilters = [];
+                let oFilters = [];
 
-				if (oViewModel.getProperty("/Vbeln")) {
-					oFilters.push(new Filter("Vbeln", FilterOperator.Contains, oViewModel.getProperty("/Vbeln")));
-				};
+                if (oViewModel.getProperty("/Vbeln")) {
+                    oFilters.push(new Filter("Vbeln", FilterOperator.Contains, oViewModel.getProperty("/Vbeln")));
+                };
 
-				oBinding.filter(oFilters);
-			},
+                oBinding.filter(oFilters);
+            },
 
             _filtersModel: function () {
-				let oModel = {
-					Vbeln: ""
-				};
-				this.getView().setModel(new JSONModel(oModel), "filters");
-			},
+                let oModel = {
+                    Vbeln: ""
+                };
+                this.getView().setModel(new JSONModel(oModel), "filters");
+            },
         });
     });   

@@ -2,7 +2,7 @@
 
 specVersion: "2.6"
 metadata:
-  name: ar.com.rizobacter.despacho
+  name: ar.com.rizobacter.ingresos
 type: application
 server:
   customMiddleware:
@@ -24,5 +24,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: ar.com.rizobacter.despacho
+        component: ar.com.rizobacter.ingresos
         ui5Theme: sap_fiori_3

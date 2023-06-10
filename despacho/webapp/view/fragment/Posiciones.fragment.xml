@@ -152,14 +152,8 @@
                             editable="true"
                             enabled="true"
                             valueHelpRequest=".onValueHelpRequest"
-                            suggestionItems="{lotes>/ZCDS_GETLOTES}"
                         >
-                            <suggestionItems>
-                                <core:ListItem
-                                    key="{lotes>p_matnr}"
-                                    text="{lotes>p_werks}"
-                                />
-                            </suggestionItems>
+
                         </Input>
                             <!-- <Text text="{Charg}" /> -->
                             <Text text="{Vrkme}" />
