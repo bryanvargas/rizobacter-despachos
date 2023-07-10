@@ -5,13 +5,15 @@ sap.ui.define(
 		'sap/ui/model/json/JSONModel',
 		'../model/DespachoFormatter',
 		'../model/models',
+		"sap/ui/Device",
+		"sap/ui/model/Sorter",
 		'sap/ui/model/Filter',
 		'sap/ui/model/FilterOperator',
 	],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Filter, FilterOperator) {
+	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Device, Sorter, Filter, FilterOperator) {
 		'use strict';
 
 		return BaseController.extend("ar.com.rizobacter.despacho.controller.Despacho", {
@@ -21,6 +23,8 @@ sap.ui.define(
 				const oFiltrosEntregas = new sap.ui.model.json.JSONModel({
 					Vbeln: ""
 				});
+
+				this._mViewSettingsDialogs = {};
 
 				this.getView().setModel(oFiltrosEntregas, "oFiltrosEntregas");
 
@@ -69,16 +73,18 @@ sap.ui.define(
 				debugger;
 				const aFilter = [];
 				var that = this;
+				var wadat = that.byId("wadatInput").getValue();
+				var kunnr = that.byId("kunnrInput").getValue();
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
 					pattern: "YYYYMMdd"
-				}),
-
-					wadat = that.byId("wadatInput").getValue(),
-					oDate = oDateFormat.format(oDateFormat.parse(wadat)),
-					kunnr = that.byId("kunnrInput").getValue();
+				});
 
 				if (wadat !== "") {
-					aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.EQ, oDate));
+					var wadat = that.byId("wadatInput").getValue(),
+						oDate = oDateFormat.format(oDateFormat.parse(wadat)),
+						dateIn = oDateFormat.format(oDateFormat.parse(wadat.split('-')[0].trim())),
+						dateOut = oDateFormat.format(oDateFormat.parse(wadat.split('-')[1].trim()));
+						aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
 				};
 
 				if (kunnr !== "") {
@@ -333,6 +339,7 @@ sap.ui.define(
 			//*************************************************
 
 			onValueHelpRequest: function (oEvent) {
+				debugger;
 				var that = this;
 				var oInput = oEvent.getSource(),
 					sInputValue = oEvent.getSource().getValue(),
@@ -368,12 +375,12 @@ sap.ui.define(
 
 
 					}
-					// if (sInputId === "kunnr") {
-					// 	oDialog.getBinding("items").filter([
-					// 		new Filter("Kunnr", FilterOperator.EQ, sInputValue),
-					// 		new Filter("Name", FilterOperator.EQ, sInputValue)
-					// 	]);
-					// }
+					 if (sInputId === "kunnr") {
+					 	oDialog.getBinding("items").filter([
+					 		new Filter("Kunnr", FilterOperator.EQ, sInputValue)
+					 		//new Filter("Name", FilterOperator.EQ, sInputValue)
+					 	]);
+					 }
 
 					oDialog.open(sInputValue);
 
@@ -389,10 +396,13 @@ sap.ui.define(
 				// 		new Filter("Kunnr", FilterOperator.EQ, sValue)
 				// 	]);
 				// }
+				debugger;
 				var sValue = oEvent.getParameter("value");
-				var oFilter = new Filter("Kunnr", FilterOperator.EQ, sValue);
+				var oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
 
-				oEvent.getSource().getBinding("items").filter([oFilter]);
+				var oBinding = oEvent.getSource().getBinding("items");
+
+				oBinding.filter(oFilter);
 			},
 
 			onValueHelpClose: function (oEvent) {
@@ -639,7 +649,51 @@ sap.ui.define(
 				debugger;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("RouteHistoricos")
-			}
+			},
+
+			onSortPark: function () {
+				debugger;
+				this.getViewSettingsDialog("ar.com.rizobacter.despacho.view.fragment.SortPopover")
+					.then(function (oViewSettingsDialog) {
+						oViewSettingsDialog.open();
+					});
+			},
+
+			getViewSettingsDialog: function (sDialogFragmentName) {
+				var pDialog = this._mViewSettingsDialogs[sDialogFragmentName];
+	
+				if (!pDialog) {
+					pDialog = Fragment.load({
+						id: this.getView().getId(),
+						name: sDialogFragmentName,
+						controller: this
+					}).then(function (oDialog) {
+						if (Device.system.desktop) {
+							oDialog.addStyleClass("sapUiSizeCompact");
+						}
+						return oDialog;
+					});
+					this._mViewSettingsDialogs[sDialogFragmentName] = pDialog;
+				}
+				return pDialog;
+			},
+
+			handleSortDialogConfirm: function (oEvent) {
+				debugger;
+				var oTable = this.byId("tablaEntregas"),
+					mParams = oEvent.getParameters(),
+					oBinding = oTable.getBinding("items"),
+					sPath,
+					bDescending,
+					aSorters = [];
+	
+				sPath = mParams.sortItem.getKey();
+				bDescending = mParams.sortDescending;
+				aSorters.push(new Sorter(sPath, bDescending));
+	
+				// apply the selected sort and group settings
+				oBinding.sort(aSorters);
+			},
 
 		});
 	});

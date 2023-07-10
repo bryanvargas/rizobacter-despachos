@@ -37,7 +37,7 @@
             growingThreshold="10"
             growingScrollToLoad="false"
             alternateRowColors="true"
-            growingTriggerText="Ver más"
+            growingTriggerText="{i18n>mas}"
             items="{
                 path: '/results',
                 sorter: {
@@ -111,22 +111,22 @@
                 </OverflowToolbar>
             </headerToolbar>
             <columns>
-                <Column width="3rem" mergeDuplicates="true">
+                <!-- <Column width="3rem" mergeDuplicates="true">
                     <header>
                         <Label/>
                     </header>
-                </Column>
-                <Column width="6rem" mergeDuplicates="true">
+                </Column> -->
+                <Column width="5rem" mergeDuplicates="true">
                     <header>
                         <Label text="{i18n>entrega.vbeln}"/>
                     </header>
                 </Column>
-                <Column width="8rem">
+                <Column width="6rem">
                     <header>
                         <Label text="{i18n>entrega.kunnr}"/>
                     </header>
                 </Column>
-                <Column width="16rem">
+                <Column width="18rem">
                     <header>
                         <Label text="{i18n>entrega.kunnrDesc}"/>
                     </header>
@@ -137,12 +137,12 @@
                     </header>
                 </Column>
                 <!--<Column width="16rem" hAlign="Center">-->
-                <Column width="8rem">
+                <Column width="12rem">
                     <header>
                         <Label text="{i18n>entrega.matnrDesc}"/>
                     </header>
                 </Column>
-                <Column width="8rem">
+                <Column width="6rem">
                     <header>
                         <Label text="{i18n>entrega.lfimg}"/>
                     </header>
@@ -157,14 +157,14 @@
                         <Label text="{i18n>entrega.wadat}"/>
                     </header>
                 </Column>
-                <Column>
-                    <header width="1rem">
+                <!-- <Column>
+                    <header width="0.1rem">
                         <Label text="{i18n>entrega.werks}"/>
                     </header>
-                </Column>	
+                </Column>	 -->
                 <Column>
-                    <header width="10rem">
-                        <Label text="{i18n>entrega.werksDesc}"/>
+                    <header width="5rem">
+                        <Label text="{i18n>entrega.werks}"/>
                     </header>
                 </Column>																						
                 <!--<Column width="5rem">
@@ -181,10 +181,10 @@
             <items>
                 <ColumnListItem type="Navigation" press="navegateToEntregasPos">  
                     <cells>
-                        <core:Icon
+                        <!-- <core:Icon
                             src="sap-icon://monitor-payments"
                             size="1.5rem"
-                        />
+                        /> -->
                         <!-- <ObjectIdentifier
                             title="{entregas>Vbeln}"
                             text="Vanessa Budeanu"
@@ -244,7 +244,10 @@
                         <ObjectStatus
                             text="{Vrkme}"
                         />
-                        <Text text="{Wadat}"/> 
+                        <Text text="{
+                            path: 'Wadat',
+                            formatter: '.formatter.dateFormat'
+                        }"/> 
                         <!-- <Text
                             text="{
                                 path: 'Wadat',
@@ -261,7 +264,7 @@
                             visible="true"
                             width="auto"
                         /> -->
-                        <Text text="{Werks}"/>
+                        <!-- <Text text="{Werks}"/> -->
                         <Text text="{WerksDesc}"/>
                         <!--<core:Icon
                             src="{

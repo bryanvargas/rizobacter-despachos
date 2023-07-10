@@ -90,15 +90,22 @@ sap.ui.define([],
                 return parseInt(iNum, 0); 
             },
 
+            quitarCeroStr: function (iNum) {
+                if (!iNum) {
+                    return "";
+                }
+                return iNum.replace(/^(0+)/g, '');
+            },
+
 
             dateFormat: function (iDate) {
                 if (!iDate) {
-                    return "";
+                    return "";  
                 }    
-                var anio = iDate.getFullYear();
-                var mes = iDate.getUTCMonth();
-                var dia = iDate.getUTCDate();
-                return dia + "/" + mes + "/" + anio;
+                var anio = String(iDate).substring(2,4);
+                var mes = String(iDate).substring(4,6);
+                var dia = String(iDate).substring(6,8);
+                return  dia + '.' + mes + '.' + anio;
             },
     
         };

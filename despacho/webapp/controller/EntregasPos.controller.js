@@ -3,6 +3,7 @@ sap.ui.define(
 		'sap/m/MessageToast',
 		'sap/ui/core/Fragment',
 		'sap/ui/model/json/JSONModel',
+		"sap/m/PDFViewer",
 		'../model/DespachoFormatter',
 		'sap/ui/model/Filter',
 		'sap/ui/model/FilterOperator',
@@ -10,10 +11,12 @@ sap.ui.define(
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, Filter, FilterOperator) {
+	function (BaseController, MessageToast, Fragment, JSONModel, PDFViewer, Despachoformatter, Filter, FilterOperator) {
 		'use strict';
 
 		return BaseController.extend("ar.com.rizobacter.despacho.controller.EntregasPos", {
+			
+			formatter: Despachoformatter,
 			/**
 			 * @override
 			 */
@@ -23,6 +26,7 @@ sap.ui.define(
 				this._countId = 0;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.getRoute("RouteEntregasPos").attachPatternMatched(this._onObjectMatch, this);
+				
 			},
 
 			_onObjectMatch: function (oEvent) {
@@ -31,6 +35,8 @@ sap.ui.define(
 					aFilter = [];
 
 				aFilter.push(new Filter('Vbeln', FilterOperator.EQ, vbeln));
+				
+				this.getView().byId("descTextarea").setValue("");
 
 				this.getView().getModel("entregas").read("/EntregaSet('" + vbeln + "')/nav_ent_to_pick", {
 					filters: aFilter,
@@ -70,17 +76,17 @@ sap.ui.define(
 
 				var newModel = new sap.ui.model.json.JSONModel();
 
-				if (this._valuesRow === null || this._valuesRow === undefined) {
-				 	this._valuesRow = oEvent.getSource().getBindingContext().getObject();
+				//if (this._valuesRow === null || this._valuesRow === undefined) {
+					this._valuesRow = oEvent.getSource().getBindingContext().getObject();
 
-				};
-				
+				//};
+
 
 
 
 				var that = this;
 
-				let valuesRow = oEvent.getSource().getBindingContext().getObject();
+				//let valuesRow = oEvent.getSource().getBindingContext().getObject();
 				var oInput = oEvent.getSource(),
 					sInputValue = oEvent.getSource().getValue(),
 					oView = this.getView();
@@ -99,18 +105,18 @@ sap.ui.define(
 					oView.addDependent(oDialog);
 					var filtro = [];
 					debugger;
-					var sInputId = /[a-z]+$/.exec((/EntregasPos--[a-z]+/.exec(oInput.getId())[0]))[0];
+					var sInputId = "charg"; ///[a-z]+$/.exec((/EntregasPos--[a-z]+/.exec(oInput.getId())[0]))[0];
 					switch (sInputId) {
 						case "charg":
 							oDialog.bindAggregation("items", {
-								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + valuesRow.Matnr + "',p_werks='" + valuesRow.Werks + "',p_lgort='" + valuesRow.Lgort + "')/Set",
+								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + that._valuesRow.Matnr + "',p_werks='" + that._valuesRow.Werks + "',p_lgort='" + that._valuesRow.Lgort + "')/Set",
 								//path: "lotes>/ZCDS_GETLOTES('" + valuesRow.Matnr + "'," + "'"  + valuesRow.Werks + "'," +  "'" + valuesRow.Lgort + "')/Set",
 								//filters: [new Filter('Charg', FilterOperator.EQ, sInputValue)],
 								template: new sap.m.StandardListItem({
 									title: '{lotes>Lote}',
 									info: '{lotes>Almacen}',
 									description: '{lotes>Stock}'
-									
+
 								})
 							});
 							that._oValueHelpDialog._Field = "charg";
@@ -128,39 +134,9 @@ sap.ui.define(
 					oDialog.open(sInputValue);
 
 					return oDialog;
-				});				
-
-
-			},
-			onValueHelpReques2t: function (oEvent) {
-				debugger;
-				var oView = this.getView();
-
-				if (!this._pValueHelpDialog) {
-					this._pValueHelpDialog = Fragment.load({
-						id: oView.getId(),
-						name: "ar.com.rizobacter.despacho.view.fragment.LotesValueHelpDialog",
-						controller: this
-					}).then(function (oValueHelpDialog) {
-						oView.addDependent(oValueHelpDialog);
-						return oValueHelpDialog;
-					});
-				}
-				this._pValueHelpDialog.then(function(oValueHelpDialog) {
-					this._configValueHelpDialog();
-					oValueHelpDialog.open();
-				}.bind(this));
-			},
-
-			_configValueHelpDialog: function () {
-				var sInputValue = this.byId("productInput").getValue(),
-					oModel = this.getView().getModel(),
-					aProducts = oModel.getProperty("/ProductCollection");
-	
-				aProducts.forEach(function (oProduct) {
-					oProduct.selected = (oProduct.Name === sInputValue);
 				});
-				oModel.setProperty("/ProductCollection", aProducts);
+
+
 			},
 
 			onValueHelpClose: function (oEvent) {
@@ -179,73 +155,24 @@ sap.ui.define(
 
 				var oItem = this.getView().byId("tablaPasiciones").getSelectedItem();
 				var entrega = {};
-				if (oItem !== null) {
-
-
-					// // ***************************************************************************
-					// this.oQuestionDialog = new sap.m.Dialog({
-					// 	title: "Picking",
-					// 	type: 'Message',
-					// 	content: [
-					// 		new sap.m.Label({
-					// 			text: "¿Desea realizar el picking?",
-					// 			labelFor: 'rejectDialogTextarea'
-					// 		})
-					// 	],
-					// 	beginButton: new sap.m.Button({
-					// 		type: sap.m.ButtonType.Emphasized,
-					// 		text: 'Confirmar'
-					// 	}),
-					// 	endButton: new sap.m.Button({
-					// 		type: sap.m.ButtonType.Reject,
-					// 		text: 'Cancelar',
-					// 		press: function () {
-					// 			this.onCancelConfirm();
-					// 		}.bind(this)
-					// 	})
-					// });
-					// this.oQuestionDialog.open();
-
-					// // *****************************************************************************
-
-
-					var oEntregas = oItem.getBindingContext().getObject();
+				var checkPickingError = false;
+				var vbeln = "";
+				//if (oItem !== null) {
+					//var oEntregas = oItem.getBindingContext().getObject();
 					var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
 					var textArea = this.getView().byId("descTextarea").getValue();
-					//  var body = {
-					// 	Vbeln:oEntregas.Vbeln,
-					// 	Posnr:oEntregas.Posnr,
-					// 	Matnr:oEntregas.Matnr,
-					// 	Werks:oEntregas.Werks,					
-					// 	Lgort:oEntregas.Lgort,	
-					// 	Lfimg:oEntregas.Lfimg,
-					// 	Pikmg:oEntregas.Pikmg,
-					// 	Charg:oEntregas.Charg
-					// };
 
+					if (textArea === "") {
+						MessageToast.show(oResourceBundle.getText("errores.detalleExp"));
+						
+						this.getView().byId("descTextarea").focus();
+						checkPickingError = true;
+						return;
+					}
 					var body = {
-						Vbeln: oEntregas.Vbeln,
-						Textocab: textArea,
+						Vbeln: "",
+						Textocab: textArea,						
 						nav_entdp_to_pick: [
-							// 		{
-							// 			// Vbeln:"80001456",
-							// 			// Posnr:"000010",
-							// 			// Matnr:"200012",
-							// 			// Werks: "1010",					
-							// 			// Lgort:"1105",	
-							// 			// Lfimg:"1.000",
-							// 			// Pikmg:"1.000",
-							// 			// Charg:"0000000247"
-							// 			// 	Vbeln:oEntregas.Vbeln,
-							// Posnr:oEntregas.Posnr,
-							// Matnr:oEntregas.Matnr,
-							// Werks:oEntregas.Werks,					
-							// Lgort:oEntregas.Lgort,	
-							// Lfimg:oEntregas.Lfimg,
-							// Pikmg:oEntregas.Pikmg,
-							// Charg:oEntregas.Charg
-							// 		}
-
 						],
 						nav_entdp_to_ret: [
 							{
@@ -257,100 +184,206 @@ sap.ui.define(
 						]
 					};
 
+					
+
 					this.getView().byId("tablaPasiciones").getItems().forEach(element => {
-						entrega.Vbeln = element.getCells()[0].getText();
-						entrega.Posnr = element.getCells()[1].getText();
-						entrega.Matnr = element.getCells()[2].getText();
-						entrega.Werks = element.getCells()[4].getText();
-						entrega.Lgort = element.getCells()[5].getText();
-						entrega.Lfimg = element.getCells()[6].getText();
-						entrega.Pikmg = element.getCells()[7]._lastValue;
-						entrega.Charg = element.getCells()[8].getValue();
+						var entrega = {};
+						vbeln = element.getCells()[1].getText();
+						entrega.Vbeln = element.getCells()[1].getText();
+						entrega.Posnr = element.getCells()[2].getText();
+						entrega.Matnr = element.getCells()[3].getText();
+						entrega.Werks = element.getCells()[5].getText();
+						entrega.Lgort = element.getCells()[6].getText();
+						entrega.Lfimg = element.getCells()[7].getText();
+						entrega.Pikmg = element.getCells()[8]._lastValue;
+						if (entrega.Pikmg === "") {
+							MessageToast.show('Por favor completar Cantidad Picking');
+							element.getCells()[8].focus();
+							checkPickingError = true;
+							return;
+						}
+						entrega.Charg = element.getCells()[9]._lastValue;
+						if (entrega.Charg === "") {
+							MessageToast.show('Por favor completar Lote');
+							element.getCells()[9].focus();
+							checkPickingError = true;
+							return;
+						}
 						body.nav_entdp_to_pick.push(entrega);
 					});
 
-
+					body.Vbeln = vbeln;
 
 
 					debugger;
+					if (!checkPickingError) {
 
 
-					this.getView().getModel("entregas").create("/EntregaDPSet", body, {
-						success: function (oData, response) {
-							MessageToast.show(response.data.nav_entdp_to_ret.results[0].Message);
-							console.log("Se grabo exitosamente");
-						}.bind(this),
-						error: function (e) {
-							MessageToast.show("No se realizo el Picking");
-							console.log("Se grabo NO exitosamente");
-						}.bind(this)
-					});
+						this.getView().setBusy(true);
+						this.getView().getModel("entregas").create("/EntregaDPSet", body, {
+							success: function (oData, response) {
 
-				} else {
-					MessageToast.show('Seleccione una entrega');
-				}
+								this.getView().setBusy(false);
+
+								if (response.data.nav_entdp_to_ret.results[0].Type === 'S') {
+									debugger;
+									//const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+									//oRouter.navTo("Despacho", {}, true);	
+									this._onPrintRemito(oData.Vbeln)
+									debugger;
+									this._getEntregaPos(oData.Vbeln);
+								} else {
+									MessageToast.show(response.data.nav_entdp_to_ret.results[0].Message, {
+										duration: 4000
+									});
+								}
+
+							}.bind(this),
+							error: function (e, response) {
+								this.getView().setBusy(false);
+								if (e !== undefined) {
+									var message = JSON.parse(e.responseText).error.message.value
+									// if (e.statusCode === '400') {
+									// 	MessageToast.show("Ingrese los campos obligatorios de cantidad de picking o lote", {
+									// 		duration: 4000
+									// 	});	
+									// } else {
+									// 	MessageToast.show(message, {
+									// 		duration: 4000
+									// 	});
+									// }
+									MessageToast.show(message, {
+										duration: 4000
+									});
+								};
+
+								if (response !== undefined) {
+									MessageToast.show(response.data.nav_entdp_to_ret.results[0].Message, {
+										duration: 4000
+									});
+								};
+
+								this.getView().setBusy(false);
+							}.bind(this),
+							finally: function () {
+								debugger;
+							} 
+						});
+
+					} 
+					    //else {
+						//this.getView().byId("descTextarea").focus();
+						//sap.ui.getCore().byId("descTextarea").focus();
+					//}
+				//} 
+				// else {
+				// 	MessageToast.show('Seleccione una entrega');
+				// }
+
 			},
-			
+
 
 			onAddLine: function (oEvent) {
-
 				debugger;
 
 				var oItem = this.getView().byId("tablaPasiciones").getSelectedItem();
-				this._oEntregas = oItem.getBindingContext().getObject();
-				var oItem = new sap.m.ColumnListItem({
-					cells: [new sap.m.Text({ text: this._oEntregas.Vbeln }),
-					new sap.m.Text({ text: this._oEntregas.Posnr }),
-					new sap.m.Text({ text: this._oEntregas.Matnr }),
-					new sap.m.Text({ text: this._oEntregas.MatnrDesc }),
-					new sap.m.Text({ text: this._oEntregas.Werks }),
-					new sap.m.Text({ text: this._oEntregas.Lgort }),
-					new sap.m.Text({ text: this._oEntregas.Lfimg }),
-					new sap.m.Input({ type: "Text", editable: true }),
-					new sap.m.Input({
-						id: "chargInput" + this._countId,
-						showSuggestion: true,
-						showValueHelp: true,
-						valueHelpOnly: false,
-						editable: true,
-						enabled: true,
-						valueHelpRequest: [this.onValueHelpRequest, this]
-					}),
-					new sap.m.Text({ text: this._oEntregas.Vrkme }),
-					new sap.m.Button({
-						icon: "sap-icon://delete",
-						type: "Reject",
-						press: [this.remove, this]
-					})]
-				});
+				if (oItem === null) {
+					MessageToast.show('Seleccione una entrega');
+				} else {
 
-				var oTable = this.getView().byId("tablaPasiciones");
-				oTable.addItem(oItem, 1);
+					this._oEntregas = oItem.getBindingContext().getObject();
+					var oItem = new sap.m.ColumnListItem({
+						cells: [
+							new sap.m.Button({
+								icon: "sap-icon://delete",
+								type: "Reject",
+								press: [this.onRemoveLine, this]
+							}),
+							new sap.m.Text({ text: this._oEntregas.Vbeln }),
+							new sap.m.Text({ text:  Despachoformatter.quitarCero(this._oEntregas.Posnr) }),
+							new sap.m.Text({ text: this._oEntregas.Matnr }),
+							new sap.m.Text({ text: this._oEntregas.MatnrDesc }),
+							new sap.m.Text({ text: this._oEntregas.Werks }),
+							new sap.m.Text({ text: this._oEntregas.Lgort }),
+							new sap.m.Text({ text: this._oEntregas.Lfimg }),
+							new sap.m.Input({ type: "Text", editable: true }),
+							new sap.m.Input({
+								id: "chargInput" + this._countId,
+								showSuggestion: true,
+								showValueHelp: true,
+								valueHelpOnly: false,
+								editable: true,
+								enabled: true,
+								valueHelpRequest: [this.onValueHelpRequest, this]
+							}),
+							new sap.m.Text({ text: this._oEntregas.Vrkme }),
 
-				this._countId = this._countId + 1;
+						]
+					});
+
+					var oTable = this.getView().byId("tablaPasiciones");
+					//let indexTable = this.getView().byId("tablaPasiciones").indexOfItem(this.getView().byId("tablaPasiciones").getSelectedItem());
+					let index = parseInt(this.getView().byId("tablaPasiciones").getSelectedContextPaths()[0].split("/")[2]) + 1;
+					oTable.insertItem(oItem, index);
+					this._countId = this._countId + 1;
+
+
+				}
 			},
 
-			onRemove: function (oEvent) {
-				var oListBox = this.byId('myListBox'); //this refers to view's controller
-				oModel.read(
-					"/Schema(" + "'" + data + "')",
-					null, [],
-					true,
-					function (oData, oResponse) {
-						var oItem = new sap.ui.core.ListItem({
-							text: "{ProductName}"
-						});
-						var oJSModel = new sap.ui.model.json.JSONModel(oData);
-						oListBox.setModel(oJSModel, "myModel");
-						oListBox.bindAggregation("items", {
-							path: "myModel>/items",
-							template: oItem
-						});
-					},
-					function (oError) {
-						sap.ui.commons.MessageBox.alert("Error ! Username is not found !");
-					}
-				);
-			}
+			onRemoveLine: function (oEvent) {
+				var oTable = this.getView().byId("tablaPasiciones");
+				oTable.removeItem(oEvent.getSource().getParent());
+
+			},
+
+			onValueHelpSearch: function (oEvent) {
+                debugger;
+                var sValue = oEvent.getParameter("value");
+
+                if (this._oValueHelpDialog._Field === "charg") {
+                    oEvent.getSource().getBinding("items").filter([
+                        new Filter("Lote", FilterOperator.Contains, sValue)
+                    ]);
+                }
+            },
+
+
+            _onPrintRemito: function (nro_doc) {
+                debugger;
+                // var oItem = this.getView().byId("tablaPasiciones").getSelectedItem();
+                var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+                // if (oItem !== null) {
+					//let vbeln = oItem.getBindingContext().getObject().Vbeln;
+                    let opdfViewer = new PDFViewer();
+                    this.getView().addDependent(opdfViewer);
+                    let sServiceURL = this.getView().getModel("entregas").sServiceUrl;
+                    let sSource = sServiceURL + "/EntregaSet('" + nro_doc + "')/$value";
+				   opdfViewer.setSource(sSource);
+				   opdfViewer.setTitle(oResourceBundle.getText("textos.globales.printPDF", [nro_doc]));
+				   opdfViewer.open();
+                    debugger;
+                // } else {
+				// 	MessageToast.show('Seleccione una entrega');
+				// };
+            },
+			_getEntregaPos: function (nro_doc) {
+				var that = this,
+				//var vbeln = oEvent.getParameter("arguments").Vbeln,
+					aFilter = [];
+
+				aFilter.push(new Filter('Vbeln', FilterOperator.EQ, nro_doc));
+
+				this.getView().getModel("entregas").read("/EntregaSet('" + nro_doc + "')/nav_ent_to_pick", {
+					filters: aFilter,
+					success: function (odata) {
+						debugger;
+						var jModel = new sap.ui.model.json.JSONModel(odata);
+						that.getView().byId("tablaPasiciones").setModel(jModel);
+					}, error: function (oError) {
+					}.bind(that)
+				})
+            },			
+
 		});
 	});   

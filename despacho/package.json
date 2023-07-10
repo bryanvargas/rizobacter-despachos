@@ -9,10 +9,13 @@
         "sapui5"
     ],
     "main": "webapp/index.html",
-    "dependencies": {},
+    "dependencies": {
+        "to": "^0.2.9",
+        "update": "^0.7.4"
+    },
     "devDependencies": {
-        "@ui5/cli": "^3.0.0",
         "@sap/ux-ui5-tooling": "1",
+        "@ui5/cli": "^3.3.0",
         "rimraf": "^3.0.2",
         "ui5-task-flatten-library": "0.2.5"
     },

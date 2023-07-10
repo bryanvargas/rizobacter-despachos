@@ -2,176 +2,193 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core"
 >
-<Panel>
-    <VBox>
-        <MessageStrip
-            text="{worklistView>/worklistTableTitle}"
-            type="Information"
-            showIcon="true"
-            class="sapUiTinyMargin"
-        />
-        <Table id="tablaHistoricos" mode="SingleSelect" items="{/results}" noDataText="Algo de posiciones" growing="true"
-							growingThreshold="10" growingScrollToLoad="false" growingTriggerText="Ver más" fixedLayout="false" alternateRowColors="true">
-            <headerToolbar>
-                <OverflowToolbar
-                    width="auto"
-                    height="auto"
-                    design="Transparent"
-                    visible="true"
-                    enabled="true"
-                >
-                    <content>
-                        <!-- <ToolbarSpacer /> -->
-                        <ToolbarSpacer width=""/>
-                        <ToolbarSpacer width=""/>
-                        <SearchField
-                            enableSuggestions="false"
-                            enabled="true"
-                            maxLength="0"
-                            placeholder=""
-                            showRefreshButton="false"
-                            showSearchButton="true"
-                            value="{
-                                path: 'filters>/Vbeln'
-                            }"
-                            visible="true"
-                            width="20rem"
-                            search=".onSearch"
-                            liveChange="onSearch"
-                        >
-                            <suggestionItems>
-                            </suggestionItems>
-                        </SearchField>
-                        <!-- <ToolbarSpacer width=""/>
+	<Panel>
+		<VBox>
+			<MessageStrip
+				text="{worklistView>/worklistTableTitle}"
+				type="Information"
+				showIcon="true"
+				class="sapUiTinyMargin"
+			/>
+			<Table
+				id="tablaHistoricos"
+				mode="SingleSelect"
+				items="{/results}"
+				noDataText="Algo de posiciones"
+				growing="true"
+				growingThreshold="10"
+				growingScrollToLoad="false"
+				growingTriggerText="{i18n>mas}"
+				fixedLayout="false"
+				alternateRowColors="true"
+				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+            updateFinished=".onUpdateFinished"
+			>
+				<headerToolbar>
+					<OverflowToolbar
+						width="auto"
+						height="auto"
+						design="Transparent"
+						visible="true"
+						enabled="true"
+					>
+						<content>
+							<!-- <ToolbarSpacer /> -->
+							<ToolbarSpacer width=""/>
+							<ToolbarSpacer width=""/>
+							<SearchField
+								enableSuggestions="false"
+								enabled="true"
+								maxLength="0"
+								placeholder=""
+								showRefreshButton="false"
+								showSearchButton="true"
+								value="{
+									path: 'filters>/Vbeln'
+								}"
+								visible="true"
+								width="20rem"
+								search=".onSearch"
+								liveChange="onSearch"
+							>
+								<suggestionItems>
+								</suggestionItems>
+							</SearchField>
+							<!-- <ToolbarSpacer width=""/>
                         <ToolbarSpacer width=""/> -->
-                        <!-- <Button
+							<!-- <Button
                             icon="sap-icon://add"
                             press=".onAddLine"
                         /> -->
-                        <Button
-                            tooltip="{i18n>sort}"
-                            icon="sap-icon://sort"
-                            press="onSortPark"
-                        />
-                        <Button
-                            tooltip="{i18n>filter}"
-                            icon="sap-icon://filter"
-                            press="onFilterPark"
-                        />
-                        <Button
-                            tooltip="{i18n>clnFlt}"
-                            icon="sap-icon://clear-filter"
-                            press="onClearFilterPark"
-                        />
-                        <Button
-                            tooltip="{i18n>dwnXls}"
-                            icon="sap-icon://excel-attachment"
-                            press="onExportxlsEntregas"
-                        />
-                        <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
-                        <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
+							<Button
+								tooltip="{i18n>sort}"
+								icon="sap-icon://sort"
+								press="onSortPark"
+							/>
+							<Button
+								tooltip="{i18n>filter}"
+								icon="sap-icon://filter"
+								press="onFilterPark"
+							/>
+							<Button
+								tooltip="{i18n>clnFlt}"
+								icon="sap-icon://clear-filter"
+								press="onClearFilterPark"
+							/>
+							<Button
+								tooltip="{i18n>dwnXls}"
+								icon="sap-icon://excel-attachment"
+								press="onExportxlsEntregas"
+							/>
+							<!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
+							<!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
                 iconDensityAware="false" press="onEditPDF" />-->
-                    </content>
-                </OverflowToolbar>
-            </headerToolbar>
-            <columns>
-                <Column width="3rem" mergeDuplicates="true">
-                    <header>
-                        <Label/>
-                    </header>
-                </Column>
-                <Column width="6rem" mergeDuplicates="true">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.vbeln}"/>
-                    </header>
-                </Column>
-                <Column width="8rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.xblnr}"/>
-                    </header>
-                </Column>
-                <Column width="16rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.kunnr}"/>
-                    </header>
-                </Column>
-                <Column width="6rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.kunnrDesc}"/>
-                    </header>
-                </Column>
-                <!--<Column width="16rem" hAlign="Center">-->
-                <Column width="8rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.matnr}"/>
-                    </header>
-                </Column>
-                <Column width="8rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.matnrDesc}"/>
-                    </header>
-                </Column>
-                <Column width="3rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.charg}"/>
-                    </header>
-                </Column>
-                <Column width="7rem">
-                    <header>
-                        <Label text="{i18n>entregas.historicos.lfimg}"/>
-                    </header>
-                </Column>
-                <Column>
-                    <header width="1rem">
-                        <Label text="{i18n>entregas.historicos.vrkme}"/>
-                    </header>
-                </Column>	
-                <Column>
-                    <header width="10rem">
-                        <Label text="{i18n>entregas.historicos.werksDesc}"/>
-                    </header>
-                </Column>		
-                <Column>
-                    <header width="10rem">
-                        <Label text="{i18n>entregas.historicos.wadatIst}"/>
-                    </header>
-                </Column>                																				
-                <!--<Column width="5rem">
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column
+						width="3rem"
+						mergeDuplicates="true"
+					>
+						<header>
+							<Label/>
+						</header>
+					</Column>
+					<Column
+						width="6rem"
+						mergeDuplicates="true"
+					>
+						<header>
+							<Label text="{i18n>entregas.historicos.vbeln}"/>
+						</header>
+					</Column>
+					<Column width="8rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.xblnr}"/>
+						</header>
+					</Column>
+					<Column width="8rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.kunnr}"/>
+						</header>
+					</Column>
+					<Column width="20rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.kunnrDesc}"/>
+						</header>
+					</Column>
+					<!--<Column width="16rem" hAlign="Center">-->
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.matnr}"/>
+						</header>
+					</Column>
+					<Column width="16rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.matnrDesc}"/>
+						</header>
+					</Column>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.charg}"/>
+						</header>
+					</Column>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entregas.historicos.lfimg}"/>
+						</header>
+					</Column>
+					<Column>
+						<header width="4rem">
+							<Label text="{i18n>entregas.historicos.vrkme}"/>
+						</header>
+					</Column>
+					<Column>
+						<header width="4rem">
+							<Label text="{i18n>entregas.historicos.werksDesc}"/>
+						</header>
+					</Column>
+					<Column>
+						<header width="4rem">
+							<Label text="{i18n>entregas.historicos.wadatIst}"/>
+						</header>
+					</Column>
+					<!--<Column width="5rem">
                     <header>
                         <Label text="{i18n>entrega.status}"/>
                     </header>
                 </Column> -->
-                <!-- <Column width="7rem" hAlign="End">
+					<!-- <Column width="7rem" hAlign="End">
                     <header>
                         <Label text="Total"/>
                     </header>
                 </Column> -->
-            </columns>
-            <items>
-                <ColumnListItem >  
-                    <cells>
-                        <core:Icon
-                            src="sap-icon://monitor-payments"
-                            size="1.5rem"
-                        />
-                        <ObjectStatus
-                            text="{
-                                path: 'Vbeln',
-                                formatter: '.formatter.quitarCero'
-                            }"
-                            state="Information"
-                            press="showPosiciones"
-                            
-                        />
-                        <!-- <ObjectStatus
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<core:Icon
+								src="sap-icon://monitor-payments"
+								size="1.5rem"
+							/>
+							<ObjectStatus
+								text="{
+									path: 'Vbeln',
+									formatter: '.formatter.quitarCeroStr'
+								}"
+								state="Information"
+								press="showPosiciones"
+							/>
+							<!-- <ObjectStatus
                             text="USD"
                             state="Information"
                         /> -->
-                        <Text text="{
-                            path: 'Xblnr',
-                            formatter: '.formatter.quitarCero'
-                        }"/> 
-                        <!-- <Input
+							<Text text="{
+								path: 'Xblnr',
+								formatter: '.formatter.quitarCeroStr'
+							}"/>
+							<!-- <Input
                             id="kunnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
@@ -184,34 +201,35 @@
                                     text="{entregas>Name}" />
                             </suggestionItems>  
                         </Input> -->
-                        <!-- <VBox alignItems="Center">
+							<!-- <VBox alignItems="Center">
                             <Text text="{entregas>NameWe}"/>
                             <StepInput width="6rem"/>
                         </VBox> -->
-                        <ObjectStatus
-                            text="{
-                                path: 'Kunnr',
-                                formatter: '.formatter.quitarCero'
-                            }"
-                        />
-                        <Text text="{KunnrDesc}"/>
-                        <ObjectStatus
-                            text="{
-                                path: 'Matnr',
-                                formatter: '.formatter.quitarCero'
-                            }"
-                        />
-                        <Text text="{MatnrDesc}"/>
-                        <Text text="{Charg}"/>
-                        <Text text="{Lfimg}"/>
-                        <ObjectStatus
-                            text="{entregas>Vrkme}"
-                        />
-                        <!-- <Text text="{Vrkme}"/> -->
-                        <Text text="{WerksDesc}"/>
-                        <Text text="{WadatIst}"/>
-
-                        <!-- <Text
+							<ObjectStatus text="{
+								path: 'Kunnr',
+								formatter: '.formatter.quitarCero'
+							}"/>
+							<Text text="{KunnrDesc}"/>
+							<ObjectStatus text="{
+								path: 'Matnr',
+								formatter: '.formatter.quitarCero'
+							}"/>
+							<Text text="{MatnrDesc}"/>
+							<Text text="{Charg}"/>
+							<!-- <Text text="{= isNaN(${Charg}) === true ? {
+								path: 'Charg',
+								formatter: '.formatter.quitarCero'
+							} : ${Charg}}"/> -->
+							<!-- <Text text="{
+								path: 'Charg',
+								formatter: '.formatter.quitarCero'
+							}"/> -->
+							<Text text="{Lfimg}"/>
+							<ObjectStatus text="{Vrkme}"/>
+							<!-- <Text text="{Vrkme}"/> -->
+							<Text text="{WerksDesc}"/>
+							<Text text="{WadatIst}"/>
+							<!-- <Text
                             text="{
                                 path: 'WadatIst',
                                 type: 'sap.ui.model.type.Date',
@@ -227,7 +245,7 @@
                             visible="true"
                             width="auto"
                         /> -->
-                        <!--<core:Icon
+							<!--<core:Icon
                             src="{
                                 path: 'entregas>Status',
                                 formatter: '.formatter.statusFormatter'
@@ -241,10 +259,10 @@
                                 formatter: '.formatter.statColorFormater'
                             }"
                         />-->
-                    </cells>
-                </ColumnListItem>
-            </items>
-        </Table>
-    </VBox>
-</Panel>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+	</Panel>
 </core:FragmentDefinition>

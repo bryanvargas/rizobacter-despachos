@@ -1,168 +1,159 @@
 <core:FragmentDefinition
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
 >
-    <Panel>
-        <VBox>
-            <MessageStrip
-                text="{worklistView>/worklistTableTitle}"
-                type="Information"
-                showIcon="true"
-                class="sapUiTinyMargin"
-            />
-
-            <Table
-                id="tablaPasiciones"
-                mode="SingleSelect"
-                items="{/results}"
-                noDataText="Algo de posiciones"
-                growing="true"
-                growingThreshold="10"
-                growingScrollToLoad="false"
-                growingTriggerText="Ver más"
-                fixedLayout="false"
-                alternateRowColors="true"
-            >
-                <headerToolbar>
-                    <OverflowToolbar>
- <content>
-                        <!-- <ToolbarSpacer /> -->
-                        <ToolbarSpacer width=""/>
-                        <ToolbarSpacer width=""/>
-
-                        <!-- <ToolbarSpacer width=""/>
+	<Panel>
+		<VBox>
+			<!-- <MessageStrip
+				text="{worklistView>/worklistTableTitle}"
+				type="Information"
+				showIcon="true"
+				class="sapUiTinyMargin"
+			/> -->
+			<Table
+				id="tablaPasiciones"
+				mode="SingleSelect"
+				items="{
+					path: '/results',
+					sorter: {
+						path: 'Posnr'
+					}
+				}"
+				inset="true"
+				noDataText=""
+				growing="true"
+				growingThreshold="10"
+				growingScrollToLoad="false"
+				growingTriggerText="{i18n>mas}"
+				fixedLayout="true"
+				alternateRowColors="true"
+			>
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<!-- <ToolbarSpacer /> -->
+							<ToolbarSpacer width=""/>
+							<ToolbarSpacer width=""/>
+							<!-- <ToolbarSpacer width=""/>
                         <ToolbarSpacer width=""/> -->
-                        <Button
-                            icon="sap-icon://add"
-                            press=".onAddLine"
-                        /> 
-                        <!-- <Button
-                            tooltip="{i18n>sort}"
-                            icon="sap-icon://sort"
-                            press="onSortPark"
-                        />
-                        <Button
-                            tooltip="{i18n>filter}"
-                            icon="sap-icon://filter"
-                            press="onFilterPark"
-                        />
-                        <Button
-                            tooltip="{i18n>clnFlt}"
-                            icon="sap-icon://clear-filter"
-                            press="onClearFilterPark"
-                        />
-                        <Button
-                            tooltip="{i18n>dwnXls}"
-                            icon="sap-icon://excel-attachment"
-                            press="onExportxlsEntregas"
-                        /> -->
-                        <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
-                        <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
-                iconDensityAware="false" press="onEditPDF" />-->
-                    </content>
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.vbeln}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.posnr}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.matnr}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.matnrDesc}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.werks}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.lgort}" />
-                        </header>
-                    </Column>
-                    <Column>
-                        <header>
-                            <Label text="{i18n>entrega.pos.lfimg}" />
-                        </header>
-                    </Column>
-                    <Column
-                        hAlign="Center"
-                        width="10rem"
-                    >
-                        <header>
-                            <Label text="{i18n>entrega.pos.pikmg}" />
-                        </header>
-                    </Column>
-                    <Column
-                        hAlign="Center"
-                        width="10rem"
-                    >
-                        <header>
-                            <Label text="{i18n>entrega.pos.charg}" />
-                        </header>
-                    </Column>
-                    <Column
-                        hAlign="Center"
-                        width="10rem"
-                    >
-                        <header>
-                            <Label text="{i18n>entrega.pos.vrkme}" />
-                        </header>
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem
-                        type="Active"
-                        press="onPicking"
-                        highlight="Information"
-                    >
-                        <cells>
-                            <Label
-                                text="{Vbeln}"
-                                design="Bold"
-                            />
-                            <Text text="{
-                            path: 'Posnr',
-                            formatter: '.formatter.quitarCero'
-                        }"/> 
-                            <Text text="{Matnr}" />
-                            <Text text="{MatnrDesc}" />
-                            <Text text="{Werks}" />
-                            <Text text="{Lgort}" />
-                            <Text text="{Lfimg}" />
-                            <Input type="Text" editable="true" id="PikmgId" />
-                        <Input
-                            id="chargInput"
-                            showSuggestion="true"
-                            showValueHelp="true"
-                            valueHelpOnly="false"
-                            editable="true"
-                            enabled="true"
-                            valueHelpRequest=".onValueHelpRequest"
-                        >
+							<Button
+								text="{i18n>btnPart}"
+								icon="sap-icon://add"
+								press=".onAddLine"
+							/>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column width="3rem"/>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entrega.pos.vbeln}"/>
+						</header>
+					</Column>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entrega.pos.posnr}"/>
+						</header>
+					</Column>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entrega.pos.matnr}"/>
+						</header>
+					</Column>
+					<Column width="20rem">
+						<header>
+							<Label text="{i18n>entrega.pos.matnrDesc}"/>
+						</header>
+					</Column>
+					<Column width="3.8rem">
+						<header>
+							<Label text="{i18n>entrega.pos.werks}"/>
+						</header>
+					</Column>
+					<Column width="6rem">
+						<header>
+							<Label text="{i18n>entrega.pos.lgort}"/>
+						</header>
+					</Column>
+					<Column width="6.8rem">
+						<header>
+							<Label text="{i18n>entrega.pos.lfimg}"/>
+						</header>
+					</Column>
+					<Column width="8rem">
+						<header>
+							<Label
+								text="{i18n>entrega.pos.pikmg}"
+								required="true"
+							/>
+						</header>
+					</Column>
+					<Column width="10rem">
+						<header>
+							<Label
+								text="{i18n>entrega.pos.charg}"
+								required="true"
+							/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Label text="{i18n>entrega.pos.vrkme}"/>
+						</header>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem
+						type="Active"
+						press="onPicking"
+						highlight="Information"
+					>
+						<cells>
+							<Text text=""/>
+							<Label
+								text="{Vbeln}"
+								design="Bold"
+							/>
+							<Text text="{
+								path: 'Posnr',
+								formatter: '.formatter.quitarCero'
+							}"/>
+							<Text text="{Matnr}"/>
+							<Text text="{MatnrDesc}"/>
+							<Text text="{Werks}"/>
+							<Text text="{Lgort}"/>
+							<Text text="{
+								path: 'Lfimg',
+								formatter: '.formatter.quitarCero'
+							}"/>
+							<Input
+								type="Text"
+								editable="true"
+								id="PikmgId"
+								valueState="{field>PikmgStatus}"
+							/>
+							<Input
+								id="chargInput"
+								showSuggestion="true"
+								showValueHelp="true"
+								valueHelpOnly="false"
+								editable="true"
+								enabled="true"
+								valueHelpRequest=".onValueHelpRequest"
+								valueState="{field>ChargStatus}"
+								value="{Charg}"
+							/>
 
-                        </Input>
-                            <!-- <Text text="{Charg}" /> -->
-                            <Text text="{Vrkme}" />
-                            <!-- <core:Icon src="{modeloVuelos>Icono}" size="1.5rem" color="{modeloVuelos>Color}"/>
+							
+							<!-- <Text text="{Charg}" /> -->
+							<Text text="{Vrkme}"/>
+							<!-- <core:Icon src="{modeloVuelos>Icono}" size="1.5rem" color="{modeloVuelos>Color}"/>
 										<core:Icon src="sap-icon://alert" size="1.5rem" color="#FABD64" visible="{modeloVuelos>Modificaciones}"/> -->
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-        </VBox>
-    </Panel>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+	</Panel>
 </core:FragmentDefinition>

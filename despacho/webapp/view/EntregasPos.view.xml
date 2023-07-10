@@ -1,32 +1,31 @@
 <mvc:View
 	controllerName="ar.com.rizobacter.despacho.controller.EntregasPos"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core"
-    xmlns:uxap="sap.uxap"
-    displayBlock="true"
-    height="100%"
-    busyIndicatorDelay="0"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:uxap="sap.uxap"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
 >
-    <Page
-        id="page"
-        showNavButton="true"
-        showHeader="true"
-    >
-        <uxap:ObjectPageLayout id="ObjectPageLayout">
-            <!-- HEADER TITULO -->
-            <uxap:headerTitle>
-                <uxap:ObjectPageDynamicHeaderTitle>
-                    <uxap:expandedHeading>
-                        <Title text="{i18n>entrega.pos.appTitle}" />
-                    </uxap:expandedHeading>
-                    <uxap:snappedHeading>
-                    </uxap:snappedHeading>
-
-                    <uxap:snappedTitleOnMobile>
-                        <Title text="{i18n>title}" />
-                    </uxap:snappedTitleOnMobile>
-                    <!-- <uxap:actions>
+	<Page
+		id="page"
+		showNavButton="false"
+		showHeader="true"
+	>
+		<uxap:ObjectPageLayout id="ObjectPageLayout">
+			<!-- HEADER TITULO -->
+			<uxap:headerTitle>
+				<uxap:ObjectPageDynamicHeaderTitle>
+					<uxap:expandedHeading>
+						<Title text="{i18n>entrega.pos.appTitle}"/>
+					</uxap:expandedHeading>
+					<uxap:snappedHeading>
+					</uxap:snappedHeading>
+					<uxap:snappedTitleOnMobile>
+						<Title text="{i18n>title}"/>
+					</uxap:snappedTitleOnMobile>
+					<!-- <uxap:actions>
                         <Button
                             press=".onOpenDialogRemito"
                             icon="sap-icon://print"
@@ -41,93 +40,80 @@
                             text="{i18n>update}"
                         />
                     </uxap:actions> -->
-                </uxap:ObjectPageDynamicHeaderTitle>
-            </uxap:headerTitle>
-
-            <!-- HEADER CONTENIDO -->
-            <uxap:headerContent>
-                <FlexBox
-                    class="fondo"
-                    wrap="Wrap"
-                    fitContainer="true"
-                >
-                    <!-- <Avatar
+				</uxap:ObjectPageDynamicHeaderTitle>
+			</uxap:headerTitle>
+			<!-- HEADER CONTENIDO -->
+			<uxap:headerContent>
+				<FlexBox
+					class="fondo"
+					wrap="Wrap"
+					fitContainer="true"
+				>
+					<!-- <Avatar
                         src="sap-icon://product"
                         displayShape="Square"
                         displaySize="L"
                     /> -->
-                    <VBox
-                        class=""
-                        alignItems="Start"
-                    >
-                        <Label
-                            text="{i18n>entrega.pos.descArea}:"
-                            labelFor="kunnr"
-                            class="sapUiTinyMarginBottom"
-                        />
-<TextArea id="descTextarea"
-	cols="50"
-	growing="false"
-	growingMaxLines="0"
-	height=""
-	maxLength="0"
-	rows="2"
-	showExceededText="false"
-	valueLiveUpdate="false"
-	wrapping="None"
->
-	
-</TextArea>
-                    </VBox>
-                </FlexBox>
-                <FlexBox
-                    alignContent="Stretch"
-                    alignItems="Stretch"
-                    backgroundDesign="Transparent"
-                    direction="Row"
-                    displayInline="false"
-                    fitContainer="false"
-                    justifyContent="End"
-                    wrap="NoWrap"
-                >
-				          
-                    <Button
-                        tooltip="{i18n>filter}"
-                        icon="sap-icon://save"
-                        text="Picking"
-                        press="onSavePicking"
-                    />
-
-                                        <Button
-                        tooltip="{i18n>filter}"
-                        icon="sap-icon://remove"
-                        text="Remove"
-                        press="onRemove"
-                    />
-                    
-                </FlexBox>
-            </uxap:headerContent>
-
-            <!-- SECCIONES -->
-            <uxap:sections>
-                <!-- CABECERA DE ENTREGAS-->
-
-                <uxap:ObjectPageSection title="{i18n>entregas}">
-                    <uxap:subSections>
-                        <uxap:ObjectPageSubSection
-                            title=""
-                            titleUppercase="false"
-                        >
-                            <uxap:blocks>
-                                <core:Fragment
-                                    fragmentName="ar.com.rizobacter.despacho.view.fragment.Posiciones"
-                                    type="XML"
-                                />
-                            </uxap:blocks>
-                        </uxap:ObjectPageSubSection>
-                    </uxap:subSections>
-                </uxap:ObjectPageSection>
-            </uxap:sections>
-        </uxap:ObjectPageLayout>
-    </Page>
+					<VBox
+						class=""
+						alignItems="Start"
+					>
+						<Label
+							text="{i18n>entrega.pos.descArea}:"
+							labelFor="kunnr"
+							class="sapUiTinyMarginBottom"
+						/>
+						<TextArea
+							id="descTextarea"
+							cols="50"
+							growing="false"
+							growingMaxLines="0"
+							height=""
+							maxLength="0"
+							rows="2"
+							showExceededText="false"
+							valueLiveUpdate="false"
+							wrapping="None"
+						/>
+					</VBox>
+				</FlexBox>
+				<FlexBox
+					alignContent="Stretch"
+					alignItems="Stretch"
+					backgroundDesign="Transparent"
+					direction="Row"
+					displayInline="false"
+					fitContainer="false"
+					justifyContent="End"
+					wrap="NoWrap"
+				>
+					<Button
+						tooltip="{i18n>filter}"
+						icon="sap-icon://save"
+						text="{i18n>entrega.pos.Picking}"
+						press="onSavePicking"
+					/>
+				</FlexBox>
+			</uxap:headerContent>
+			<!-- SECCIONES -->
+			<uxap:sections>
+				<!-- CABECERA DE ENTREGAS-->
+				<uxap:ObjectPageSection title="{i18n>entregas}">
+					<uxap:subSections>
+						<uxap:ObjectPageSubSection
+							title=""
+							titleUppercase="false"
+						>
+							<uxap:blocks>
+								<core:Fragment
+									fragmentName="ar.com.rizobacter.despacho.view.fragment.Posiciones"
+									type="XML"
+								/>
+							</uxap:blocks>
+						</uxap:ObjectPageSubSection>
+					</uxap:subSections>
+				</uxap:ObjectPageSection>
+			</uxap:sections>
+		</uxap:ObjectPageLayout>
+	</Page>
 </mvc:View>
