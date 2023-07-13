@@ -63,9 +63,9 @@ sap.ui.define(
 				debugger;
 
 				var vbeln = oEvent.getParameter("arguments").vbeln;
-				var printPdf = oEvent.getParameter("arguments").printPdf;
+				//var printPdf = oEvent.getParameter("arguments").printPdf;
 
-				if (vbeln !== undefined && printPdf === 'X') {
+				if (vbeln !== undefined && vbeln.split("-")[1] === 'X') {
 					this.onFilterEntregas(oEvent);
 
 					this._onPrintRemito(vbeln);
@@ -689,7 +689,10 @@ sap.ui.define(
 			onOpenHistoricos: function (oEvent) {
 				debugger;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("RouteHistoricos")
+				oRouter.navTo("RouteHistoricos", {
+					vbeln: "",
+					printPdf: ""
+				})
 			},
 
 			onSortPark: function () {

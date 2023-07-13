@@ -80,7 +80,7 @@ sap.ui.define(
 						that.getView().byId("descTextarea").setValue(valueDescrip);
 
 					const oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-					oRouter.navTo("Despacho", { vbeln: vbeln, printPdf:'X' }, true);	
+					oRouter.navTo("Despacho", { vbeln: 'X-' + vbeln });	
 					}, error: function (oError) {
 					}.bind(that)
 				})

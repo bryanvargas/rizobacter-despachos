@@ -141,7 +141,7 @@
       "routes": [
         {
           "name": "Despacho",
-          "pattern": "/:vbeln:|:printPdf:",
+          "pattern": "/:vbeln:",
           "target": [
             "Despacho"
           ]
@@ -155,7 +155,7 @@
         },
         {
           "name": "RouteHistoricos",
-          "pattern": "Historicos",
+          "pattern": "Historicos/:vbeln:|:printPdf:",
           "target": [
             "TargetHistoricos"
           ]
