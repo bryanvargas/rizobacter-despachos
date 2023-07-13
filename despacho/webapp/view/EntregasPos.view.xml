@@ -11,7 +11,7 @@
 	<Page
 		id="page"
 		showNavButton="false"
-		showHeader="true"
+		navButtonPress="onNavBack"
 	>
 		<uxap:ObjectPageLayout id="ObjectPageLayout">
 			<!-- HEADER TITULO -->

@@ -18,6 +18,7 @@ sap.ui.define([
 		},
 
 		onNavBack: function () {
+			debugger;
 			var oHistory, sPreviousHash;
 
 			oHistory = History.getInstance();
@@ -25,7 +26,7 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				this.getRouter().navTo("Principal");
+				this.getRouter().navTo("Despacho");
 			}
 		},
 

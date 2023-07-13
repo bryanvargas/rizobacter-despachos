@@ -41,6 +41,10 @@
 								icon="sap-icon://add"
 								press=".onAddLine"
 							/>
+							<Button
+								icon="sap-icon://refresh"
+								press=".onRefreshPos"
+							/>							
 						</content>
 					</OverflowToolbar>
 				</headerToolbar>

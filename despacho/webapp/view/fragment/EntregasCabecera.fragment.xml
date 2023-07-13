@@ -104,6 +104,10 @@
                             icon="sap-icon://excel-attachment"
                             press="onExportxlsEntregas"
                         />
+                        <Button
+							icon="sap-icon://refresh"
+							press=".onFilterEntregas"
+						/>
                         <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
                         <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
                 iconDensityAware="false" press="onEditPDF" />-->

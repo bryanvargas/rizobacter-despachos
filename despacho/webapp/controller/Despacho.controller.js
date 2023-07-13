@@ -3,6 +3,7 @@ sap.ui.define(
 		'sap/m/MessageToast',
 		'sap/ui/core/Fragment',
 		'sap/ui/model/json/JSONModel',
+		"sap/m/PDFViewer",
 		'../model/DespachoFormatter',
 		'../model/models',
 		"sap/ui/Device",
@@ -13,13 +14,14 @@ sap.ui.define(
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (BaseController, MessageToast, Fragment, JSONModel, Despachoformatter, models, Device, Sorter, Filter, FilterOperator) {
+	function (BaseController, MessageToast, Fragment, JSONModel, PDFViewer, Despachoformatter, models, Device, Sorter, Filter, FilterOperator) {
 		'use strict';
 
 		return BaseController.extend("ar.com.rizobacter.despacho.controller.Despacho", {
 			formatter: Despachoformatter,
 			onInit: function () {
 
+				this.vbeln = "";
 				const oFiltrosEntregas = new sap.ui.model.json.JSONModel({
 					Vbeln: ""
 				});
@@ -52,6 +54,44 @@ sap.ui.define(
 				this._oGlobalBusyDialog = new sap.m.BusyDialog();
 				this._getEntregas();
 				this._filtersModel();
+
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.getRoute("Despacho").attachPatternMatched(this._onObjectMatch, this);
+			},
+
+			_onObjectMatch: function (oEvent) {
+				debugger;
+
+				var vbeln = oEvent.getParameter("arguments").vbeln;
+				var printPdf = oEvent.getParameter("arguments").printPdf;
+
+				if (vbeln !== undefined && printPdf === 'X') {
+					this.onFilterEntregas(oEvent);
+
+					this._onPrintRemito(vbeln);
+
+				}
+				// var vbeln = oEvent.getParameter("arguments").Vbeln,
+				// 	aFilter = [];
+
+				// aFilter.push(new Filter('Vbeln', FilterOperator.EQ, vbeln));
+
+				// this.getView().byId("descTextarea").setValue("");
+
+				// this.getView().getModel("entregas").read("/EntregaSet('" + vbeln + "')/nav_ent_to_pick", {
+				// 	filters: aFilter,
+				// 	success: function (odata) {
+				// 		debugger;
+				// 		var jModel = new sap.ui.model.json.JSONModel(odata);
+				// 		that.getView().byId("tablaPasiciones").setModel(jModel);
+				// 		let valueDescrip = '';
+				// 		if (jModel.oData.results[0] !== undefined) {
+				// 			valueDescrip = jModel.oData.results[0].TextoCab;
+				// 		}
+				// 		that.getView().byId("descTextarea").setValue(valueDescrip);
+				// 	}, error: function (oError) {
+				// 	}.bind(that)
+				// })
 			},
 
 			onSearch: function (oEvent) {
@@ -84,7 +124,7 @@ sap.ui.define(
 						oDate = oDateFormat.format(oDateFormat.parse(wadat)),
 						dateIn = oDateFormat.format(oDateFormat.parse(wadat.split('-')[0].trim())),
 						dateOut = oDateFormat.format(oDateFormat.parse(wadat.split('-')[1].trim()));
-						aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
+					aFilter.push(new Filter("Wadat", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
 				};
 
 				if (kunnr !== "") {
@@ -375,12 +415,12 @@ sap.ui.define(
 
 
 					}
-					 if (sInputId === "kunnr") {
-					 	oDialog.getBinding("items").filter([
-					 		new Filter("Kunnr", FilterOperator.EQ, sInputValue)
-					 		//new Filter("Name", FilterOperator.EQ, sInputValue)
-					 	]);
-					 }
+					if (sInputId === "kunnr") {
+						oDialog.getBinding("items").filter([
+							new Filter("Kunnr", FilterOperator.EQ, sInputValue)
+							//new Filter("Name", FilterOperator.EQ, sInputValue)
+						]);
+					}
 
 					oDialog.open(sInputValue);
 
@@ -425,6 +465,7 @@ sap.ui.define(
 				// });
 
 				//var vbeln = oEvent.getSource().getBindingContext("entregas").getObject().Vbeln;
+				this.vbeln = oEvent.getSource().getBindingContext().getObject().Vbeln;
 				var vbeln = oEvent.getSource().getBindingContext().getObject().Vbeln;
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("RouteEntregasPos", {
@@ -661,7 +702,7 @@ sap.ui.define(
 
 			getViewSettingsDialog: function (sDialogFragmentName) {
 				var pDialog = this._mViewSettingsDialogs[sDialogFragmentName];
-	
+
 				if (!pDialog) {
 					pDialog = Fragment.load({
 						id: this.getView().getId(),
@@ -686,13 +727,29 @@ sap.ui.define(
 					sPath,
 					bDescending,
 					aSorters = [];
-	
+
 				sPath = mParams.sortItem.getKey();
 				bDescending = mParams.sortDescending;
 				aSorters.push(new Sorter(sPath, bDescending));
-	
+
 				// apply the selected sort and group settings
 				oBinding.sort(aSorters);
+			},
+
+			_onPrintRemito: function (nro_doc) {
+				debugger;
+				// var oItem = this.getView().byId("tablaPasiciones").getSelectedItem();
+				var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+				// if (oItem !== null) {
+				//let vbeln = oItem.getBindingContext().getObject().Vbeln;
+				let opdfViewer = new PDFViewer();
+				this.getView().addDependent(opdfViewer);
+				let sServiceURL = this.getView().getModel("entregas").sServiceUrl;
+				let sSource = sServiceURL + "/EntregaSet('" + nro_doc + "')/$value";
+				opdfViewer.setSource(sSource);
+				opdfViewer.setTitle(oResourceBundle.getText("textos.globales.printPDF", [nro_doc]));
+				opdfViewer.open();
+
 			},
 
 		});

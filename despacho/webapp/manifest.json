@@ -141,7 +141,7 @@
       "routes": [
         {
           "name": "Despacho",
-          "pattern": "",
+          "pattern": "/:vbeln:|:printPdf:",
           "target": [
             "Despacho"
           ]
