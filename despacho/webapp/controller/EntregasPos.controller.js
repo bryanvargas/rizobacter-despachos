@@ -94,7 +94,10 @@ sap.ui.define(
 				var oModel = this.getOwnerComponent().getModel("lotes");
 
 				var newModel = new sap.ui.model.json.JSONModel();
+				if (oEvent.getSource().getBindingContext() !== undefined) {
 					this._valuesRow = oEvent.getSource().getBindingContext().getObject();
+				}
+				
 
 				var that = this;
 
@@ -120,7 +123,7 @@ sap.ui.define(
 					switch (sInputId) {
 						case "charg":
 							oDialog.bindAggregation("items", {
-								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + that._valuesRow.Matnr + "',p_werks='" + that._valuesRow.Werks + "',p_lgort='" + that._valuesRow.Lgort + "')/Set",
+								path: "lotes>/ZCDS_GETLOTES(p_matnr='" + that._oEntregas.Matnr + "',p_werks='" + that._oEntregas.Werks + "',p_lgort='" + that._oEntregas.Lgort + "')/Set",
 								//path: "lotes>/ZCDS_GETLOTES('" + valuesRow.Matnr + "'," + "'"  + valuesRow.Werks + "'," +  "'" + valuesRow.Lgort + "')/Set",
 								//filters: [new Filter('Charg', FilterOperator.EQ, sInputValue)],
 								template: new sap.m.StandardListItem({
@@ -282,18 +285,6 @@ sap.ui.define(
 								debugger;
 							} 
 						});
-						//this.getView().byId("tablaPasiciones").getBinding("items").refresh();	
-					//const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-					//oRouter.navTo("Despacho", {}, true);	
-					} 
-					    //else {
-						//this.getView().byId("descTextarea").focus();
-						//sap.ui.getCore().byId("descTextarea").focus();
-					//}
-				//} 
-				// else {
-				// 	MessageToast.show('Seleccione una entrega');
-				// }
 
 			},
 
@@ -336,11 +327,26 @@ sap.ui.define(
 						]
 					});
 
+					//var oItem = this.getView().byId("tablaPasiciones").getSelectedItem();
+					var indexItem = 0;
+					var flag = '';
+					this.getView().byId("tablaPasiciones").getItems().forEach(element => {
+
+						if (element.getId() === this.getView().byId("tablaPasiciones").getSelectedItem().getId() && flag !== 'X') {					
+							
+							flag = 'X'
+						}
+						if (flag !== 'X') {
+							indexItem++;
+						}
+					});
+
 					var oTable = this.getView().byId("tablaPasiciones");
 					//let indexTable = this.getView().byId("tablaPasiciones").indexOfItem(this.getView().byId("tablaPasiciones").getSelectedItem());
 					let index = parseInt(this.getView().byId("tablaPasiciones").getSelectedContextPaths()[0].split("/")[2]) + 1;
-					oTable.insertItem(oItem, index);
+					oTable.insertItem(oItem, indexItem + 1);
 					this._countId = this._countId + 1;
+					flag = '';
 
 
 				}

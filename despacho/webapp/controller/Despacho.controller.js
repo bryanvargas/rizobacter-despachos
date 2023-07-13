@@ -65,7 +65,7 @@ sap.ui.define(
 				var vbeln = oEvent.getParameter("arguments").vbeln;
 				//var printPdf = oEvent.getParameter("arguments").printPdf;
 
-				if (vbeln !== undefined && vbeln.split("-")[1] === 'X') {
+				if (vbeln !== undefined && vbeln.split("-")[0] === 'X') {
 					this.onFilterEntregas(oEvent);
 
 					this._onPrintRemito(vbeln);
