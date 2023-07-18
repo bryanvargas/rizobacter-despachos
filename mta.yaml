@@ -1,50 +1,80 @@
-_schema-version: '3.2'
+_schema-version: "3.2"
 ID: planta-procesos
 version: 0.0.1
 modules:
-  - name: planta-procesos-approuter
-    type: approuter.nodejs
-    path: planta-procesos-approuter
-    requires:
-      - name: planta-procesos_html_repo_runtime
-      - name: uaa_planta-procesos
-      - name: dest_planta-procesos
-      - name: conn_planta-procesos
-    parameters:
-      disk-quota: 256M
-      memory: 256M
-  - name: planta-procesos_ui_deployer
-    type: com.sap.application.content
-    path: .
-    requires:
-      - name: planta-procesos_html_repo_host
-        parameters:
-          content-target: true
-resources:
+- name: planta-procesos-approuter
+  type: approuter.nodejs
+  path: planta-procesos-approuter
+  requires:
   - name: planta-procesos_html_repo_runtime
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-runtime
   - name: uaa_planta-procesos
-    type: org.cloudfoundry.managed-service
-    parameters:
-      path: ./xs-security.json
-      service: xsuaa
-      service-name: planta-procesos-xsuaa-service
-      service-plan: application
-  - name: planta-procesos_html_repo_host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-host
-  - name: conn_planta-procesos
-    parameters:
-      service-plan: lite
-      service: connectivity
-    type: org.cloudfoundry.managed-service
   - name: dest_planta-procesos
+  - name: conn_planta-procesos
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+- name: planta-procesos_ui_deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: planta-procesos_html_repo_host
     parameters:
-      service-plan: lite
-      service: destination
-    type: org.cloudfoundry.managed-service
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - arcomrizobacterstockstock.zip
+      name: arcomrizobacterstockstock
+      target-path: resources/
+- name: arcomrizobacterstockstock
+  type: html5
+  path: stock
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: planta-procesos_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: uaa_planta-procesos
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: planta-procesos-xsuaa-service
+    service-plan: application
+- name: planta-procesos_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: conn_planta-procesos
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: connectivity
+    service-plan: lite
+- name: dest_planta-procesos
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+    service: destination
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo

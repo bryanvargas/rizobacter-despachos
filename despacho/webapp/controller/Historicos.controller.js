@@ -59,13 +59,15 @@ sap.ui.define(
 
             _onObjectMatch: function (oEvent) {
                 var that = this;
-
+				this.getView().setBusy(true);		
                 this.getView().getModel("entregas").read("/EntHistSet", {
                     success: function (odata) {
                         debugger;
                         var jModel = new sap.ui.model.json.JSONModel(odata);
                         that.getView().byId("tablaHistoricos").setModel(jModel);
+						that.getView().setBusy(false);		
                     }, error: function (oError) {
+						that.getView().setBusy(false);		
                     }.bind(that)
                 })
             },
@@ -95,7 +97,6 @@ sap.ui.define(
                         case "kunnr":
                             oDialog.bindAggregation("items", {
                                 path: 'entregas>/F4kunnrSet',
-                                //filters: [new Filter('Kunnr', FilterOperator.EQ, sInputValue)],
                                 template: new sap.m.StandardListItem({
                                     title: '{entregas>Kunnr}',
                                     description: '{entregas>Name}'
@@ -106,7 +107,6 @@ sap.ui.define(
                         case "matnr":
                             oDialog.bindAggregation("items", {
                                 path: 'materiales>/ZCDS_GETMATERIAL',
-                                //filters: [new Filter('Material', FilterOperator.EQ, sInputValue)],
                                 template: new sap.m.StandardListItem({
                                     title: '{materiales>Descripcion}',
                                     description: '{materiales>Material}'
@@ -256,18 +256,14 @@ sap.ui.define(
             },
             onClearFilterHistorico: function () {
                 var that = this;
-                //if (that.byId("kunnrInput").getValue() !== "" || that.byId("matnrInput").getValue() !== "") {
                 that.byId("kunnrInput").setValue("");
                 that.byId("matnrInput").setValue("");
                 that.byId("wadatIstInput").setValue("");
                 this._getHistorico();
-                //}
-
             },
 
             _getHistorico: function () {
 				debugger;
-                //this.getView().setBusy(true);
                 this.getOwnerComponent().getModel("entregas").read("/EntHistSet", {
                     success: function (odata) {
                         this.getView().setBusy(false);
@@ -360,8 +356,6 @@ sap.ui.define(
 				sPath = mParams.sortItem.getKey();
 				bDescending = mParams.sortDescending;
 				aSorters.push(new Sorter(sPath, bDescending));
-	
-				// apply the selected sort and group settings
 				oBinding.sort(aSorters);
 			},
 
@@ -371,11 +365,8 @@ sap.ui.define(
 					this._oGlobalBusyDialog.setText("DescargandoInformacion");
 					this._oGlobalBusyDialog.open();
 					var oLibro = this._crearLibroExcel();
-					// Cargar info a cada sheet
-					var oDatosResultados = this._armarDatos3WMParkeadas(); //retorna un array con los datos de la página 'Postulacions' ya armados 
-					//Agregar hojas al XLS
-					//this._agregarPaginaLibroExcel(oLibro, oDatosResultados, that.oTextos.getText("3WMTitlePage"));
-					this._agregarPaginaLibroExcel(oLibro, oDatosResultados, "3WMTitlePage");
+					var oDatosResultados = this._armarDatos3WMParkeadas(); 
+					this._agregarPaginaLibroExcel(oLibro, oDatosResultados, "Historico");
 
 					var filename = "Reporte Despachos - Historico " + new Date().toDateString();
 
@@ -383,8 +374,6 @@ sap.ui.define(
 					this._oGlobalBusyDialog.close();
 
 				} else {
-
-					//sap.m.MessageToast.show(that.oTextos.getText("Error al generar XLS"));
 					sap.m.MessageToast.show("Error al generar XLS");
 				}
 			},
@@ -421,7 +410,6 @@ sap.ui.define(
 				//Agregar solo postulaciones seleccionadas
 				for (var i = 0; i < aItems.length; i++) {
 
-					//var oResultados = aItems[i].getBindingContext("entregas").getObject();
 					var oResultados = aItems[i].getBindingContext().getObject();
 					var sEstadoDescrip;
 
