@@ -6,8 +6,8 @@
 	<SelectDialog
 		id="selectDialog"
 		confirmButtonText="Confirmar"
-		contentHeight="300px"
-		contentWidth="100px"
+		contentHeight="400px"
+		contentWidth="400px"
 		draggable="false"
 		search=".onValueHelpSearch"
 		confirm=".onValueHelpClose"

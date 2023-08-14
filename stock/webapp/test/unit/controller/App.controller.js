@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"arcomrizobacterstock/stock/controller/App.controller"
+	"arcomrizobacter/stock/controller/App.controller"
 ], function (Controller) {
 	"use strict";
 

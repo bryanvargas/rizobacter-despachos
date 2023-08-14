@@ -70,12 +70,12 @@
 							<Label text="{i18n>entrega.pos.matnrDesc}"/>
 						</header>
 					</Column>
-					<Column width="3.8rem">
+					<Column width="3.8rem" visible="false">
 						<header>
 							<Label text="{i18n>entrega.pos.werks}"/>
 						</header>
 					</Column>
-					<Column width="6rem">
+					<Column width="6rem" visible="false">
 						<header>
 							<Label text="{i18n>entrega.pos.lgort}"/>
 						</header>
@@ -125,8 +125,8 @@
 							}"/>
 							<Text text="{Matnr}"/>
 							<Text text="{MatnrDesc}"/>
-							<Text text="{Werks}"/>
-							<Text text="{Lgort}"/>
+							<Text text="{Werks}" visible="false"/>
+							<Text text="{Lgort}" visible="false"/>
 							<Text text="{
 								path: 'Lfimg',
 								formatter: '.formatter.quitarCero'

@@ -24,17 +24,20 @@ sap.ui.define(
              * 
              */
             onInit: function () {
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);				
+				var oViewModel,
+					iOriginalBusyDelay,
+					oTable = this.byId("tablaHistoricos");
+
                 oRouter.getRoute("RouteHistoricos").attachPatternMatched(this._onObjectMatch, this);
                 this._oTextos = this.getOwnerComponent().getModel("i18n").getResourceBundle();
                 this._oGlobalBusyDialog = new sap.m.BusyDialog();
                 this._mViewSettingsDialogs = {};
                 this._getHistorico();
                 this._filtersModel();
+				
 
-				var oViewModel,
-					iOriginalBusyDelay,
-					oTable = this.byId("tablaHistoricos");
+				
 
 				iOriginalBusyDelay = oTable.getBusyIndicatorDelay();
 
@@ -45,20 +48,16 @@ sap.ui.define(
 					tableBusyDelay: 0
 				});
 				this.setModel(oViewModel, "worklistView");
-
 				oTable.attachEventOnce("updateFinished", function () {
-					// Restore original busy indicator delay for worklist's table
 					oViewModel.setProperty("/tableBusyDelay", iOriginalBusyDelay);
 				});
-
-
-
-
-
             },
 
             _onObjectMatch: function (oEvent) {
                 var that = this;
+				that.byId("kunnrInput").setValue("");
+				that.byId("matnrInput").setValue("");
+				that.byId("wadatIstInput").setValue("");
 				this.getView().setBusy(true);		
                 this.getView().getModel("entregas").read("/EntHistSet", {
                     success: function (odata) {
@@ -97,9 +96,9 @@ sap.ui.define(
                         case "kunnr":
                             oDialog.bindAggregation("items", {
                                 path: 'entregas>/F4kunnrSet',
-                                template: new sap.m.StandardListItem({
-                                    title: '{entregas>Kunnr}',
-                                    description: '{entregas>Name}'
+								template: new sap.m.StandardListItem({
+									title: '{entregas>Kunnr}' + ' - {entregas>Name}',
+									description: '{entregas>Kunnr}'
                                 })
                             });
                             that._oValueHelpDialog._Field = "kunnr";
@@ -108,8 +107,8 @@ sap.ui.define(
                             oDialog.bindAggregation("items", {
                                 path: 'materiales>/ZCDS_GETMATERIAL',
                                 template: new sap.m.StandardListItem({
-                                    title: '{materiales>Descripcion}',
-                                    description: '{materiales>Material}'
+                                    title: '{materiales>Material}' + ' - {materiales>Descripcion}',
+                                    description: '{materiales>Descripcion}'
                                 })
                             });
                             that._oValueHelpDialog._Field = "matnr";
@@ -117,6 +116,26 @@ sap.ui.define(
 
 
                     }
+
+					if (sInputId === "kunnr") {
+						if (sInputValue !== "") {
+							oDialog.getBinding("items").filter([new sap.ui.model.Filter([
+								new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[0]),
+								//new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[1])
+							], false)]);
+						}
+
+					}			
+					
+					if (sInputId === "matnr") {
+						if (sInputValue !== "") {
+							oDialog.getBinding("items").filter([new sap.ui.model.Filter([
+								new sap.ui.model.Filter("Material", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[0].trim()),
+								//new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[1])
+							], false)]);
+						}
+
+					}
                     oDialog.open(sInputValue);
 
                     return oDialog;
@@ -125,19 +144,36 @@ sap.ui.define(
             },
             onValueHelpSearch: function (oEvent) {
                 debugger;
+				var oFilter = [];
                 var sValue = oEvent.getParameter("value");
 
                 if (this._oValueHelpDialog._Field === "matnr") {
-                    oEvent.getSource().getBinding("items").filter([
-                        new Filter("Material", FilterOperator.Contains, sValue)
-                    ]);
+					if (sValue) {
+						if (isNaN( sValue.split("-")[0])) {
+							oFilter = new Filter("Descripcion", FilterOperator.Contains, sValue.split("-")[0]);		
+						} else {
+							oFilter = new Filter("Material", FilterOperator.Contains, sValue.split("-")[0]);
+						}
+					}
                 }
 
                 if (this._oValueHelpDialog._Field === "kunnr") {
-                    oEvent.getSource().getBinding("items").filter([
-                        new Filter("Kunnr", FilterOperator.Contains, sValue)
-                    ]);
+					if (sValue) {
+						if (isNaN( sValue.split("-")[0])) {
+							oFilter = new Filter("Name", FilterOperator.Contains, sValue.split("-")[0].toUpperCase());		
+						} else {
+							oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue.split("-")[0]);
+						}
+					}
+
+                    // oEvent.getSource().getBinding("items").filter([
+                    //     new Filter("Kunnr", FilterOperator.Contains, sValue)
+                    // ]);
                 }
+									
+				var oBinding = oEvent.getSource().getBinding("items");
+
+				oBinding.filter(oFilter);
             },
 
             onValueHelpClose: function (oEvent) {
@@ -199,22 +235,24 @@ sap.ui.define(
                 let oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
                     pattern: "YYYYMMdd"
                 }),
-
+				    dateIn,
+				    dateOut,
                     kunnr = that.byId("kunnrInput").getValue(),
                     matnr = that.byId("matnrInput").getValue(),
                     wadatIst = that.byId("wadatIstInput").getValue(),
-                    oDate = oDateFormat.format(oDateFormat.parse(wadatIst)),
+                    oDate = oDateFormat.format(oDateFormat.parse(wadatIst));
 
-					
+				if (wadatIst !== "") {					
 					dateIn = oDateFormat.format(oDateFormat.parse(wadatIst.split('-')[0].trim())),
 					dateOut = oDateFormat.format(oDateFormat.parse(wadatIst.split('-')[1].trim()));
+				}	
 
                 if (kunnr !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
                 };
 
                 if (matnr !== "") {
-                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr.split("-")[0].trim()));
                 };
 
                 if (wadatIst !== "") {
@@ -223,24 +261,24 @@ sap.ui.define(
 
                 if (kunnr !== "" && matnr !== "" && wadatIst !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
-                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
-                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr.split("-")[0].trim()));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
                 };
 
                 if (kunnr !== "" && matnr !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
-                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr));
+                    aFilter.push(new Filter("Matnr", sap.ui.model.FilterOperator.EQ, matnr.split("-")[0].trim()));
                 };
 
                 if (kunnr !== "" && wadatIst !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
-                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
 
                 };
 
                 if (matnr !== "" && wadatIst !== "") {
                     aFilter.push(new Filter("Kunnr", sap.ui.model.FilterOperator.EQ, kunnr));
-                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.EQ, oDate));
+                    aFilter.push(new Filter("WadatIst", sap.ui.model.FilterOperator.BT, dateIn, dateOut));
                 };
 
                 this.getView().getModel("entregas").read("/EntHistSet", {
@@ -583,5 +621,89 @@ sap.ui.define(
 				}
 				this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
 			},
-        });
+
+			onSuggest: function (event) {
+				debugger;
+
+				var idInput = /[a-z]+$/.exec((/Historicos--[a-z]+/.exec(event.getSource().getId())[0]))[0];
+
+				var sValue = event.getParameter("suggestValue"),
+					aFilters = [];
+
+					switch (idInput) {
+						case "kunnr":
+							if (sValue) {
+								if (isNaN(sValue)) {
+									aFilters.push(new Filter({
+										filters: [
+											new Filter("Name", FilterOperator.Contains, sValue.toUpperCase())
+											//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+										],
+										and: false
+									}));	
+								} else {
+									aFilters.push(new Filter({
+										filters: [
+											new Filter("Kunnr", FilterOperator.Contains, sValue)
+											//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+										],
+										and: false
+									}));										
+								}
+							}
+							
+							break;
+					
+						case "matnr":
+							// aFilters.push(new Filter({
+							// 	filters: [
+							// 		new Filter("Material", FilterOperator.Contains, sValue.toUpperCase())
+							// 		//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+							// 	],
+							// 	and: false
+							// }));
+							if (sValue) {
+								if (isNaN(sValue)) {
+									aFilters.push(new Filter({
+										filters: [
+											new Filter("Descripcion", FilterOperator.Contains, sValue)
+											//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+										],
+										and: false
+									}));	
+								} else {
+									aFilters.push(new Filter({
+										filters: [
+											new Filter("Material", FilterOperator.Contains, sValue)
+											//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+										],
+										and: false
+									}));										
+								}
+							}
+							break;
+					}
+				var oSource = event.getSource();
+				var oBinding = oSource.getBinding('suggestionItems');
+				oBinding.filter(aFilters);
+				//oBinding.attachEventOnce('dataReceived', function() {
+				 oSource.setFilterSuggests(false);
+				//});
+
+			},
+			onShowPdf: function (oEvent) {
+				debugger;
+				var oRowSelect = oEvent.getSource().getBindingContext().getObject();
+
+					let vbeln = oRowSelect.Vbeln;
+                    let opdfViewer = new PDFViewer();
+                    this.getView().addDependent(opdfViewer);
+                    let sServiceURL = this.getView().getModel("entregas").sServiceUrl;
+                    let sSource = sServiceURL + "/EntregaSet('" + vbeln + "')/$value";
+				   opdfViewer.setSource(sSource);
+				   opdfViewer.setTitle(this._oTextos.getText("textos.globales.printPDF", [vbeln]));
+				   opdfViewer.open();
+                
+			}
+        })
     });   

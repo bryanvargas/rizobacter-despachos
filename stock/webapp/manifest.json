@@ -1,7 +1,7 @@
 {
   "_version": "1.49.0",
   "sap.app": {
-    "id": "ar.com.rizobacter.stock.stock",
+    "id": "ar.com.rizobacter.stock",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,11 +13,30 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.10.2",
-      "toolsId": "294df00e-5e67-42c1-835a-1348e7bda929"
+      "toolsId": "c520f0ea-ba1e-4811-878b-67a588cf4ffb"
+    },
+    "dataSources": {
+      "ZCDS_GETSTOCK_CDS": {
+        "uri": "/sap/opu/odata/sap/ZCDS_GETSTOCK_CDS/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      },
+      "ZOS_STOCK_SRV": {
+        "uri": "/sap/opu/odata/sap/ZOS_STOCK_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      }
     }
   },
   "sap.ui": {
     "technology": "UI5",
+    "fullWidth": true,
     "icons": {
       "icon": "",
       "favIcon": "",
@@ -55,7 +74,25 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ar.com.rizobacter.stock.stock.i18n.i18n"
+          "bundleName": "ar.com.rizobacter.stock.i18n.i18n"
+        }
+      },
+      "stock": {
+        "dataSource": "ZCDS_GETSTOCK_CDS",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
+        }
+      },
+      "filtrosModel": {
+        "dataSource": "ZOS_STOCK_SRV",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false
         }
       }
     },
@@ -64,6 +101,14 @@
         {
           "uri": "css/style.css"
         }
+      ],
+      "js": [
+        {
+          "uri": "libs/FileSaver.js"
+        },
+        {
+          "uri": "libs/xlsx.core.min.js"
+        }
       ]
     },
     "routing": {
@@ -71,17 +116,17 @@
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "ar.com.rizobacter.stock.stock.view",
+        "viewPath": "ar.com.rizobacter.stock.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
       },
       "routes": [
         {
-          "name": "RouteApp",
-          "pattern": ":?query:",
+          "name": "Stock",
+          "pattern": "",
           "target": [
-            "TargetApp"
+            "Stock"
           ]
         }
       ],
@@ -92,11 +137,16 @@
           "clearControlAggregation": false,
           "viewId": "App",
           "viewName": "App"
+        },
+        "Stock": {
+          "viewType": "XML",
+          "viewName": "Stock",
+          "viewId": "Stock"
         }
       }
     },
     "rootView": {
-      "viewName": "ar.com.rizobacter.stock.stock.view.App",
+      "viewName": "ar.com.rizobacter.stock.view.App",
       "type": "XML",
       "async": true,
       "id": "App"

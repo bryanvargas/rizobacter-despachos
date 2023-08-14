@@ -183,7 +183,7 @@ sap.ui.define(
 
 			onAddLine: function (oEvent) {
 				debugger;
-				
+
 				var oView = this.getView();
 
 				if (!this.byId("mainDialog")) {
@@ -198,7 +198,7 @@ sap.ui.define(
 				} else {
 					this.byId("mainDialog").open();
 				}
-				
+
 			},
 
 			onOpenDialogRemito: function (oEvent) {
@@ -246,11 +246,9 @@ sap.ui.define(
 						case "kunnr":
 							oDialog.bindAggregation("items", {
 								path: 'entregas>/F4kunnrSet',
-								
 								template: new sap.m.StandardListItem({
-									title: '{entregas>Kunnr}',
-
-									description: '{entregas>Name}'
+									title: '{entregas>Kunnr}' + ' - {entregas>Name}',
+									description: '{entregas>Kunnr}'
 								})
 							});
 							that._oValueHelpDialog._Field = "kunnr";
@@ -259,10 +257,20 @@ sap.ui.define(
 
 					}
 					if (sInputId === "kunnr") {
-						oDialog.getBinding("items").filter([
-							new Filter("Kunnr", FilterOperator.EQ, sInputValue)
-							
-						]);
+						if (sInputValue !== "") {
+							if (isNaN(sInputValue)) {								
+								oDialog.getBinding("items").filter([new sap.ui.model.Filter([
+									new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[0]),
+									//new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[1])
+								], false)]);
+							} else {
+								oDialog.getBinding("items").filter([new sap.ui.model.Filter([
+									new sap.ui.model.Filter("Kunnr", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[0]),
+									//new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, sInputValue.split("-")[1])
+								], false)]);
+							}
+						}
+
 					}
 
 					oDialog.open(sInputValue);
@@ -272,10 +280,34 @@ sap.ui.define(
 
 			},
 			onValueHelpSearch: function (oEvent) {
-				
+
+				// debugger;
+				// var oFilter = [];
+				// var sValue = oEvent.getParameter("value");
+				// if (isNaN(sValue)) {
+				// 	oFilter = new Filter("Name", FilterOperator.Contains, sValue);
+				// } else {
+				// 	oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
+				// }
+
+
+				// var oBinding = oEvent.getSource().getBinding("items");
+
+				// oBinding.filter(oFilter);
 				debugger;
+				var oFilter = [];
 				var sValue = oEvent.getParameter("value");
-				var oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
+				if (sValue !== "") {
+					if (isNaN(sValue.split("-")[0])) {
+						oFilter = new Filter("Name", FilterOperator.Contains, sValue.split("-")[0].toUpperCase());
+					} else {
+						oFilter = new Filter("Kunnr", FilterOperator.Contains, sValue.split("-")[0]);
+					}
+					//	oFilter = new Filter("Name", FilterOperator.Contains, sValue);
+					//} else {
+					
+				}
+
 
 				var oBinding = oEvent.getSource().getBinding("items");
 
@@ -308,7 +340,7 @@ sap.ui.define(
 					this._oGlobalBusyDialog.setText("DescargandoInformacion");
 					this._oGlobalBusyDialog.open();
 					var oLibro = this._crearLibroExcel();
-					var oDatosResultados = this._armarDatos3WMParkeadas(); 
+					var oDatosResultados = this._armarDatos3WMParkeadas();
 					this._agregarPaginaLibroExcel(oLibro, oDatosResultados, "Entregas");
 
 					var filename = "Reporte Despachos - Entregas " + new Date().toDateString();
@@ -572,6 +604,61 @@ sap.ui.define(
 				opdfViewer.open();
 
 			},
+
+			onLiveKunnr: function (oEvent) {
+				debugger;
+
+				var oValueInput = oEvent.getSource().getValue();
+
+				if (isNaN(oValueInput)) {
+
+				}
+
+				var oInput = oEvent.getSource();
+				//if (!oInput.getSuggestionItems().length) {
+				oInput.bindAggregation("suggestionItems", {
+					path: "entregas>/F4kunnrSet",
+					template: new sap.ui.core.Item({
+						//title: '{entregas>Kunnr}' + ' - {entregas>Name}',									
+						//		description: '{entregas>Kunnr}'
+						text: '{entregas>Kunnr}' + ' - {entregas>Name}'
+					})
+				});
+				//}				
+			},
+
+			onSuggest: function (event) {
+				debugger;
+				var sValue = event.getParameter("suggestValue"),
+					aFilters = [];
+				if (sValue) {
+					if (isNaN(sValue)) {
+						aFilters.push(new Filter({
+							filters: [
+								new Filter("Name", FilterOperator.Contains, sValue.toUpperCase())
+								//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+							],
+							and: false
+						}));
+					} else {
+						aFilters.push(new Filter({
+							filters: [
+								new Filter("Kunnr", FilterOperator.Contains, sValue)
+								//new Filter("creditseg", FilterOperator.Contains, sValue.toUpperCase())
+							],
+							and: false
+						}));
+					}
+
+				}
+				var oSource = event.getSource();
+				var oBinding = oSource.getBinding('suggestionItems');
+				oBinding.filter(aFilters);
+				//oBinding.attachEventOnce('dataReceived', function() {
+				oSource.setFilterSuggests(false);
+				//});
+
+			}
 
 		});
 	});

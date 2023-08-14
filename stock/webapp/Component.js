@@ -5,12 +5,12 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "ar/com/rizobacter/stock/stock/model/models"
+        "ar/com/rizobacter/stock/model/models"
     ],
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("ar.com.rizobacter.stock.stock.Component", {
+        return UIComponent.extend("ar.com.rizobacter.stock.Component", {
             metadata: {
                 manifest: "json"
             },
@@ -29,7 +29,12 @@ sap.ui.define([
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
-            }
+
+                // setear modelo global
+                this.setModel(models.createGlobalModel(), "globalModel");
+            },
+
+            SapUser: "SGIUSTO" // sap.ushell.Container.getService("UserInfo").getUser(); sap.ushell.Container.getService("UserInfo").getId()
         });
     }
 );

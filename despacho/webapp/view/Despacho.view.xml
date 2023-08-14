@@ -70,13 +70,15 @@
                             valueLiveUpdate="true"
                             editable="true"
                             enabled="true"
+                            width="400px"
+                            suggest="onSuggest"   
                             valueHelpRequest=".onValueHelpRequest"
                             suggestionItems="{entregas>/F4kunnrSet}"
                         >
                             <suggestionItems>
                                 <core:ListItem
                                     key="{entregas>Kunnr}"
-                                    text="{entregas>Name}"
+                                    text="{entregas>Kunnr} - {entregas>Name}" 
                                 />
                             </suggestionItems>
                         </Input>

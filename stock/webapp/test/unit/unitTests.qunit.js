@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"arcomrizobacterstock/stock/test/unit/AllTests"
+		"arcomrizobacter/stock/test/unit/AllTests"
 	], function () {
 		QUnit.start();
 	});

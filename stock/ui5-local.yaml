@@ -2,7 +2,7 @@
 
 specVersion: "2.6"
 metadata:
-  name: ar.com.rizobacter.stock.stock
+  name: ar.com.rizobacter.stock
 type: application
 framework:
   name: SAPUI5
@@ -32,5 +32,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: ar.com.rizobacter.stock.stock
+        component: ar.com.rizobacter.stock
         ui5Theme: sap_horizon

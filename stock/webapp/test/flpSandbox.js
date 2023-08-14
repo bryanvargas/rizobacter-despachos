@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "Stock",
-									"targetURL": "#arcomrizobacterstockstock-display"
+									"targetURL": "#arcomrizobacterstock-display"
 								}
 							}]
 						}]
@@ -51,18 +51,18 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"arcomrizobacterstockstock-display": {
-								"semanticObject": "arcomrizobacterstockstock",
+							"arcomrizobacterstock-display": {
+								"semanticObject": "arcomrizobacterstock",
 								"action": "display",
-								"description": "Stock",
+								"description": "Stocks",
 								"title": "Stock",
 								"signature": {
 									"parameters": {}
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=ar.com.rizobacter.stock.stock",
-									"url": sap.ui.require.toUrl("ar/com/rizobacter/stock/stock")
+									"additionalInformation": "SAPUI5.Component=ar.com.rizobacter.stock",
+									"url": sap.ui.require.toUrl("ar/com/rizobacter/stock")
 								}
 							}
 						}

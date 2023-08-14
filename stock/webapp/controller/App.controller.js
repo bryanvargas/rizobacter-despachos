@@ -7,7 +7,7 @@ sap.ui.define([
     function (Controller) {
         "use strict";
 
-        return Controller.extend("ar.com.rizobacter.stock.stock.controller.App", {
+        return Controller.extend("ar.com.rizobacter.stock.controller.App", {
             onInit: function () {
 
             }

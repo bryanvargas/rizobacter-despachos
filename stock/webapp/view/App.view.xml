@@ -1,7 +1,11 @@
-<mvc:View controllerName="ar.com.rizobacter.stock.stock.controller.App"
+<mvc:View controllerName="ar.com.rizobacter.stock.controller.App"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
-    </Page>
+	<App id="app">
+		<pages>
+			<Page id="page" title="{i18n>title}">
+				<content />
+			</Page>
+		</pages>
+	</App>
 </mvc:View>

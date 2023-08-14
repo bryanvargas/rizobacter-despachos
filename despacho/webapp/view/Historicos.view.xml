@@ -39,7 +39,7 @@
                     <uxap:snappedTitleOnMobile>
                         <Title text="{i18n>title}" />
                     </uxap:snappedTitleOnMobile>
-                    <uxap:actions>
+                    <!-- <uxap:actions>
                         <Button
                             press=".onPrintRemito"
                             icon="sap-icon://print"
@@ -47,13 +47,7 @@
                             type="Emphasized"
                             visible="true"
                         />
-                        <!-- <Button
-                            type="Accept"
-                            press="abrirDialogFinalizacion"
-                            icon="sap-icon://save"
-                            text="{i18n>update}"
-                        /> -->
-                    </uxap:actions>
+                    </uxap:actions> -->
                 </uxap:ObjectPageDynamicHeaderTitle>
             </uxap:headerTitle>
 
@@ -64,11 +58,6 @@
                     wrap="Wrap"
                     fitContainer="true"
                 >
-                    <!-- <Avatar
-                        src="sap-icon://product"
-                        displayShape="Square"
-                        displaySize="L"
-                    /> -->
                     <VBox
                         class="sapUiSmallMargin"
                         alignItems="Center"
@@ -79,19 +68,23 @@
                             class="sapUiTinyMarginBottom"
                         />
                         <Input
+                            placeholder="Search Cliente"
                             id="kunnrInput"
                             showSuggestion="true"
                             showValueHelp="true"
                             valueHelpOnly="false"
+                            valueLiveUpdate="true"
                             editable="true"
                             enabled="true"
+                            width="400px"
+                            suggest="onSuggest"   
                             valueHelpRequest=".onValueHelpRequest"
                             suggestionItems="{entregas>/F4kunnrSet}"
                         >
                             <suggestionItems>
                                 <core:ListItem
                                     key="{entregas>Kunnr}"
-                                    text="{entregas>Name}"
+                                    text="{entregas>Kunnr} - {entregas>Name}" 
                                 />
                             </suggestionItems>
                         </Input>
@@ -112,13 +105,14 @@
                             valueHelpOnly="false"
                             editable="true"
                             enabled="true"
+                            suggest="onSuggest"
                             valueHelpRequest=".onValueHelpRequest"
                             suggestionItems="{materiales>/ZCDS_GETMATERIAL}"
                         >
                             <suggestionItems>
                                 <core:ListItem
-                                    key="{materiales>Descripcion}"
-                                    text="{materiales>Material}"
+                                    key="{materiales>Material}"
+                                    text="{materiales>Material} - {materiales>Descripcion}"
                                 />
                             </suggestionItems>
                         </Input>

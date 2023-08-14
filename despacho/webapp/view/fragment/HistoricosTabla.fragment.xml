@@ -12,7 +12,6 @@
 			/>
 			<Table
 				id="tablaHistoricos"
-				mode="SingleSelect"
 				items="{/results}"
 				growing="true"
 				growingThreshold="10"
@@ -87,8 +86,7 @@
 				</headerToolbar>
 				<columns>
 					<Column
-						width="3rem"
-						mergeDuplicates="true"
+						width="2rem"
 					>
 						<header>
 							<Label/>
@@ -112,7 +110,7 @@
 							<Label text="{i18n>entregas.historicos.kunnr}"/>
 						</header>
 					</Column>
-					<Column width="20rem">
+					<Column width="18rem">
 						<header>
 							<Label text="{i18n>entregas.historicos.kunnrDesc}"/>
 						</header>
@@ -123,7 +121,7 @@
 							<Label text="{i18n>entregas.historicos.matnr}"/>
 						</header>
 					</Column>
-					<Column width="16rem">
+					<Column width="14rem">
 						<header>
 							<Label text="{i18n>entregas.historicos.matnrDesc}"/>
 						</header>
@@ -133,13 +131,13 @@
 							<Label text="{i18n>entregas.historicos.charg}"/>
 						</header>
 					</Column>
-					<Column width="6rem">
+					<Column width="5rem">
 						<header>
 							<Label text="{i18n>entregas.historicos.lfimg}"/>
 						</header>
 					</Column>
 					<Column>
-						<header width="4rem">
+						<header width="8rem">
 							<Label text="{i18n>entregas.historicos.vrkme}"/>
 						</header>
 					</Column>
@@ -149,7 +147,7 @@
 						</header>
 					</Column>
 					<Column>
-						<header width="4rem">
+						<header width="6rem">
 							<Label text="{i18n>entregas.historicos.wadatIst}"/>
 						</header>
 					</Column>
@@ -167,16 +165,23 @@
 				<items>
 					<ColumnListItem>
 						<cells>
-							<core:Icon
-								src="sap-icon://monitor-payments"
-								size="1.5rem"
+							<Button
+								icon="sap-icon://pdf-attachment"
+								press="onShowPdf"
+								state="Information"
+								width="3rem"
 							/>
+							<!-- <ObjectStatus
+								class="sapUiSmallMarginBottom"
+								icon="sap-icon://pdf-attachment"
+								state="Information" 
+								press="onShowPdf"
+								/> -->
 							<ObjectStatus
 								text="{
 									path: 'Vbeln',
 									formatter: '.formatter.quitarCeroStr'
 								}"
-								state="Information"
 								press="showPosiciones"
 							/>
 							<!-- <ObjectStatus
@@ -224,10 +229,14 @@
 								formatter: '.formatter.quitarCero'
 							}"/> -->
 							<Text text="{Lfimg}"/>
-							<ObjectStatus text="{Vrkme}"/>
+							<Text text="{Vrkme}" width="2.5rem"/>
 							<!-- <Text text="{Vrkme}"/> -->
-							<Text text="{WerksDesc}"/>
-							<Text text="{WadatIst}"/>
+							<Text text="{WerksDesc}" width="4rem"/>
+							<!--<Text text="{WadatIst}"/>-->
+							<Text text="{
+								path: 'WadatIst',
+								formatter: '.formatter.dateFormat'
+							}" width="4rem"/> 							
 							<!-- <Text
                             text="{
                                 path: 'WadatIst',

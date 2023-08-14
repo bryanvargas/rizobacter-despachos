@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (Opa5) {
 	"use strict";
 
-	return Opa5.extend("ar.com.rizobacter.stock.stock.test.integration.arrangements.Startup", {
+	return Opa5.extend("ar.com.rizobacter.stock.test.integration.arrangements.Startup", {
 
 		iStartMyApp: function (oOptionsParameter) {
 			var oOptions = oOptionsParameter || {};
@@ -14,7 +14,7 @@ sap.ui.define([
 			// start the app UI component
 			this.iStartMyUIComponent({
 				componentConfig: {
-					name: "ar.com.rizobacter.stock.stock",
+					name: "ar.com.rizobacter.stock",
 					async: true
 				},
 				hash: oOptions.hash,

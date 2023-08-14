@@ -92,9 +92,13 @@ sap.ui.define(
 				debugger;
 				var oView = this.getView();
 
-				const pMatnr = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[3].getText();
-				const pWerks = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[5].getText()
-				const pLgort = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[6].getText()
+				//const pMatnr = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[3].getText();
+				//const pWerks = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[5].getText()
+				//const pLgort = this.getView().byId("tablaPasiciones").getItems()[0].getCells()[6].getText()
+
+				const pMatnr = oEvent.getSource().getParent().getCells()[3].getText();
+				const pWerks = oEvent.getSource().getParent().getCells()[5].getText();
+				const pLgort = oEvent.getSource().getParent().getCells()[6].getText();
 
 				if (oEvent.getSource().getBindingContext() !== undefined) {
 					this._valuesRow = oEvent.getSource().getBindingContext().getObject();

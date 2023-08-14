@@ -1,0 +1,322 @@
+<mvc:View
+    controllerName="ar.com.rizobacter.stock.controller.Stock"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:uxap="sap.uxap"
+    xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:svm="sap.ui.comp.smartvariants">
+>
+    <Page
+        id="page"
+        showNavButton="false"
+        showHeader="false"
+    >
+        <uxap:ObjectPageLayout id="ObjectPageLayout">
+            <!-- HEADER TITULO -->
+            <uxap:headerTitle>
+                <uxap:ObjectPageDynamicHeaderTitle>
+                    <uxap:expandedHeading>
+                        <Title text="{i18n>appTitle}" />
+                    </uxap:expandedHeading>
+                    <uxap:snappedHeading>
+                        <HBox>
+                            <VBox>
+                                <Title text="{i18n>title}" />
+                            </VBox>
+                        </HBox>
+                    </uxap:snappedHeading>
+                    <uxap:expandedContent>
+                    </uxap:expandedContent>
+                    <uxap:snappedTitleOnMobile>
+                        <Title text="{i18n>title}" />
+                    </uxap:snappedTitleOnMobile>
+                    <!-- <uxap:actions>
+                        <Button                            
+                            press=".onOpenHistoricos"
+                            icon="sap-icon://paper-plane"
+                            text="{i18n>vermas}"
+                        />
+                    </uxap:actions> -->
+                </uxap:ObjectPageDynamicHeaderTitle>
+            </uxap:headerTitle>
+            <!-- HEADER CONTENIDO -->
+
+            <uxap:headerContent>
+            	<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
+						<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem name="Material" label="{i18n>material}" groupName="FILTERCUST" visibleInFilterBar="true">
+									<fb:control>
+                                    
+                                    <MultiComboBox 
+                                        id="MultiComboMaterial"
+                                        selectionChange="onSelectionChange"
+                                        selectionFinish="handleSelectionFinish"
+                                        
+                                        width="350px"
+
+                                        items="{
+                                            path: 'oFiltrosCentro>/materiales',
+                                            sorter: { path: 'material' }
+                                        }">               
+                                        
+                                        <core:Item 
+                                            key="{oFiltrosCentro>material}" 
+                                            text="{oFiltrosCentro>material} - {oFiltrosCentro>descripcion}">
+                                        </core:Item>
+                                    </MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem name="Centro" label="{i18n>centro}" groupName="FILTERCUST" visibleInFilterBar="true">
+									<fb:control>
+                                    <MultiComboBox 
+                                        id="MultiComboCentro"
+                                        selectionChange="onSelectionChange"
+                                        selectionFinish="handleSelectionFinish"
+                                        width="350px"
+                                        items="{
+                                            path: 'oFiltrosCentro>/centros',
+                                            sorter: { path: 'centro' }
+                                        }">               
+                                        
+                                        <core:Item 
+                                            key="{oFiltrosCentro>centro}" 
+                                            text="{oFiltrosCentro>centro} - {oFiltrosCentro>descripcion}">
+                                        </core:Item>
+                                    </MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem name="Lote" label="{i18n>lote}" groupName="FILTERCUST" visibleInFilterBar="true">
+									<fb:control>
+                                    <MultiComboBox 
+                                        id="MultiComboLote"
+                                        selectionChange="onSelectionChange"
+                                        selectionFinish="handleSelectionFinish"
+                                        width="350px"
+                                        items="{
+                                            path: 'oFiltrosCentro>/lotes',
+                                            sorter: { path: 'lote' }
+                                        }">               
+                                        
+                                        <core:Item 
+                                            key="{oFiltrosCentro>lote}" 
+                                            text="{oFiltrosCentro>lote}">
+                                        </core:Item>
+                                    </MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>    
+                        
+                                
+                <!-- <FlexBox
+                    class="fondo"
+                    wrap="Wrap"
+                    fitContainer="true"
+                >
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>almacen}:"
+                            labelFor="almacen"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <Input
+                            placeholder="Buscar {i18n>almacen}"
+                            id="almacenInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="false"
+                            valueLiveUpdate="true"
+                            editable="true"
+                            enabled="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{entregas>/F4kunnrSet}"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{entregas>Kunnr}"
+                                    text="{entregas>Name}"
+                                />
+                            </suggestionItems>
+                        </Input>
+                    </VBox>
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>Centro}:"
+                            labelFor="Centro"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <Input
+                            placeholder="Buscar {i18n>centro}"
+                            id="CentroInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="false"
+                            valueLiveUpdate="true"
+                            editable="true"
+                            enabled="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{entregas>/F4kunnrSet}"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{entregas>Kunnr}"
+                                    text="{entregas>Name}"
+                                />
+                            </suggestionItems>
+                        </Input>
+                    </VBox>                    
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>lote}:"
+                            labelFor="Lote"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <Input
+                            placeholder="Buscar {i18n>lote}"
+                            id="loteInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="false"
+                            valueLiveUpdate="true"
+                            editable="true"
+                            enabled="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{entregas>/F4kunnrSet}"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{entregas>Kunnr}"
+                                    text="{entregas>Name}"
+                                />
+                            </suggestionItems>
+                        </Input>
+                    </VBox>
+                </FlexBox>
+                <FlexBox
+                    alignContent="Stretch"
+                    alignItems="Stretch"
+                    backgroundDesign="Transparent"
+                    direction="Row"
+                    displayInline="false"
+                    fitContainer="false"
+                    justifyContent="End"
+                    wrap="NoWrap"
+                >
+
+                    <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://search"
+                        text="Filtrar"
+                        press="onFilterEntregas"
+
+                    />
+                   
+                    <Button width="5px" type="Transparent"/>
+                    
+                    <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://clear-filter"
+                        text="Limpiar Filtro"
+                        press="onCleanFilterEntregas"
+                    />
+                    
+                </FlexBox> -->
+            </uxap:headerContent>            
+            <!-- <uxap:headerContent>
+                <FlexBox
+                    class="fondo"
+                    wrap="Wrap"
+                    fitContainer="true"
+                >
+                    <VBox
+                        class="sapUiSmallMargin"
+                        alignItems="Center"
+                    >
+                        <Label
+                            text="{i18n>almacen}:"
+                            labelFor="almacen"
+                            class="sapUiTinyMarginBottom"
+                        />
+                        <Input
+                            placeholder="Search Almacén"
+                            id="almacenInput"
+                            showSuggestion="true"
+                            showValueHelp="true"
+                            valueHelpOnly="false"
+                            valueLiveUpdate="true"
+                            editable="true"
+                            enabled="true"
+                            valueHelpRequest=".onValueHelpRequest"
+                            suggestionItems="{entregas>/F4kunnrSet}"
+                        >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{entregas>Kunnr}"
+                                    text="{entregas>Name}"
+                                />
+                            </suggestionItems>
+                        </Input>
+                    </VBox>
+                </FlexBox>
+                <FlexBox
+                    alignContent="Stretch"
+                    alignItems="Stretch"
+                    backgroundDesign="Transparent"
+                    direction="Row"
+                    displayInline="false"
+                    fitContainer="false"
+                    justifyContent="End"
+                    wrap="NoWrap"
+                >
+
+                    <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://search"
+                        text="Filtrar"
+                        press="onFilterStock"
+
+                    />
+                   
+                    <Button width="5px" type="Transparent"/>
+                    
+                    <Button
+                        tooltip="{i18n>filter}"
+                        icon="sap-icon://clear-filter"
+                        text="Limpiar Filtro"
+                        press="onCleanFilterStock"
+                    />
+                    
+                </FlexBox>
+            </uxap:headerContent> -->
+
+            <!-- SECCIONES -->
+            <uxap:sections>
+                <!-- CABECERA DE ENTREGAS-->
+
+                <uxap:ObjectPageSection title="{i18n>titleTablaStock}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <uxap:blocks>
+                                <core:Fragment
+                                    fragmentName="ar.com.rizobacter.stock.view.fragment.StockTabla"
+                                    type="XML"
+                                />
+                            </uxap:blocks>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+    </Page>
+</mvc:View>

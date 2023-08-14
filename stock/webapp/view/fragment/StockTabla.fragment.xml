@@ -1,0 +1,191 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+>
+<Panel>
+    <VBox>
+        <MessageStrip
+            text="{worklistView>/worklistTableTitle}"
+            type="Information"
+            showIcon="true"
+            class="sapUiTinyMargin"
+        />
+        <Table
+            id="tablaStock"  
+            width="auto"
+            class="sapUiResponsiveMargin"
+            growing="true"
+            growingThreshold="100"
+            growingScrollToLoad="false"
+            alternateRowColors="true"
+            growingTriggerText="{i18n>mas}"
+            items="{
+                path: '/results',
+                sorter: {
+                    path: 'Centro',
+                    descending: false
+                }
+            }"
+            busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+            updateFinished=".onUpdateFinished"
+        >
+            <headerToolbar>
+                <OverflowToolbar
+                    width="auto"
+                    height="auto"
+                    design="Transparent"
+                    visible="true"
+                    enabled="true"
+                >
+                    <content>
+                        <!-- <ToolbarSpacer /> -->
+                        <ToolbarSpacer width=""/>
+                        <ToolbarSpacer width=""/>
+                        <SearchField
+                            enableSuggestions="false"
+                            enabled="true"
+                            maxLength="0"
+                            placeholder="Buscar..."
+                            showRefreshButton="false"
+                            showSearchButton="true"
+                            value="{
+                                path: 'filters>/Centro'
+                            }"
+                            visible="true"
+                            width="20rem"
+                            search="onSearching"
+                            liveChange="onSearching"
+                        >
+                            <suggestionItems>
+                            </suggestionItems>
+                        </SearchField>
+                        <!-- <ToolbarSpacer width=""/>
+                        <ToolbarSpacer width=""/> -->
+                        <!-- <Button
+                            icon="sap-icon://add"
+                            press=".onAddLine"
+                        /> -->
+                        <Button
+                            tooltip="{i18n>sort}"
+                            icon="sap-icon://sort"
+                            press="onSortStock"
+                        />
+                        <Button
+                            tooltip="{i18n>dwnXls}"
+                            icon="sap-icon://excel-attachment"
+                            press="onExportxlsStock"
+                        />
+                        <Button
+							icon="sap-icon://refresh"
+							press=".onFilterStock"
+						/>
+                        <!--<Button tooltip="{i18n>dwnXls}" icon="sap-icon://excel-attachment" press="onExportxls"/>-->
+                        <!--<OverflowToolbarButton text="Editar Link Pdf" type="Transparent" iconFirst="true" width="auto" enabled="true" visible="true"
+                iconDensityAware="false" press="onEditPDF" />-->
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <!-- <Column width="3rem" mergeDuplicates="true">
+                    <header>
+                        <Label/>
+                    </header>
+                </Column> -->
+                <Column width="5rem" mergeDuplicates="true">
+                    <header>
+                        <Label text="{i18n>stock.centro}"/>
+                    </header>
+                </Column>
+                <Column width="6rem">
+                    <header>
+                        <Label text="{i18n>stock.material}"/>
+                    </header>
+                </Column>
+                <Column width="16rem">
+                    <header>
+                        <Label text="{i18n>stock.materialDesc}"/>
+                    </header>                
+                </Column>                    
+                <Column width="6rem">
+                    <header>
+                        <Label text="{i18n>stock.almacen}"/>
+                    </header>
+                </Column>
+                <Column width="8rem">
+                    <header>
+                        <Label text="{i18n>stock.lote}"/>
+                    </header>
+                </Column>
+                <Column width="4rem">
+                    <header>
+                        <Label text="{i18n>stock.umb}"/>
+                    </header>
+                </Column>
+                <Column width="8rem">
+                    <header>
+                        <Label text="{i18n>stock.stockLibre}"/>
+                    </header>
+                </Column>
+                <Column width="6rem">
+                    <header>
+                        <Label text="{i18n>stock.stockInspe}"/>
+                    </header>
+                </Column>
+                <Column>
+                    <header width="4rem">
+                        <Label text="{i18n>stock.stockNolib}"/>
+                    </header>
+                </Column>
+                <Column>
+                    <header width="4rem">
+                        <Label text="{i18n>stock.stockBloq}"/>
+                    </header>
+                </Column>
+                <Column>
+                    <header width="12rem">
+                        <Label text="{i18n>stock.centroDesc}"/>
+                    </header>
+                </Column>
+            </columns>
+            <items>
+                <!-- <ColumnListItem type="Navigation" press="navegateToEntregasPos">   -->
+                <ColumnListItem>  
+                    <cells>
+                        <ObjectStatus
+                            text="{
+                                path: 'Centro',
+                                formatter: '.formatter.quitarCero'
+                            }"
+                            state="Information"
+                            press="showPosiciones"
+                            
+                        />
+                        <!-- <ObjectStatus
+                            text="USD"
+                            state="Information"
+                        /> -->
+                        <Text text="{
+                            path: 'Material',
+                            formatter: '.formatter.quitarCero'
+                        }"/>
+                        <Text text="{Descripcion}"/>
+                        <Text text="{Almacen}"/>
+                        <ObjectStatus
+                            text="{
+                                path: 'Lote',
+                                formatter: '.formatter.quitarCero'
+                            }"
+                        />
+                        <Text text="{UMB}"/>
+                        <Text text="{StockLibre}"/> 
+                        <Text text="{StockInspe}"/> 
+                        <Text text="{StockNoLib}"/> 
+                        <Text text="{StockBloq}"/> 
+                        <Text text="{CentroDesc}"/>  
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </VBox>
+</Panel>
+</core:FragmentDefinition>

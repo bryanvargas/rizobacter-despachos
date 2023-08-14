@@ -1,7 +1,7 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Tue Jul 18 2023 16:47:39 GMT+0000 (Coordinated Universal Time)|
+|**Generation Date and Time**<br>Wed Jul 19 2023 01:12:18 GMT+0000 (Coordinated Universal Time)|
 |**App Generator**<br>@sap/generator-fiori-freestyle|
 |**App Generator Version**<br>1.10.2|
 |**Generation Platform**<br>SAP Business Application Studio|
@@ -10,7 +10,7 @@
 |**Service URL**<br>N/A
 |**Module Name**<br>stock|
 |**Application Title**<br>Stock|
-|**Namespace**<br>ar.com.rizobacter.stock|
+|**Namespace**<br>ar.com.rizobacter|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.116.0|
 |**Enable Code Assist Libraries**<br>False|
@@ -19,7 +19,7 @@
 
 ## stock
 
-Stock
+Stocks
 
 ### Starting the generated app
 
