@@ -100,6 +100,24 @@ sap.ui.define([],
                 return iNum.replace(/^(0+)/g, '');
             },
 
+            decimal: function (iNum) {
+                if (!iNum) {
+                    return "0,00";
+                } else {
+                    console.log(iNum);
+                    var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+                        "groupingEnabled": true,  // grouping is enabled
+                        "groupingSeparator": '.', // grouping separator is '.'
+                        "groupingSize": 3,  
+                        "maxFractionDigits": 2,      // the amount of digits to be grouped (here: thousand)
+                        "decimalSeparator": ","   // the decimal separator must be different from the grouping separator
+                    });
+                    
+
+                    return oFormat.format(iNum); // "1.234,56"
+                }
+            },
+
 
             dateFormat: function (iDate) {
                 if (!iDate) {

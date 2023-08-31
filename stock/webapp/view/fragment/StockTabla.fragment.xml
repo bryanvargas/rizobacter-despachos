@@ -91,11 +91,11 @@
                         <Label/>
                     </header>
                 </Column> -->
-                <Column width="5rem" mergeDuplicates="true">
+                <!--<Column width="5rem" mergeDuplicates="true">
                     <header>
                         <Label text="{i18n>stock.centro}"/>
                     </header>
-                </Column>
+                </Column> -->
                 <Column width="6rem">
                     <header>
                         <Label text="{i18n>stock.material}"/>
@@ -106,11 +106,11 @@
                         <Label text="{i18n>stock.materialDesc}"/>
                     </header>                
                 </Column>                    
-                <Column width="6rem">
+                <!-- <Column width="6rem">
                     <header>
                         <Label text="{i18n>stock.almacen}"/>
                     </header>
-                </Column>
+                </Column> -->
                 <Column width="8rem">
                     <header>
                         <Label text="{i18n>stock.lote}"/>
@@ -136,11 +136,11 @@
                         <Label text="{i18n>stock.stockNolib}"/>
                     </header>
                 </Column>
-                <Column>
+               <!-- <Column>
                     <header width="4rem">
                         <Label text="{i18n>stock.stockBloq}"/>
                     </header>
-                </Column>
+                </Column> -->
                 <Column>
                     <header width="12rem">
                         <Label text="{i18n>stock.centroDesc}"/>
@@ -151,7 +151,7 @@
                 <!-- <ColumnListItem type="Navigation" press="navegateToEntregasPos">   -->
                 <ColumnListItem>  
                     <cells>
-                        <ObjectStatus
+                        <!--<ObjectStatus
                             text="{
                                 path: 'Centro',
                                 formatter: '.formatter.quitarCero'
@@ -159,7 +159,7 @@
                             state="Information"
                             press="showPosiciones"
                             
-                        />
+                        />-->
                         <!-- <ObjectStatus
                             text="USD"
                             state="Information"
@@ -169,7 +169,7 @@
                             formatter: '.formatter.quitarCero'
                         }"/>
                         <Text text="{Descripcion}"/>
-                        <Text text="{Almacen}"/>
+                        <!--<Text text="{Almacen}"/>-->
                         <ObjectStatus
                             text="{
                                 path: 'Lote',
@@ -177,11 +177,37 @@
                             }"
                         />
                         <Text text="{UMB}"/>
-                        <Text text="{StockLibre}"/> 
-                        <Text text="{StockInspe}"/> 
-                        <Text text="{StockNoLib}"/> 
-                        <Text text="{StockBloq}"/> 
-                        <Text text="{CentroDesc}"/>  
+                        <!--<Text text="{StockLibre}"/> -->
+                        <Text text="{
+                            path: 'StockLibre',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <Text text="{
+                            path: 'StockInspe',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <Text text="{
+                            path: 'StockNoLib',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <!--<Text text="{StockBloq}"/> -->
+                        <!--<Text text="{
+                            path: 'StockLibre',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <Text text="{
+                            path: 'StockInspe',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <Text text="{
+                            path: 'StockNoLib',
+                            formatter: '.formatter.decimal'
+                        }"/> 
+                        <Text text="{
+                            path: 'StockBloq',
+                            formatter: '.formatter.decimal'
+                        }"/> -->
+                        <Text text="{CentroDesc}"/>
                     </cells>
                 </ColumnListItem>
             </items>

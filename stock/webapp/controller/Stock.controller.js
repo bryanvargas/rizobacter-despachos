@@ -44,13 +44,6 @@ sap.ui.define([
 			this.oSmartVariantManagement.addPersonalizableControl(oPersInfo);
 			this.oSmartVariantManagement.initialise(function () {}, this.oFilterBar);
 
-				// const oFilterOdata = new sap.ui.model.json.JSONModel({
-				// 	Almacen: "",
-				// 	Centro: "",
-				// 	Usuario: ""
-				// });
-
-
 				const oFiltrosCentro = new sap.ui.model.json.JSONModel({
 					centros: [ {						
 						centro: "",
@@ -69,7 +62,6 @@ sap.ui.define([
 
 				this.getView().setModel(oFiltrosStock, "oFiltrosStock");
 
-				//this.getView().setModel(oFilterOdata, "oFilterOdata");
 				this.getView().setModel(oFiltrosCentro, "oFiltrosCentro");
 
 				var oViewModel,
@@ -383,23 +375,6 @@ sap.ui.define([
 				return ws;
 			},
 
-
-			// _getStock1: function () {
-			// 	debugger;
-			// 	this.getView().setBusy(true);
-			// 	this.getOwnerComponent().getModel("stock").read("/ZCDS_GETSTOCK", {
-			// 		success: function (odata) {
-			// 			this.getView().setBusy(false);
-			// 			var jModel = new sap.ui.model.json.JSONModel(odata);
-			// 			this.getView().byId("tablaStock").setModel(jModel);
-			// 		}.bind(this),
-			// 		error: function (oError) {
-			// 			console.log(oError)
-			// 			this.getView().setBusy(false);
-			// 		}.bind(this)
-			// 	});
-			// },
-
 			_filtersModel: function () {
 				let oModel = {
 					Centro: "",
@@ -454,7 +429,6 @@ sap.ui.define([
 
 			_getStock: function () {
 				debugger;
-				
 				this.getView().setBusy(true);
 				this.getOwnerComponent().getModel("filtrosModel").read("/GetFiltrosUsuario", {
 					urlParameters:{
@@ -482,6 +456,7 @@ sap.ui.define([
 							console.log(oData.results);
 						}
 						this.getView().setBusy(true);
+
 						this.getOwnerComponent().getModel("stock").read("/ZCDS_GETSTOCK", {	
 							filters: oFilters,
 							success: function (odata) {
@@ -501,24 +476,24 @@ sap.ui.define([
 									return !this.has(key) && this.add(key);
 								}, new Set);
 								
+								
+				                 this.getView().getModel("oFiltrosCentro").setSizeLimit(50000);
 				           		 var aRegistros = this.getView().getModel("oFiltrosCentro").getData();
 
 								ofilterCentros.forEach(function (item) {
-									debugger;
 									aRegistros.centros.push({centro: item.Centro, descripcion: item.CentroDesc})						
 								});
 
 								ofilterMaterial.forEach(function (item) {
-									debugger;
 									aRegistros.materiales.push({material: item.Material, descripcion: item.Descripcion})					
 								});
 
 								ofilterLotes.forEach(function (item) {
-									debugger;
 									aRegistros.lotes.push({lote: item.Lote})					
 								});
 
-								this.getView().getModel("oFiltrosCentro").refresh();							
+								this.getView().getModel("oFiltrosCentro").refresh();
+								
 								
 								this.getView().setBusy(false);
 								var jModel = new sap.ui.model.json.JSONModel(odata);
@@ -547,22 +522,6 @@ sap.ui.define([
 
 				this.getView().setModel(new JSONModel(oModel), "filters");
 			},
-
-			// onFilter: function () {
-			// 	debugger;
-			// 	let oModel = this.getView().getModel("filters");
-			// 	let oFilters = oModel.getData();
-			// 	let aFilters = [];
-
-			// 	if (oFilters.Almacen) {
-			// 		aFilters.push(new Filter("Almacen", FilterOperator.Contains, oFilters.Almacen));
-			// 	};
-
-			// 	let oTable = this.getView().byId("tablaStock");
-			// 	let oBinding = oTable.getBinding("items");
-			// 	oBinding.filter(aFilters);
-			// 	console.log(oFilters);
-			// },
 
 			onFilterChange: function () {
 				debugger;
